@@ -1,0 +1,116 @@
+---
+import BlogPost from '../../../../layouts/BlogPost.astro';
+import { BLOG_POSTS } from '../../../../data/blog';
+
+const meta = BLOG_POSTS.find((p) => p.slug === 'dscr-loans-real-estate-investors')!;
+
+const faqs = [
+  {
+    question: 'What is a DSCR loan in plain English?',
+    answer:
+      'A DSCR loan is a rental-property mortgage that qualifies on the property\'s rental cash flow instead of the borrower\'s personal income, tax returns, or W-2s. The lender divides the property\'s gross rent by its total monthly housing payment (PITIA) to get the DSCR ratio. A 1.0 ratio means rent exactly covers the mortgage payment.',
+  },
+  {
+    question: 'What is the minimum DSCR ratio?',
+    answer:
+      'Most lenders, Clout included, will approve DSCR loans at a 1.0 ratio at standard pricing. Some files close below 1.0 with compensating factors — larger down payment, higher FICO, stronger reserves. Clout offers no-ratio DSCR on select programs at price for strong borrowers.',
+  },
+  {
+    question: 'Can I use a DSCR loan on my primary residence?',
+    answer:
+      'No. DSCR loans are investment-property loans only. The property must be non-owner-occupied — a long-term rental, short-term rental, or second-home rental. Using a DSCR loan on a primary residence is occupancy fraud and a disqualifying condition.',
+  },
+  {
+    question: 'What is the minimum FICO for a Clout DSCR loan?',
+    answer:
+      'Standard Clout DSCR programs require a 620 FICO minimum. Lower scores are sometimes possible with compensating factors — larger down payment, stronger DSCR ratio, or significant reserves. Pricing improves at 680, 720, and 740 FICO tiers.',
+  },
+];
+---
+
+<BlogPost
+  slug={meta.slug}
+  title={meta.title}
+  description={meta.description}
+  category={meta.category}
+  datePublished={meta.datePublished}
+  dateModified={meta.dateModified}
+  lead="A DSCR loan is a rental-property mortgage that qualifies on the property's rental cash flow — not on the borrower's W-2 or tax returns. For real estate investors whose Schedule E understates their actual financial position, it's often the only loan that fits how the deal actually works."
+  faqs={faqs}
+>
+  <h2>The underwriting logic nobody explains clearly</h2>
+  <p>
+    Conventional lenders underwrite the borrower. DSCR lenders underwrite the property. That's
+    not a small distinction — it's a completely different framework. A Debt Service Coverage
+    Ratio loan approves the deal based on whether the rent covers the mortgage payment, not on
+    whether the borrower's tax returns show enough W-2 income. For investors who write off
+    legally (as they should), this isn't a workaround. It's the product built for how a real
+    estate investor actually operates.
+  </p>
+
+  <h2>Why your Schedule E hurts your conventional qualification</h2>
+  <p>
+    Here's the broken loop most investors hit: your CPA does excellent work, and that work
+    kills your conventional financing. You depreciated the asset, deducted repairs, wrote off
+    the property manager — and your Schedule E shows a fraction of the actual cash flow. A
+    conventional underwriter uses that lower number for DTI. The property generates more than
+    enough to cover the mortgage. The paper version of you doesn't. DSCR loans exist to bridge
+    that exact gap.
+  </p>
+
+  <h2>How DSCR is calculated</h2>
+  <p>
+    DSCR = <strong>Gross rental income ÷ Monthly PITIA</strong> (principal, interest, taxes,
+    insurance, and any HOA). A 1.0 ratio means rent exactly covers PITIA. Most lenders want
+    1.10 to 1.25 at standard pricing. Clout's DSCR program approves at 1.0 at standard
+    pricing and can go below with compensating factors.
+  </p>
+  <p>
+    Worked example: a $2,500 monthly market rent on a property with $1,500 P&amp;I, $300 taxes,
+    $150 insurance, and $0 HOA produces PITIA of $1,950 — so DSCR = $2,500 ÷ $1,950 = 1.28.
+    That file prices at standard DSCR rates.
+  </p>
+
+  <h2>What Clout DSCR typically requires</h2>
+  <div class="key-stats">
+    <div><span class="k">Min FICO</span><span class="v">620</span></div>
+    <div><span class="k">Max LTV (purchase)</span><span class="v">80%</span></div>
+    <div><span class="k">Reserves</span><span class="v">3–12 months PITIA</span></div>
+  </div>
+  <p>
+    LTV caps tighten on cash-out refinances (typically 70–75% maximum), and reserves scale up
+    with property count and lower FICO bands. Exact program parameters are published inside
+    <a href="/tpo-connect/">TPO Connect</a>; brokers can also run a scenario through the desk
+    before submission.
+  </p>
+
+  <h2>What to do before you apply</h2>
+  <ol>
+    <li><strong>Pull a rent schedule on the target property.</strong> If the market rent does not produce a DSCR of at least 1.0 at your expected price and down payment, the file will price up or decline.</li>
+    <li><strong>Check your FICO.</strong> DSCR pricing is credit-sensitive. Most lenders publish tiers at 620 / 680 / 720 / 740.</li>
+    <li><strong>Plan for 20–25% down.</strong> Most DSCR programs cap at 75–80% LTV.</li>
+    <li><strong>Decide on vesting.</strong> LLC vesting is allowed at Clout; confirm before forming an entity solely for the transaction.</li>
+    <li><strong>Document your reserves source.</strong> Liquid funds, not commingled with the down payment.</li>
+    <li><strong>Don't try DSCR on a primary residence.</strong> Investment property only.</li>
+  </ol>
+
+  <h2>Frequently asked</h2>
+  <div class="faq">
+    {faqs.map((f) => (
+      <details>
+        <summary>{f.question}</summary>
+        <div><p>{f.answer}</p></div>
+      </details>
+    ))}
+  </div>
+
+  <h2>Next steps</h2>
+  <p>
+    Investors can request a same-day eligibility read directly through <a href="/contact/">Clout</a>.
+    Mortgage brokers placing wholesale DSCR files: see the <a href="/tpo-connect/">TPO Connect
+    partner hub</a>. Related reading:
+    <a href="/resources/blog/conventional-vs-dscr-investment-property/">Conventional vs DSCR for investment property</a> ·
+    <a href="/resources/blog/cash-reserves-dscr-loan/">Cash reserves for DSCR loans</a> ·
+    <a href="/resources/glossary/#dscr">DSCR in the glossary</a>.
+  </p>
+</BlogPost>

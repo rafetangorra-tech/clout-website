@@ -1,0 +1,124 @@
+---
+import BlogPost from '../../../../layouts/BlogPost.astro';
+import { BLOG_POSTS } from '../../../../data/blog';
+
+const meta = BLOG_POSTS.find((p) => p.slug === 'cash-reserves-dscr-loan')!;
+
+const faqs = [
+  {
+    question: 'How many months of reserves does Clout require on a DSCR loan?',
+    answer:
+      'Standard Clout DSCR programs require 3 to 12 months of PITIA reserves, depending on LTV, FICO band, property count, and whether the loan is a purchase or cash-out refinance. Higher LTV and lower FICO bands require more reserves. Multi-unit and short-term-rental properties typically require more reserves than long-term single-family.',
+  },
+  {
+    question: 'Do retirement accounts count as reserves?',
+    answer:
+      'Partially. Most Non-QM lenders, Clout included, accept retirement accounts (401(k), IRA, Roth IRA) at 60 to 70 percent of vested balance — not face value. The haircut reflects taxes and early-withdrawal penalties. Self-directed IRA balances follow the same treatment.',
+  },
+  {
+    question: 'Does a HELOC on a primary residence count toward DSCR reserves?',
+    answer:
+      'Generally no. Most lenders require reserves to be in liquid, accessible accounts (checking, savings, money market, brokerage) — not in available credit lines. A HELOC documents access to liquidity but does not count as a reserve dollar.',
+  },
+];
+---
+
+<BlogPost
+  slug={meta.slug}
+  title={meta.title}
+  description={meta.description}
+  category={meta.category}
+  datePublished={meta.datePublished}
+  dateModified={meta.dateModified}
+  lead="Cash reserves are the DSCR requirement that catches first-time investors more than any other. Lenders want to see liquid funds the borrower retains after closing — measured in months of PITIA, not dollar count. Here's exactly how Clout calculates it and how to document it cleanly."
+  faqs={faqs}
+>
+  <h2>What "reserves" actually means</h2>
+  <p>
+    Reserves are the liquid assets the borrower keeps after closing — separate from the funds
+    used for down payment and closing costs. Lenders express reserves in months of PITIA
+    (principal, interest, taxes, insurance, association dues), not in raw dollars. A program
+    requiring "6 months reserves" on a DSCR loan with $3,200 monthly PITIA means the borrower
+    must show <strong>$19,200 in eligible liquid assets</strong> after closing.
+  </p>
+
+  <h2>How Clout calculates reserve months</h2>
+  <p>
+    The reserve requirement scales with three things: LTV, FICO, and property count. A
+    purchase at 65% LTV with a 740 FICO and 1.25 DSCR might require 3 months. A cash-out refi
+    at 75% LTV with a 660 FICO and 1.05 DSCR might require 12. The exact requirement is
+    published in the program matrix inside <a href="/tpo-connect/">TPO Connect</a> and lives on
+    the rate sheet.
+  </p>
+
+  <div class="key-stats">
+    <div><span class="k">Strongest files</span><span class="v">3 months</span></div>
+    <div><span class="k">Standard band</span><span class="v">6 months</span></div>
+    <div><span class="k">Higher-risk bands</span><span class="v">9–12 months</span></div>
+  </div>
+
+  <h2>What counts as eligible reserves</h2>
+  <ul>
+    <li><strong>Checking, savings, money market:</strong> 100% of seasoned balance.</li>
+    <li><strong>Brokerage accounts (stocks, bonds, mutual funds, ETFs):</strong> 70–80% of value.</li>
+    <li><strong>Retirement accounts (401(k), IRA, Roth):</strong> 60–70% of vested balance.</li>
+    <li><strong>CD and treasury holdings:</strong> 100% of balance.</li>
+    <li><strong>Crypto:</strong> generally excluded or sharply haircut; depends on program.</li>
+  </ul>
+
+  <h2>What doesn't count</h2>
+  <ul>
+    <li>HELOC or other available credit lines (access ≠ asset).</li>
+    <li>Business operating accounts (lender wants personal liquidity, not working capital).</li>
+    <li>Pledged or restricted assets (collateralized to another loan).</li>
+    <li>Funds gifted but not seasoned (typically 60-day seasoning required).</li>
+    <li>Anticipated proceeds from a future sale.</li>
+  </ul>
+
+  <h2>Seasoning — the 60-day rule</h2>
+  <p>
+    Underwriters look back two months on every account used for reserves. Large unexplained
+    deposits inside the 60-day window get questioned. The fix: deposit liquid funds at least
+    60 days before the file is submitted, and keep contributions inside the normal pattern.
+    If a large deposit is necessary inside the window (sale of a vehicle, business
+    distribution), have the documentation ready at submission — bill of sale, distribution
+    notice — not after the underwriter asks.
+  </p>
+
+  <h2>Common mistake: commingled funds</h2>
+  <p>
+    Brokers often submit a file where the down payment and reserves are in the same account.
+    The underwriter has to determine which dollars are which. Cleanest move: hold the down
+    payment in one account and the reserves in another, both seasoned, both documented
+    separately. Reserves should remain visible after the closing wire.
+  </p>
+
+  <div class="callout">
+    <p class="callout-title">Pre-submission reserve check</p>
+    <p>
+      Total PITIA × required months = reserve target. Liquid funds after down payment +
+      brokerage at 80% + retirement at 65% should clear that target with a buffer. If it
+      doesn't, surface it before submission — the program-matrix LTV or down payment may need
+      to shift.
+    </p>
+  </div>
+
+  <h2>Frequently asked</h2>
+  <div class="faq">
+    {faqs.map((f) => (
+      <details>
+        <summary>{f.question}</summary>
+        <div><p>{f.answer}</p></div>
+      </details>
+    ))}
+  </div>
+
+  <h2>Next steps</h2>
+  <p>
+    Brokers can run a reserves check through the <a href="/tpo-connect/">scenario desk</a> before
+    submission. Investors can <a href="/contact/">contact Clout</a> for a same-day eligibility read.
+    Related: <a href="/resources/blog/dscr-loans-real-estate-investors/">DSCR Loans for Real Estate Investors</a> ·
+    <a href="/resources/glossary/#reserves">Reserves</a> ·
+    <a href="/resources/glossary/#seasoning">Seasoning</a> in the glossary.
+  </p>
+</BlogPost>

@@ -1,0 +1,116 @@
+---
+import BlogPost from '../../../../layouts/BlogPost.astro';
+import { BLOG_POSTS } from '../../../../data/blog';
+
+const meta = BLOG_POSTS.find((p) => p.slug === 'foreign-national-dscr-loans')!;
+
+const faqs = [
+  {
+    question: 'Do I need a US Social Security Number to qualify for a Foreign National DSCR loan?',
+    answer:
+      'No. Foreign National DSCR loans are designed for non-US citizens who do not have a US SSN. Qualifying uses international credit equivalent (Equifax Canada, Experian UK, etc.), foreign income documentation, and asset reserves. An ITIN is helpful but not strictly required by every program.',
+  },
+  {
+    question: 'What countries do you accept borrowers from?',
+    answer:
+      'Clout accepts Foreign National DSCR borrowers from most stable-economy countries with verifiable credit and banking systems — Canada, the United Kingdom, the European Union, Australia, and many Latin American and Asian countries. OFAC-sanctioned countries are excluded. Confirm a specific country with your AE before submission.',
+  },
+  {
+    question: 'Can a Foreign National DSCR loan be used for a short-term rental?',
+    answer:
+      'Yes — short-term rental (Airbnb, Vrbo) properties are eligible. Underwriting uses AirDNA or AllTheRooms data plus a 12-month operating history (if available) to compute the qualifying rent. Properties in markets without STR data may require a long-term rental comp instead.',
+  },
+];
+---
+
+<BlogPost
+  slug={meta.slug}
+  title={meta.title}
+  description={meta.description}
+  category={meta.category}
+  datePublished={meta.datePublished}
+  dateModified={meta.dateModified}
+  lead="A Foreign National DSCR loan lets non-US citizens buy US rental property without a US Social Security Number, US tax returns, or US credit history. The property qualifies on its own cash flow — the borrower documents identity, foreign credit equivalent, and reserves. It is the cleanest path for international investors entering the US rental market."
+  faqs={faqs}
+>
+  <h2>What "foreign national" means in this context</h2>
+  <p>
+    A foreign national, for mortgage purposes, is a person who is not a US citizen, not a US
+    permanent resident (green card holder), and does not maintain primary residence in the
+    United States. The category includes Canadian snowbirds buying Florida property, UK and
+    European investors buying short-term rentals, Latin American business owners diversifying
+    into US real estate, and Asian investors building US portfolio exposure. ITIN holders are
+    a related but distinct category — they have US tax identification and typically use
+    different programs.
+  </p>
+
+  <h2>Why DSCR is the right vehicle for foreign-national investors</h2>
+  <p>
+    A foreign national investor has two structural problems with conventional US lending:
+    they don't have US W-2 income, and they don't have US credit history. DSCR underwriting
+    sidesteps both by qualifying on property cash flow rather than borrower income. The
+    borrower still has to prove identity, source the down payment, and document reserves, but
+    the qualifying logic moves to the property — which the borrower is buying precisely
+    because it generates US-dollar cash flow.
+  </p>
+
+  <h2>What Clout typically requires</h2>
+  <div class="key-stats">
+    <div><span class="k">Max LTV (purchase)</span><span class="v">65–75%</span></div>
+    <div><span class="k">Reserves</span><span class="v">6–12 months PITIA</span></div>
+    <div><span class="k">Min DSCR</span><span class="v">1.0+ standard</span></div>
+  </div>
+  <ul>
+    <li>Valid passport (color copy, all signed pages).</li>
+    <li>US visa or proof of legal entry (typically a B-1/B-2 stamp or ESTA confirmation for visa-waiver-country borrowers).</li>
+    <li>Foreign credit report or international credit reference equivalent (Equifax Canada, Experian UK, etc.). Some programs accept three-tradeline letters of reference from international banks in lieu of a formal credit report.</li>
+    <li>Source-of-funds documentation for down payment and reserves (12 months of foreign bank statements; wire transfer trail into US escrow).</li>
+    <li>Foreign tax returns or equivalent (helpful but not always required since income isn't the qualifying basis).</li>
+    <li>US bank account for closing (often required at funding; can be opened during the process).</li>
+  </ul>
+
+  <h2>Property eligibility</h2>
+  <ul>
+    <li>Non-owner-occupied investment property only (rental purpose). No US primary residence.</li>
+    <li>1–4 unit residential, condotel and condo with project review, short-term rental eligible in approved markets.</li>
+    <li>Rural and non-warrantable condo files have additional review steps.</li>
+    <li>LLC vesting allowed (most foreign-national investors prefer it).</li>
+  </ul>
+
+  <h2>Common use cases at Clout</h2>
+  <ul>
+    <li><strong>Canadian investors buying Florida vacation rentals.</strong> Naples, Miami, Orlando, Tampa Gulf Coast. AirDNA-supported underwriting.</li>
+    <li><strong>UK and European investors buying NY metro long-term rentals.</strong> Brooklyn brownstones, Jersey City multi-family, Long Island.</li>
+    <li><strong>Latin American business owners buying Houston / Dallas single-family rentals.</strong> Long-term lease comps from MLS.</li>
+    <li><strong>Asian investors entering Texas portfolio markets.</strong> San Antonio, Austin suburbs.</li>
+  </ul>
+
+  <div class="callout">
+    <p class="callout-title">Typical close timeline</p>
+    <p>
+      25–35 days from submission to clear-to-close. The international documentation, foreign
+      credit translation, and source-of-funds reconciliation extend the timeline vs domestic
+      DSCR. Plan offer-to-close around a 30-day window with a 5-day buffer.
+    </p>
+  </div>
+
+  <h2>Frequently asked</h2>
+  <div class="faq">
+    {faqs.map((f) => (
+      <details>
+        <summary>{f.question}</summary>
+        <div><p>{f.answer}</p></div>
+      </details>
+    ))}
+  </div>
+
+  <h2>Next steps</h2>
+  <p>
+    Foreign national investors: <a href="/contact/">contact Clout</a> directly for an
+    eligibility read. Mortgage brokers placing wholesale Foreign National files: open the
+    <a href="/tpo-connect/">TPO Connect partner hub</a> or run a scenario through the desk. Related:
+    <a href="/resources/blog/dscr-loans-real-estate-investors/">DSCR Loans for Real Estate Investors</a> ·
+    <a href="/loan-options/foreign-national/">Foreign National program page</a> ·
+    <a href="/resources/glossary/#foreign-national-mortgage">Foreign National</a> in the glossary.
+  </p>
+</BlogPost>

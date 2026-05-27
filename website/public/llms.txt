@@ -43,6 +43,7 @@ NY, NJ, PA, FL, CT, TX
 - [TPO Connect — Wholesale Partner Portal](https://cloutwmb.com/tpo-connect/) — How brokers register, price, submit, and track Non-QM files with Clout. Includes turn-times by program, onboarding steps, scenario desk, and partner FAQs.
 - [Real Estate Investors](https://cloutwmb.com/investors/)
 - [Resources Library](https://cloutwmb.com/resources/)
+- [Non-QM Blog](https://cloutwmb.com/resources/blog/) — Plain-language guides for brokers and investors on DSCR, Bank Statement, 1099 Only, P&L Only, BRRRR refinances, and Foreign National DSCR. Field-tested practical advice with real numbers.
 - [Non-QM Wholesale Mortgage Glossary](https://cloutwmb.com/resources/glossary/) — 61-term plain-language glossary covering Non-QM program names (DSCR, Bank Statement, 1099, Foreign National, Asset Qualifier), wholesale-channel mechanics (TPO, AE, rate sheet, scenario desk), underwriting (ATR/QM, FICO, LTV, DTI, reserves), real-estate-investor metrics (NOI, cap rate, BRRRR), and regulatory frameworks (CFPB, ECOA, Reg Z, TRID, RESPA, NMLS).
 - [About Clout](https://cloutwmb.com/about/)
 

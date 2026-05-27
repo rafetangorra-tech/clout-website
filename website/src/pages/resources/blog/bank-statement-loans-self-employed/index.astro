@@ -1,0 +1,113 @@
+---
+import BlogPost from '../../../../layouts/BlogPost.astro';
+import { BLOG_POSTS } from '../../../../data/blog';
+
+const meta = BLOG_POSTS.find((p) => p.slug === 'bank-statement-loans-self-employed')!;
+
+const faqs = [
+  {
+    question: 'How do bank statement loans calculate income?',
+    answer:
+      'Lenders sum the deposits across 12 or 24 months of the borrower\'s business or personal bank statements, then apply an expense-factor haircut (typically 30 to 50 percent on business statements, lower on personal). The result is the qualifying monthly income used for DTI. The expense factor varies by industry and by whether the statements are personal or business.',
+  },
+  {
+    question: 'Do I need both business and personal bank statements?',
+    answer:
+      'No. You choose one stream — business statements (typically 24 months) or personal statements (12 or 24 months). Business statements usually produce higher gross deposits but receive a larger expense haircut. Personal statements receive a smaller haircut but only count deposits clearly traceable to self-employment income.',
+  },
+  {
+    question: 'What disqualifies a bank statement file?',
+    answer:
+      'Common disqualifiers: large unexplained deposits inconsistent with a business pattern, NSF (non-sufficient funds) charges in the statement window, deposit averages that fluctuate beyond program tolerance, or commingled accounts where personal and business funds are mixed without clean separation. NSF activity is the most common single cause.',
+  },
+];
+---
+
+<BlogPost
+  slug={meta.slug}
+  title={meta.title}
+  description={meta.description}
+  category={meta.category}
+  datePublished={meta.datePublished}
+  dateModified={meta.dateModified}
+  lead="A Bank Statement loan qualifies self-employed borrowers using actual bank deposits — not Schedule C, not tax returns. For business owners and self-employed professionals whose write-offs tank their reported income, it is often the only path to a mortgage that reflects their real cash flow."
+  faqs={faqs}
+>
+  <h2>Who Bank Statement loans are for</h2>
+  <p>
+    The borrower most often served by a Bank Statement loan: a self-employed professional or
+    small-business owner who legally writes off significant business expenses, shows modest
+    net Schedule C income, but consistently deposits $200K+ per year in personal or business
+    bank accounts. Conventional underwriting reads only the Schedule C net. A Bank Statement
+    program reads the gross deposits with an expense-factor adjustment — producing a
+    qualifying income that reflects the borrower's actual financial position.
+  </p>
+
+  <h2>How Clout calculates qualifying income</h2>
+  <p>
+    Two paths:
+  </p>
+  <ul>
+    <li><strong>Business bank statements (typically 24 months):</strong> sum eligible business deposits, exclude transfers and non-business income, divide by 24 to get monthly average, then apply an expense factor (usually 30–50% haircut, varying by industry).</li>
+    <li><strong>Personal bank statements (12 or 24 months):</strong> count only deposits clearly attributable to self-employment income (not W-2 wages, transfers, gifts, loan proceeds), divide by the statement window, smaller expense haircut.</li>
+  </ul>
+  <p>
+    Worked example: a sole proprietor consultant deposits $26,000/month into a business
+    account, averaging $312,000 annually. A 40% expense factor produces qualifying income of
+    $15,600/month — which most lenders allow into DTI calculation at full value.
+  </p>
+
+  <div class="key-stats">
+    <div><span class="k">Min FICO</span><span class="v">620</span></div>
+    <div><span class="k">Max LTV (purchase)</span><span class="v">85%</span></div>
+    <div><span class="k">Statement window</span><span class="v">12 or 24 months</span></div>
+  </div>
+
+  <h2>What underwriters look at on the statements</h2>
+  <ol>
+    <li><strong>Deposit consistency.</strong> Steady monthly deposits inside a 25–35% variance band. Wild swings get scrutinized.</li>
+    <li><strong>NSF and overdraft activity.</strong> Even a few NSF charges in the window can disqualify the file. Resolve any NSFs and document them with a borrower LOX.</li>
+    <li><strong>Large unexplained deposits.</strong> Single deposits significantly above the running average require source documentation (invoice, settlement, sale of asset).</li>
+    <li><strong>Commingling.</strong> If business and personal funds flow through the same account, the file may require additional reconciliation or fail program requirements.</li>
+    <li><strong>Business existence and tenure.</strong> Two-year minimum self-employment history is standard. Lenders verify with a CPA letter or business license.</li>
+  </ol>
+
+  <h2>When Bank Statement isn't the right program</h2>
+  <p>
+    Bank Statement is not the best fit when:
+  </p>
+  <ul>
+    <li>The borrower's gross deposits are roughly equal to their Schedule C net — conventional usually wins on rate.</li>
+    <li>The borrower is an independent contractor paid by 1099 — a <a href="/loan-options/1099-only/">1099 Only mortgage</a> may produce higher qualifying income with simpler documentation.</li>
+    <li>The borrower's primary income is from rental properties — a <a href="/loan-options/dscr/">DSCR loan</a> qualifies on the property's cash flow without touching the bank statements at all.</li>
+    <li>The borrower writes off heavily but pays themselves through a clean P&amp;L — a <a href="/loan-options/pl-only/">P&amp;L Only loan</a> may be faster.</li>
+  </ul>
+
+  <div class="callout">
+    <p class="callout-title">Pre-submission Bank Statement checklist</p>
+    <p>
+      24 months of business or 12 of personal statements · NSF and overdraft activity resolved
+      · large deposit explanations ready · CPA letter or business license confirming 2+ years
+      self-employment · clear separation between business and personal funds.
+    </p>
+  </div>
+
+  <h2>Frequently asked</h2>
+  <div class="faq">
+    {faqs.map((f) => (
+      <details>
+        <summary>{f.question}</summary>
+        <div><p>{f.answer}</p></div>
+      </details>
+    ))}
+  </div>
+
+  <h2>Next steps</h2>
+  <p>
+    Brokers: open the <a href="/tpo-connect/">TPO Connect partner hub</a> to register or run a
+    Bank Statement scenario. Self-employed borrowers: <a href="/contact/">contact Clout</a> for
+    a same-day eligibility read. Related: <a href="/resources/blog/pl-only-loans-business-owners/">P&amp;L Only Loans</a> ·
+    <a href="/loan-options/bank-statement/">Bank Statement program page</a> ·
+    <a href="/resources/glossary/#bank-statement-loan">Bank Statement</a> in the glossary.
+  </p>
+</BlogPost>

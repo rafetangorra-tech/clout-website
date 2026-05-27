@@ -1,0 +1,350 @@
+---
+/**
+ * BlogPost layout — wraps every individual /resources/blog/{slug}/ article with:
+ *  - Standard <Layout> shell (head, header, footer, base Org + LocalBusiness schema)
+ *  - Breadcrumbs (Home > Resources > Blog > Article title)
+ *  - Hero (category eyebrow, H1, answer-first lead)
+ *  - Reviewed-by stamp + visible last-updated date
+ *  - Article JSON-LD (BlogPosting variant)
+ *  - Compliance band at the bottom
+ *  - <slot /> for the article body
+ */
+
+import Layout from './Layout.astro';
+import { SITE } from '../data/site';
+import { jsonLd, articleSchema, faqSchema } from '../data/schema';
+import { blogPostUrl, BLOG_ROOT } from '../data/blog';
+
+interface Props {
+  slug: string;
+  title: string;
+  /** Short meta description (used for <meta>, OG, and BlogPosting.description). */
+  description: string;
+  /** Category label shown in eyebrow. */
+  category: string;
+  /** 40–60 word inverted-pyramid answer that opens the post. */
+  lead: string;
+  /** ISO date string. */
+  datePublished: string;
+  /** ISO date string. */
+  dateModified: string;
+  /** Optional FAQ block — adds FAQPage schema if present. */
+  faqs?: Array<{ question: string; answer: string }>;
+  /** Optional human-readable last-updated for display ("May 27, 2026"). */
+  lastUpdatedDisplay?: string;
+}
+
+const {
+  slug,
+  title,
+  description,
+  category,
+  lead,
+  datePublished,
+  dateModified,
+  faqs,
+  lastUpdatedDisplay,
+} = Astro.props;
+
+const url = blogPostUrl(slug);
+const breadcrumbs = [
+  { name: 'Home', url: SITE.url },
+  { name: 'Resources', url: `${SITE.url}/resources/` },
+  { name: 'Blog', url: BLOG_ROOT },
+  { name: title, url },
+];
+
+// BlogPosting variant of Article schema — includes mainEntityOfPage and isPartOf=Blog
+const post = {
+  ...articleSchema({
+    headline: title,
+    description,
+    url,
+    datePublished,
+    dateModified,
+    reviewedByName: 'Clout Wholesale Operations',
+    reviewedByNmls: SITE.nmlsId,
+  }),
+  '@type': 'BlogPosting',
+  '@id': `${url}#post`,
+  articleSection: category,
+  mainEntityOfPage: url,
+  isPartOf: { '@id': `${BLOG_ROOT}#blog` },
+};
+
+const extraSchema = [
+  jsonLd(post),
+  ...(faqs && faqs.length > 0 ? [jsonLd(faqSchema(faqs))] : []),
+];
+
+const displayDate =
+  lastUpdatedDisplay ??
+  new Date(dateModified + 'T00:00:00Z').toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+    timeZone: 'UTC',
+  });
+---
+
+<Layout
+  title={`${title} · Clout`}
+  description={description}
+  canonical={url}
+  breadcrumbs={breadcrumbs}
+  extraSchema={extraSchema}
+>
+  <section class="post-hero">
+    <div class="container">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span aria-hidden="true">/</span>
+        <a href="/resources/">Resources</a>
+        <span aria-hidden="true">/</span>
+        <a href={BLOG_ROOT}>Blog</a>
+      </nav>
+      <p class="eyebrow">{category}</p>
+      <h1>{title}</h1>
+      <p class="answer-first lead">{lead}</p>
+      <p class="reviewed-by">
+        Reviewed by Clout Wholesale Operations · NMLS #{SITE.nmlsId} ·
+        Last updated <time datetime={dateModified}>{displayDate}</time>
+      </p>
+    </div>
+  </section>
+
+  <article class="post-body">
+    <div class="container">
+      <slot />
+    </div>
+  </article>
+
+  <section class="band band-cta">
+    <div class="container">
+      <div class="cta-card">
+        <div>
+          <p class="cta-eyebrow">Have a file or scenario?</p>
+          <h2>Talk to a Clout AE.</h2>
+          <p>
+            Active partner brokers can submit a scenario to the desk for a
+            same-business-day response. New brokers — start with the TPO Connect
+            partner hub, or call us directly.
+          </p>
+        </div>
+        <div class="cta-actions">
+          <a href="/tpo-connect/" class="cta-primary">Open TPO Connect</a>
+          <a href={`tel:${SITE.phone}`} class="cta-secondary">Call {SITE.phoneDisplay}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band band-compliance">
+    <div class="container">
+      <p class="compliance-row">
+        This article is general education and does not constitute regulatory or legal
+        advice, program guidelines, or a commitment to lend. Loan terms, eligibility,
+        and rates are determined by program guidelines in effect on the lock date and
+        by underwriting approval. {SITE.legalName} · NMLS
+        <a href={SITE.nmlsUrl} target="_blank" rel="noopener">#{SITE.nmlsId}</a> ·
+        Equal Housing Lender · Licensed in NY · NJ · PA · FL · CT · TX. Article last
+        updated <time datetime={dateModified}>{displayDate}</time>.
+      </p>
+    </div>
+  </section>
+</Layout>
+
+<style is:global>
+  /* Body styles scoped via .post-body to avoid bleeding into other pages. */
+  .post-body .container {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+  .post-body {
+    padding: 2.5rem 0 4rem;
+    font-size: 1.0625rem;
+    line-height: 1.75;
+    color: var(--color-ink);
+  }
+  .post-body p { margin: 0 0 1.25rem; }
+  .post-body h2 {
+    margin: 2.5rem 0 1rem;
+    font-size: 1.625rem;
+    line-height: 1.25;
+    color: var(--color-brand-deep);
+    letter-spacing: -0.01em;
+  }
+  .post-body h3 {
+    margin: 2rem 0 0.75rem;
+    font-size: 1.25rem;
+    color: var(--color-brand-deep);
+  }
+  .post-body ul, .post-body ol {
+    margin: 0 0 1.5rem;
+    padding-left: 1.25rem;
+  }
+  .post-body li { margin: 0.5rem 0; }
+  .post-body strong { color: var(--color-ink); font-weight: 700; }
+  .post-body a { color: var(--color-brand-deep); font-weight: 500; }
+  .post-body blockquote {
+    margin: 1.5rem 0;
+    padding: 1rem 1.5rem;
+    border-left: 3px solid var(--color-brand-warmth);
+    background: var(--color-surface);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    font-size: 1rem;
+    color: var(--color-ink-soft);
+  }
+  .post-body .callout {
+    margin: 1.75rem 0;
+    padding: 1.5rem;
+    border: 1px solid var(--color-line);
+    border-left: 3px solid var(--color-brand);
+    border-radius: var(--radius-lg);
+    background: var(--color-paper);
+    font-size: 1rem;
+    line-height: 1.65;
+  }
+  .post-body .callout p:last-child { margin: 0; }
+  .post-body .callout-title {
+    font-size: var(--text-micro);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-brand-deep);
+    font-weight: 700;
+    margin: 0 0 0.5rem;
+  }
+  .post-body .key-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin: 1.75rem 0;
+    padding: 1.25rem 1.5rem;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+  }
+  .post-body .key-stats div { display: flex; flex-direction: column; gap: 0.25rem; }
+  .post-body .key-stats .k {
+    font-size: var(--text-meta);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-ink-soft);
+  }
+  .post-body .key-stats .v {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-brand-deep);
+    font-feature-settings: 'tnum';
+    line-height: 1.1;
+  }
+  @media (max-width: 640px) {
+    .post-body .key-stats { grid-template-columns: 1fr; }
+  }
+  .post-body .faq {
+    margin: 2rem 0;
+    border-top: 1px solid var(--color-line);
+  }
+  .post-body .faq details {
+    border-bottom: 1px solid var(--color-line);
+    padding: 1rem 0;
+  }
+  .post-body .faq summary {
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1.0625rem;
+    color: var(--color-ink);
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
+  .post-body .faq summary::-webkit-details-marker { display: none; }
+  .post-body .faq summary::after {
+    content: '+';
+    font-size: 1.5rem;
+    color: var(--color-brand);
+  }
+  .post-body .faq details[open] summary::after { content: '–'; }
+  .post-body .faq details > div { padding-top: 0.5rem; color: var(--color-ink-soft); }
+  .post-body .faq details > div p { margin: 0; }
+</style>
+
+<style>
+  .container { max-width: 1080px; margin: 0 auto; padding: 0 1.5rem; }
+
+  .post-hero {
+    padding: 3rem 0 2rem;
+    background:
+      radial-gradient(900px 360px at 12% -10%, color-mix(in srgb, var(--color-brand-bright) 16%, transparent) 0%, transparent 60%),
+      linear-gradient(180deg, var(--color-paper) 0%, var(--color-surface) 100%);
+  }
+  .post-hero .container { max-width: 760px; }
+
+  .crumbs {
+    font-size: var(--text-meta);
+    color: var(--color-mid);
+    margin-bottom: 1.5rem;
+  }
+  .crumbs a { color: var(--color-ink-soft); text-decoration: none; }
+  .crumbs a:hover { color: var(--color-brand-deep); }
+  .crumbs span[aria-hidden] { margin: 0 0.5rem; color: var(--color-line); }
+
+  .eyebrow {
+    font-size: var(--text-micro);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-brand-warmth);
+    font-weight: 700;
+    margin: 0 0 1rem;
+  }
+  .post-hero h1 {
+    font-size: clamp(1.75rem, 4vw, 2.75rem);
+    line-height: 1.15;
+    margin: 0 0 1.25rem;
+    letter-spacing: -0.015em;
+  }
+  .post-hero .lead {
+    font-size: 1.1875rem;
+    line-height: 1.55;
+    margin: 0 0 1.25rem;
+    color: var(--color-ink);
+  }
+  .post-hero .reviewed-by { margin: 0; }
+
+  /* CTA card */
+  .band-cta { padding: 2.5rem 0; background: var(--color-surface); }
+  .cta-card {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 2rem;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    background: var(--color-paper);
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 1.5rem;
+    align-items: center;
+    box-shadow: 0 16px 40px -24px rgba(0, 65, 70, 0.14);
+  }
+  .cta-eyebrow {
+    font-size: var(--text-micro);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-brand-warmth);
+    font-weight: 700;
+    margin: 0 0 0.5rem;
+  }
+  .cta-card h2 { margin: 0 0 0.5rem; font-size: 1.375rem; color: var(--color-brand-deep); }
+  .cta-card p { margin: 0; color: var(--color-ink-soft); font-size: var(--text-small); line-height: 1.6; }
+  .cta-actions { display: flex; flex-direction: column; gap: 0.5rem; }
+  @media (max-width: 720px) {
+    .cta-card { grid-template-columns: 1fr; }
+    .cta-actions { flex-direction: row; flex-wrap: wrap; }
+  }
+
+  .band-compliance { padding: 1rem 0 3rem; }
+  .compliance-row { max-width: 96ch; }
+</style>

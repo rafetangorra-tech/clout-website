@@ -1,0 +1,116 @@
+---
+import BlogPost from '../../../../layouts/BlogPost.astro';
+import { BLOG_POSTS } from '../../../../data/blog';
+
+const meta = BLOG_POSTS.find((p) => p.slug === 'dscr-files-stuck-underwriting')!;
+
+const faqs = [
+  {
+    question: 'What is the minimum DSCR ratio Clout will accept?',
+    answer:
+      'Clout DSCR programs typically approve at 1.0 DSCR at standard pricing. Some files price up below 1.0 — a 0.75 to 0.99 DSCR ratio can still close with a larger down payment, stronger FICO, and reserves. No-ratio DSCR is available on select programs at price.',
+  },
+  {
+    question: 'How long is appraisal turnaround on a DSCR file?',
+    answer:
+      'Appraisal turnaround depends on the AMC and the market — typical residential appraisal turnaround in Clout\'s six states runs 7 to 14 calendar days from order to delivery. Rush options exist at additional cost. Properties with limited recent comps or unusual configurations can take longer.',
+  },
+  {
+    question: 'Can a borrower vest a DSCR loan in an LLC?',
+    answer:
+      'Yes. Clout allows entity vesting on DSCR loans — LLC, LP, or S-Corp — provided the entity is in good standing and the operating agreement names the borrowing principals as personal guarantors. The LLC documentation (articles, EIN, operating agreement) is part of the standard submission package.',
+  },
+];
+---
+
+<BlogPost
+  slug={meta.slug}
+  title={meta.title}
+  description={meta.description}
+  category={meta.category}
+  datePublished={meta.datePublished}
+  dateModified={meta.dateModified}
+  lead="DSCR files don't stall because underwriters are slow — they stall because six specific things weren't addressed before submission. Knowing the pattern lets a broker close the same file in 18 days that another broker is fighting to close in 45."
+  faqs={faqs}
+>
+  <h2>1. Missing or thin lease comps</h2>
+  <p>
+    DSCR underwriting uses the lower of the appraiser's 1007 market rent or the actual lease.
+    If a property is vacant and the appraiser pulls only two comparable rents in a thin market,
+    the underwriter often calls for additional comps — adding 5 to 10 days. The fix: provide the
+    AE with a rent-roll from a property manager or short-term-rental data (AirDNA, AllTheRooms)
+    before appraisal, and request the AMC pull at least 4 comparable rents in the 1007.
+  </p>
+
+  <h2>2. Entity vesting documentation gaps</h2>
+  <p>
+    Many DSCR borrowers vest in an LLC for liability protection. Clout allows this, but the
+    file needs the articles of organization, the EIN letter, the operating agreement showing
+    principal ownership, and a certificate of good standing dated within 60 days. If the LLC
+    was formed less than 60 days before submission, expect an underwriter callout —
+    pre-emptively send a borrower LOX explaining the formation purpose.
+  </p>
+
+  <h2>3. Reserves under-documented</h2>
+  <p>
+    DSCR programs typically require 3 to 12 months of reserves in PITIA, depending on LTV and
+    property count. The error: brokers count 401(k) and IRA balances at face value. Most
+    Non-QM lenders haircut retirement accounts (typically 60–70%) and exclude business
+    operating accounts. Document the reserves source clearly in the submission: brokerage,
+    money market, savings — not commingled with the down payment funds.
+  </p>
+
+  <div class="callout">
+    <p class="callout-title">Quick reserves math</p>
+    <p>
+      Six months PITIA on a $400K DSCR loan at 7.5% + $4K annual tax + $1.2K annual insurance
+      ≈ $3,200 monthly PITIA × 6 = <strong>$19,200 reserves required</strong> per property.
+      Verify the exact requirement against the program matrix in TPO Connect.
+    </p>
+  </div>
+
+  <h2>4. Appraisal scope of work mis-ordered</h2>
+  <p>
+    DSCR loans require a 1007 (single-family comparable rent schedule) or 216 (operating
+    statement, if applicable) — not just the standard 1004. If the AMC was ordered without
+    the 1007, the appraiser returns to the property to add it, costing 5 to 7 days. The fix:
+    confirm with the AMC at order time that the appraisal includes the 1007 schedule.
+  </p>
+
+  <h2>5. Condo questionnaire delays</h2>
+  <p>
+    DSCR loans on condominiums require a project review. The HOA must return a completed
+    condo questionnaire — investor concentration, litigation status, reserves, master
+    insurance. HOAs often take 2 to 3 weeks. Order the questionnaire the same day you submit
+    the file, not after the initial credit decision posts.
+  </p>
+
+  <h2>6. DSCR math the borrower didn't run</h2>
+  <p>
+    The most preventable cause of a stall: the file is submitted with a DSCR ratio the
+    borrower didn't compute. Run the math first: <strong>Gross rent ÷ PITIA</strong>. If the
+    ratio is below 1.0, the file will either price up significantly or require structural
+    changes (larger down payment, lower loan amount). Surface this to the borrower before
+    submission, not after.
+  </p>
+
+  <h2>Frequently asked</h2>
+  <div class="faq">
+    {faqs.map((f) => (
+      <details>
+        <summary>{f.question}</summary>
+        <div><p>{f.answer}</p></div>
+      </details>
+    ))}
+  </div>
+
+  <h2>Use the scenario desk</h2>
+  <p>
+    Most of the six causes above are catchable in a scenario submission. The
+    <a href="/tpo-connect/">Clout scenario desk</a> returns same-business-day responses on
+    clean scenarios before 2 PM ET — call the borderline files in first. See also:
+    <a href="/resources/glossary/#dscr">DSCR</a>,
+    <a href="/resources/glossary/#reserves">reserves</a>,
+    <a href="/resources/glossary/#pitia">PITIA</a> in the Non-QM glossary.
+  </p>
+</BlogPost>

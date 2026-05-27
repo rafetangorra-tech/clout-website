@@ -1,0 +1,131 @@
+---
+import BlogPost from '../../../../layouts/BlogPost.astro';
+import { BLOG_POSTS } from '../../../../data/blog';
+
+const meta = BLOG_POSTS.find((p) => p.slug === 'place-first-non-qm-file-clout')!;
+
+const faqs = [
+  {
+    question: 'How long does it take to get approved as a Clout wholesale partner?',
+    answer:
+      'Most brokers are approved and submitting their first file within 5 to 7 business days of sending the broker package. The package review takes 1 to 2 days; the AE onboarding call is 30 minutes; TPO Connect provisioning is same-day after approval.',
+  },
+  {
+    question: 'What documents does Clout require for broker onboarding?',
+    answer:
+      'A standard wholesale package: completed broker application, signed broker agreement, W-9, current E&O insurance certificate ($1M minimum), company NMLS license, AML policy and procedures, and principal resumes. No background-check fees or upfront costs.',
+  },
+  {
+    question: 'Can I run a scenario before becoming a partner?',
+    answer:
+      'Yes. Email PowerUp@CLOUTwmb.com or call 844-477-3111 with a high-level scenario — borrower profile, property, loan request, FICO band — and an AE will respond with whether it fits any of the 10 Clout programs. No NDA required for general eligibility questions.',
+  },
+];
+---
+
+<BlogPost
+  slug={meta.slug}
+  title={meta.title}
+  description={meta.description}
+  category={meta.category}
+  datePublished={meta.datePublished}
+  dateModified={meta.dateModified}
+  lead="Placing your first Non-QM file with Clout follows the same six-step rhythm as every wholesale lender — but the conditions, scenario-desk usage, and AE handoff are what decide whether the file clears in 17 days or 47. This is the field guide we wish every new partner had."
+  faqs={faqs}
+>
+  <h2>1. Run the scenario before you submit</h2>
+  <p>
+    The single most common reason a first file stalls is that the broker submitted before
+    confirming program eligibility. Clout publishes a <a href="/tpo-connect/">scenario desk</a>
+    that returns a same-business-day written eligibility opinion on clean scenarios received
+    before 2 PM ET. Use it. Email the borrower profile, property, loan request, LTV, FICO band,
+    and the specific question (will you approve, best program, max LTV) to your AE or to
+    <strong>PowerUp@CLOUTwmb.com</strong>. The scenario response prevents 80% of
+    decline-after-submission heartbreaks.
+  </p>
+
+  <h2>2. Pick the right program from the start</h2>
+  <p>
+    Clout has ten Non-QM programs. The right one depends on how the borrower's income is
+    documented — not on what the borrower "wants." A few decision shortcuts:
+  </p>
+  <ul>
+    <li><strong>Rental property, no W-2 income:</strong> <a href="/loan-options/dscr/">DSCR</a>.</li>
+    <li><strong>Self-employed, business or personal deposits available:</strong> <a href="/loan-options/bank-statement/">Bank Statement</a>.</li>
+    <li><strong>1099 contractor with strong gross 1099s:</strong> <a href="/loan-options/1099-only/">1099 Only</a>.</li>
+    <li><strong>Non-US citizen, no SSN:</strong> <a href="/loan-options/foreign-national/">Foreign National</a>.</li>
+    <li><strong>High-net-worth, thin documented income:</strong> <a href="/loan-options/asset-qualifier/">Asset Qualifier</a>.</li>
+  </ul>
+  <p>
+    If the borrower fits more than one program, ask the AE which one the desk prefers for the
+    specific FICO and LTV band — pricing and turn-times vary.
+  </p>
+
+  <h2>3. Register and submit through TPO Connect</h2>
+  <p>
+    All Non-QM files go through <a href="/tpo-connect/">Clout TPO Connect</a> (Encompass-powered).
+    Upload: a completed 1003, tri-merge credit, income documentation per the program matrix,
+    purchase contract or refinance worksheet, identification, and any LLC formation documents
+    if vesting in entity. Clout does not accept paper, fax, or FTP submissions — only eDoc
+    inside the portal.
+  </p>
+
+  <div class="callout">
+    <p class="callout-title">Submission checklist</p>
+    <p>
+      1003 · tri-merge credit · 60 days bank statements · LOX for credit events · purchase
+      contract or refi statement · LLC docs (if entity) · executed leases (if existing
+      tenants) · prior year insurance binder · most recent property tax bill.
+    </p>
+  </div>
+
+  <h2>4. Expect an initial decision in 24–72 hours</h2>
+  <p>
+    Clout publishes a 24–72 hour initial-decision window across nearly all Non-QM programs.
+    DSCR purchases tend to land in 24–48 hours; Foreign National and Asset Qualifier files
+    take longer because of documentation seasoning and international credit translation. The
+    AE will text or email you when the decision posts inside TPO Connect.
+  </p>
+
+  <h2>5. Clear conditions inside the 4-hour window</h2>
+  <p>
+    Conditions are where most files lose time — not because the lender is slow, but because
+    brokers batch-respond to conditions a week later. Clout publishes a <strong>4-business-hour
+    internal commitment</strong> on conditions review. If you reply to conditions the same day
+    they post, the file moves at the pace the turn-time table suggests. If you batch them, it
+    won't.
+  </p>
+
+  <h2>6. Get to clear-to-close inside the published window</h2>
+  <p>
+    Typical clear-to-close timelines, assuming a clean file and responsive borrower:
+  </p>
+  <div class="key-stats">
+    <div><span class="k">DSCR purchase</span><span class="v">15–20 days</span></div>
+    <div><span class="k">Bank Statement</span><span class="v">18–25 days</span></div>
+    <div><span class="k">Foreign National</span><span class="v">25–35 days</span></div>
+  </div>
+  <p>
+    After clear-to-close, the file moves to closing department for doc prep and TRID-compliant
+    CD delivery. The borrower's 3-business-day TRID waiting period applies, then closing.
+  </p>
+
+  <h2>Frequently asked</h2>
+  <div class="faq">
+    {faqs.map((f) => (
+      <details>
+        <summary>{f.question}</summary>
+        <div><p>{f.answer}</p></div>
+      </details>
+    ))}
+  </div>
+
+  <h2>Next steps</h2>
+  <p>
+    Not yet a partner? Start at the <a href="/tpo-connect/">TPO Connect partner hub</a> — the
+    "Apply" section walks through the broker package and what happens in the first 7 days.
+    Already onboarded? Open TPO Connect, run your scenario, and submit. The Clout
+    <a href="/resources/glossary/">Non-QM glossary</a> covers the program-specific terminology if
+    you want a quick refresher before the borrower call.
+  </p>
+</BlogPost>

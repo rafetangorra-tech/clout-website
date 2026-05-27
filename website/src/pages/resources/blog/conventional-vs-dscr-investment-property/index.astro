@@ -1,0 +1,124 @@
+---
+import BlogPost from '../../../../layouts/BlogPost.astro';
+import { BLOG_POSTS } from '../../../../data/blog';
+
+const meta = BLOG_POSTS.find((p) => p.slug === 'conventional-vs-dscr-investment-property')!;
+
+const faqs = [
+  {
+    question: 'Is the rate higher on a DSCR loan than a conventional investment loan?',
+    answer:
+      'Yes — DSCR rates typically run 0.5 to 1.5 percentage points above conventional investment-property rates. The tradeoff: DSCR qualifies on property cash flow, so investors whose tax returns understate their real position can access financing they would otherwise be denied. For most experienced investors, the rate premium is far smaller than the value of the access.',
+  },
+  {
+    question: 'Can a conventional Fannie/Freddie loan be used for investment property?',
+    answer:
+      'Yes. Fannie Mae and Freddie Mac both purchase investment-property loans. The limits: 10 financed properties per borrower (Fannie), strict DTI calculation using documented Schedule E income, higher reserve requirements, and full income documentation. Investors with multiple LLCs and heavy Schedule C deductions often hit a wall at 4 to 6 properties.',
+  },
+  {
+    question: 'Which loan is better for a first-time investor?',
+    answer:
+      'It depends on income documentation. A first-time investor with clean W-2 income, a single rental purchase, and standard DTI typically qualifies for conventional at a better rate. A first-time investor who is self-employed, has heavy Schedule E losses, or wants to scale fast usually fits DSCR better — even on the first property.',
+  },
+];
+---
+
+<BlogPost
+  slug={meta.slug}
+  title={meta.title}
+  description={meta.description}
+  category={meta.category}
+  datePublished={meta.datePublished}
+  dateModified={meta.dateModified}
+  lead="Conventional loans qualify the borrower; DSCR loans qualify the property. The right choice for an investment property depends on three things: how your income looks on paper, how the property cash flows, and how fast you plan to scale. Here's the comparison most lenders won't make."
+  faqs={faqs}
+>
+  <h2>Side by side — the underwriting that decides the file</h2>
+  <p>
+    Both loan types fund investment properties. They diverge on what they look at first.
+  </p>
+
+  <h3>Income qualification</h3>
+  <p>
+    Conventional loans use the borrower's documented income — two years of tax returns, W-2s,
+    paystubs — and calculate DTI against full housing and consumer debt. Schedule E rental
+    income is allowed but limited to the documented net (after depreciation, repairs,
+    management fees). DSCR loans skip the borrower's income entirely. The property's rent
+    covers the property's PITIA — that's the qualification.
+  </p>
+
+  <h3>LTV caps</h3>
+  <p>
+    Conventional caps for investment property purchases typically run 75–85% LTV depending on
+    occupancy, property count, and FICO. DSCR caps run 75–80% LTV on purchases and 70–75% on
+    cash-out refinances. Conventional has the small edge on LTV; DSCR has the large edge on
+    documentation.
+  </p>
+
+  <h3>Property-count limit</h3>
+  <p>
+    This is where most investors switch to DSCR. Fannie Mae limits a borrower to <strong>10
+    financed properties total</strong> — which sounds like a lot until you actually try to
+    scale. DSCR has no aggregate property-count cap. Many DSCR lenders, Clout included, also
+    allow LLC vesting, which makes portfolio organization cleaner across multiple states.
+  </p>
+
+  <h3>Rate</h3>
+  <p>
+    Conventional investment-property rates beat DSCR by roughly 0.5 to 1.5 percentage points.
+    For an investor whose tax returns qualify them, the rate gap is real money. For an
+    investor whose returns don't qualify them, the comparison is moot — they get a DSCR rate
+    or they get nothing.
+  </p>
+
+  <div class="key-stats">
+    <div><span class="k">Conventional LTV (purchase)</span><span class="v">75–85%</span></div>
+    <div><span class="k">DSCR LTV (purchase)</span><span class="v">75–80%</span></div>
+    <div><span class="k">Property count cap</span><span class="v">Conv: 10 · DSCR: none</span></div>
+  </div>
+
+  <h2>When conventional wins</h2>
+  <ul>
+    <li>Clean W-2 borrower buying their first or second rental.</li>
+    <li>Strong DTI even with rental obligations counted at 75% gross.</li>
+    <li>Single-family long-term rental with stable comp rents.</li>
+    <li>Borrower under the 10-property aggregate limit.</li>
+  </ul>
+
+  <h2>When DSCR wins</h2>
+  <ul>
+    <li>Self-employed borrower whose tax returns understate income.</li>
+    <li>Investor heavy on Schedule E depreciation losses.</li>
+    <li>Borrower scaling past 10 financed properties.</li>
+    <li>Short-term rental (Airbnb / Vrbo) where rents exceed long-term comps.</li>
+    <li>LLC vesting preferred for liability or estate-planning reasons.</li>
+    <li>Foreign national investor (no US SSN — see <a href="/resources/blog/foreign-national-dscr-loans/">Foreign National DSCR</a>).</li>
+  </ul>
+
+  <h2>The decision shortcut</h2>
+  <p>
+    Run two numbers: (1) your DTI with full income documentation and the new property at 75%
+    rental credit, and (2) the property's DSCR ratio at your expected purchase price and down
+    payment. If both qualify you, take conventional for the rate. If only DSCR does, the rate
+    premium is the cost of getting the deal done at all.
+  </p>
+
+  <h2>Frequently asked</h2>
+  <div class="faq">
+    {faqs.map((f) => (
+      <details>
+        <summary>{f.question}</summary>
+        <div><p>{f.answer}</p></div>
+      </details>
+    ))}
+  </div>
+
+  <h2>Next steps</h2>
+  <p>
+    Brokers placing wholesale Non-QM files: open the <a href="/tpo-connect/">TPO Connect partner hub</a>
+    or run a scenario through the desk. Real estate investors: <a href="/contact/">request a same-day eligibility read</a>.
+    See also: <a href="/resources/blog/dscr-loans-real-estate-investors/">DSCR Loans for Real Estate Investors</a> ·
+    <a href="/resources/glossary/#conforming-loan">Conforming Loan</a> ·
+    <a href="/resources/glossary/#dscr">DSCR</a>.
+  </p>
+</BlogPost>

@@ -1,0 +1,127 @@
+---
+import BlogPost from '../../../../layouts/BlogPost.astro';
+import { BLOG_POSTS } from '../../../../data/blog';
+
+const meta = BLOG_POSTS.find((p) => p.slug === 'pl-only-loans-business-owners')!;
+
+const faqs = [
+  {
+    question: 'Who can prepare the P&L for a P&L Only loan?',
+    answer:
+      'A third-party CPA, EA (Enrolled Agent), or licensed tax professional — not the borrower. The P&L must be signed and dated by the preparer, include the preparer\'s license number, and cover 12 or 24 months ending within 90 days of submission.',
+  },
+  {
+    question: 'How is the qualifying income calculated on a P&L Only file?',
+    answer:
+      'Most lenders, Clout included, use net income as reported on the CPA-prepared P&L — sometimes adjusted by adding back depreciation, amortization, and one-time non-cash expenses. The income is then divided into a monthly figure for DTI calculation, similar to how Schedule C net income is used on a conventional file.',
+  },
+  {
+    question: 'How does a P&L Only loan compare to a Bank Statement loan?',
+    answer:
+      'A P&L Only loan uses a CPA-prepared profit-and-loss statement instead of bank deposits. It is typically faster to submit (one document instead of 24 statements) but produces qualifying income closer to documented net rather than gross deposits. Bank Statement loans usually generate higher qualifying income for heavily-deducted businesses; P&L Only loans are cleaner when the business actually shows healthy net income.',
+  },
+];
+---
+
+<BlogPost
+  slug={meta.slug}
+  title={meta.title}
+  description={meta.description}
+  category={meta.category}
+  datePublished={meta.datePublished}
+  dateModified={meta.dateModified}
+  lead="A P&L Only loan qualifies business owners using a CPA-prepared profit-and-loss statement in lieu of tax returns. The right fit when your Schedule C deductions tank your reported income but your business actually cash-flows — and you'd rather not pull together 24 months of bank statements."
+  faqs={faqs}
+>
+  <h2>When P&amp;L Only is the right tool</h2>
+  <p>
+    Bank Statement loans are the better-known Non-QM option for self-employed borrowers — but
+    they require the borrower to assemble 12 or 24 months of statements, explain large
+    deposits, resolve NSF activity, and (often) wait while the underwriter runs deposit math
+    in Excel. A P&amp;L Only loan compresses that into a single document: a profit-and-loss
+    statement prepared by a third-party CPA or EA, signed and dated, covering 12 or 24 months.
+  </p>
+  <p>
+    The borrower most served by this program: a small-business owner with clean books, a CPA
+    who already prepares interim financials, and a reluctance to drop 50 PDF pages of bank
+    activity into a portal.
+  </p>
+
+  <h2>What the P&amp;L must include</h2>
+  <ul>
+    <li>Covers 12 or 24 consecutive months ending within 90 days of submission.</li>
+    <li>Prepared by a third-party CPA, EA, or licensed tax preparer — not the borrower.</li>
+    <li>Preparer's name, signature, license number, and date.</li>
+    <li>Business name, EIN, and entity type matching the business license.</li>
+    <li>Line items showing revenue, cost of goods, operating expenses, and net income.</li>
+    <li>Consistency with prior-year tax returns within a defensible variance.</li>
+  </ul>
+
+  <h2>How Clout calculates qualifying income</h2>
+  <p>
+    Most lenders, Clout included, use the net income as reported on the P&amp;L, sometimes
+    with add-backs for non-cash expenses (depreciation, amortization, one-time business losses
+    not expected to recur). The result divided by 12 or 24 produces monthly qualifying income
+    for DTI. Worked example: a P&amp;L showing $240K net for the trailing 24 months produces
+    $10K monthly qualifying income — which the underwriter uses to compute DTI against
+    proposed housing and consumer debt.
+  </p>
+
+  <div class="key-stats">
+    <div><span class="k">Statement period</span><span class="v">12 or 24 months</span></div>
+    <div><span class="k">Min FICO</span><span class="v">620</span></div>
+    <div><span class="k">Self-employment tenure</span><span class="v">2 years minimum</span></div>
+  </div>
+
+  <h2>P&amp;L Only vs Bank Statement — when each one wins</h2>
+  <p>
+    <strong>P&amp;L Only wins when:</strong> the business shows healthy net income after
+    expenses, the books are clean, and the borrower has a CPA relationship. Submission is
+    faster (one signed document vs 24 statements) and qualifying income tracks closer to the
+    net the borrower already sees.
+  </p>
+  <p>
+    <strong>Bank Statement wins when:</strong> the business shows aggressive write-offs that
+    tank the P&amp;L's net but consistently deposits substantial gross revenue. The Bank
+    Statement program's gross-deposits-minus-expense-factor math typically produces a higher
+    qualifying number than the P&amp;L's net.
+  </p>
+
+  <div class="callout">
+    <p class="callout-title">Quick decision shortcut</p>
+    <p>
+      Compare your P&amp;L net to roughly 50–60% of your annual gross business deposits. If the
+      net is higher, P&amp;L Only is usually better. If gross deposits at the haircut are
+      higher, Bank Statement is usually better. Confirm with the scenario desk before locking
+      a program choice.
+    </p>
+  </div>
+
+  <h2>What disqualifies a P&amp;L Only file</h2>
+  <ul>
+    <li>P&amp;L prepared by the borrower themselves (must be third-party).</li>
+    <li>P&amp;L net wildly inconsistent with prior-year Schedule C (large unexplained gap).</li>
+    <li>Business entity less than 2 years old.</li>
+    <li>Preparer is not a licensed CPA, EA, or tax professional.</li>
+    <li>P&amp;L cutoff date more than 90 days old at submission.</li>
+  </ul>
+
+  <h2>Frequently asked</h2>
+  <div class="faq">
+    {faqs.map((f) => (
+      <details>
+        <summary>{f.question}</summary>
+        <div><p>{f.answer}</p></div>
+      </details>
+    ))}
+  </div>
+
+  <h2>Next steps</h2>
+  <p>
+    Brokers placing P&amp;L Only files: confirm program parameters with your AE — P&amp;L
+    expense add-back rules vary by lender. Open the <a href="/tpo-connect/">TPO Connect partner
+    hub</a> or run a scenario. Related: <a href="/resources/blog/bank-statement-loans-self-employed/">Bank Statement Loans</a> ·
+    <a href="/loan-options/pl-only/">P&amp;L Only program page</a> ·
+    <a href="/resources/glossary/#pl-only-loan">P&amp;L Only</a> in the glossary.
+  </p>
+</BlogPost>
