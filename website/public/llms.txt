@@ -40,12 +40,13 @@ NY, NJ, PA, FL, CT, TX
 - [Loan Options Hub](https://cloutwmb.com/loan-options/)
 - [Locations Hub](https://cloutwmb.com/locations/)
 - [Broker Partners](https://cloutwmb.com/brokers/)
+- [TPO Connect — Wholesale Partner Portal](https://cloutwmb.com/tpo-connect/) — How brokers register, price, submit, and track Non-QM files with Clout. Includes turn-times by program, onboarding steps, scenario desk, and partner FAQs.
 - [Real Estate Investors](https://cloutwmb.com/investors/)
 - [Resources Library](https://cloutwmb.com/resources/)
 - [About Clout](https://cloutwmb.com/about/)
 
 ## Optional
 
-- Wholesale Partner Portal: https://1866701084.encompasstpoconnect.com/
+- Wholesale Partner Portal sign-in (Encompass): https://1866701084.encompasstpoconnect.com/
 - Pricing Engine: https://clout.loannex.com/
 - Parent company: https://cliffcomortgage.com/

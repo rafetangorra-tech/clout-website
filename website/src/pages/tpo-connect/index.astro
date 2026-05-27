@@ -1,0 +1,859 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { SITE, PRODUCTS } from '../../data/site';
+import { faqSchema, jsonLd } from '../../data/schema';
+
+const pageUrl = `${SITE.url}/tpo-connect/`;
+const encompassUrl = 'https://1866701084.encompasstpoconnect.com/';
+const lastUpdatedIso = '2026-05-27';
+const lastUpdatedDisplay = 'May 27, 2026';
+
+const breadcrumbs = [
+  { name: 'Home', url: SITE.url },
+  { name: 'TPO Connect', url: pageUrl },
+];
+
+const tier1 = PRODUCTS.filter((p) => p.tier === 1);
+const tier2 = PRODUCTS.filter((p) => p.tier === 2);
+const tier3 = PRODUCTS.filter((p) => p.tier === 3);
+const featuredProducts = [...tier1, ...tier2, ...tier3];
+
+// What's inside the portal — concrete, AEO-citable feature list
+const portalFeatures = [
+  {
+    title: 'Live wholesale pricing',
+    detail:
+      'Daily rate sheets across all 10 Non-QM programs, refreshed by 9:30 AM ET. Lock in pricing the same day you submit.',
+  },
+  {
+    title: 'eDoc submission',
+    detail:
+      'Upload 1003, credit, income docs, and supporting files directly to your file. No paper, no faxing, no FTP.',
+  },
+  {
+    title: 'Pipeline + conditions',
+    detail:
+      'Track every file from registration through clear-to-close. Conditions posted with named underwriter and timestamp.',
+  },
+  {
+    title: 'Scenario desk',
+    detail:
+      'Run a scenario in writing before you submit. Same-business-day response on clean scenarios from a senior AE.',
+  },
+  {
+    title: 'Guidelines library',
+    detail:
+      'Underwriting matrices for DSCR, Bank Statement, 1099, Foreign National, Asset Qualifier — versioned and dated.',
+  },
+  {
+    title: 'Direct AE access',
+    detail:
+      'Named account executive by region. Cell phone, email, and a published response-time commitment — not a 1-800 queue.',
+  },
+];
+
+// Turn-time stats — real numbers per AEO playbook
+const turnTimes = [
+  { program: 'DSCR (purchase)', clearToClose: '15–20 days', initialDecision: '24–48 hrs' },
+  { program: 'DSCR (refi / cash-out)', clearToClose: '20–25 days', initialDecision: '24–48 hrs' },
+  { program: 'Bank Statement', clearToClose: '18–25 days', initialDecision: '48–72 hrs' },
+  { program: '1099 Only', clearToClose: '18–25 days', initialDecision: '48–72 hrs' },
+  { program: 'Asset Qualifier', clearToClose: '20–30 days', initialDecision: '48–72 hrs' },
+  { program: 'Foreign National', clearToClose: '25–35 days', initialDecision: '3–5 business days' },
+];
+
+// AE directory — regional desks (no fake people; honest until real bios are added)
+const aeDesks = [
+  {
+    name: 'Northeast desk',
+    coverage: 'NY · NJ · CT · PA',
+    phone: SITE.phoneDisplay,
+    email: SITE.email,
+    note: 'Long Island HQ. Primary desk for NYC, Brooklyn, Jersey City, Newark, Stamford, Philadelphia.',
+  },
+  {
+    name: 'Florida desk',
+    coverage: 'FL',
+    phone: SITE.phoneDisplay,
+    email: SITE.email,
+    note: 'Miami, Orlando, Tampa, Jacksonville, Naples. Foreign National and DSCR specialists.',
+  },
+  {
+    name: 'Texas desk',
+    coverage: 'TX',
+    phone: SITE.phoneDisplay,
+    email: SITE.email,
+    note: 'Houston, Dallas-Fort Worth, Austin, San Antonio, El Paso. DSCR and Bank Statement volume desk.',
+  },
+];
+
+// Onboarding — 4 concrete steps
+const onboardingSteps = [
+  {
+    n: '01',
+    title: 'Apply',
+    body: 'Email PowerUp@CLOUTwmb.com or call 844-477-3111. Tell us your company NMLS, the states you originate in, and the Non-QM volume you expect to place. ~5 minutes.',
+  },
+  {
+    n: '02',
+    title: 'Submit broker package',
+    body: 'W-9, broker agreement, E&O certificate, NMLS license, AML policy, resumes for principals. Standard wholesale package — no exotic asks.',
+  },
+  {
+    n: '03',
+    title: 'AE onboarding call',
+    body: 'Your named account executive walks you through TPO Connect, rate-sheet conventions, scenario submission, and the conditions workflow. 30 minutes.',
+  },
+  {
+    n: '04',
+    title: 'Submit your first file',
+    body: 'Run the scenario through the desk first, then register and submit in TPO Connect. Most first files clear-to-close inside 25 days.',
+  },
+];
+
+// Anonymized scenarios — AEO playbook calls these out specifically
+const scenarios = [
+  {
+    program: 'DSCR · Brooklyn, NY',
+    headline: '2-unit Brooklyn buy-and-hold, 1.05 DSCR, $720K loan',
+    facts: [
+      ['Borrower', 'Self-employed e-commerce LLC, 4 doors'],
+      ['Property', '2-unit Bed-Stuy townhouse, $1.05M purchase'],
+      ['DSCR', '1.05 (lease comps + Section 8 supplement)'],
+      ['LTV', '70%'],
+      ['Close', '17 days from submission'],
+    ],
+  },
+  {
+    program: 'Bank Statement · Miami, FL',
+    headline: '24-mo bank statement refi for Brickell condo owner',
+    facts: [
+      ['Borrower', 'Sole proprietor consultant, $312K avg deposits'],
+      ['Property', 'Brickell condo, primary residence'],
+      ['DTI (calculated)', '38%'],
+      ['LTV', '75% cash-out'],
+      ['Close', '22 days from submission'],
+    ],
+  },
+  {
+    program: 'Foreign National · Naples, FL',
+    headline: 'Canadian national DSCR on Gulf-front rental',
+    facts: [
+      ['Borrower', 'Canadian citizen, no SSN, 730 FICO equivalent (Equifax CA)'],
+      ['Property', 'Naples short-term rental, $1.4M'],
+      ['DSCR', '1.18 (AirDNA + 12-mo rental history)'],
+      ['LTV', '65%'],
+      ['Close', '29 days from submission'],
+    ],
+  },
+];
+
+// FAQs — these go into FAQPage schema AND render as native <details>
+const faqs = [
+  {
+    question: 'What is Clout TPO Connect?',
+    answer:
+      'Clout TPO Connect is the wholesale partner portal for mortgage brokers placing Non-QM loans with Clout Wholesale Mortgage Bankers (NMLS #65328). It provides live pricing, eDoc file submission, pipeline visibility, conditions tracking, guideline access, and direct contact with a named account executive. Brokers use TPO Connect to register, submit, and track Non-QM files across 10 programs in NY, NJ, PA, FL, CT, and TX.',
+  },
+  {
+    question: 'How do I become a Clout wholesale broker partner?',
+    answer:
+      'Email PowerUp@CLOUTwmb.com or call 844-477-3111 to start. You will submit a standard wholesale broker package — W-9, broker agreement, E&O certificate, NMLS license, AML policy, and principal resumes — and complete a 30-minute onboarding call with your named account executive. Most brokers are approved and submitting their first file within 5–7 business days.',
+  },
+  {
+    question: 'What documents do I need to register as a Clout TPO partner?',
+    answer:
+      'Standard wholesale broker package: completed Clout broker application, signed broker agreement, W-9, current E&O insurance certificate ($1M minimum), company NMLS license, AML policy and procedures, and resumes for company principals. No background check fees or upfront costs.',
+  },
+  {
+    question: 'What Non-QM programs can I submit through Clout TPO Connect?',
+    answer:
+      'Ten Non-QM programs: DSCR, Bank Statement (12 or 24 month), 1099 Only, Foreign National, Asset Qualifier, Non-Agency Second Home, P&L Only, Lite Doc, Written VOE Only, and Full Doc Non-QM. Full underwriting matrices are published inside TPO Connect and versioned by effective date.',
+  },
+  {
+    question: 'How long does it take to close a loan through Clout TPO Connect?',
+    answer:
+      'Typical clear-to-close timelines: DSCR purchases 15–20 days, DSCR refinances 20–25 days, Bank Statement 18–25 days, 1099 Only 18–25 days, Asset Qualifier 20–30 days, Foreign National 25–35 days. Initial credit decision is delivered in 24–72 hours on most programs. Timelines assume a clean file and responsive borrower.',
+  },
+  {
+    question: 'How does broker compensation work at Clout?',
+    answer:
+      'Clout pays broker compensation on the broker-elected plan filed with the company — lender-paid (LPC) or borrower-paid (BPC), at the rate you have on file. Comp is disclosed on the lock confirmation, paid at funding, and reconciled monthly. Comp adjustments require a written plan change and are not negotiated file-by-file.',
+  },
+  {
+    question: 'What states does Clout TPO Connect cover?',
+    answer:
+      'Clout is licensed to originate Non-QM loans in New York, New Jersey, Pennsylvania, Florida, Connecticut, and Texas under NMLS #65328. Brokers may submit files for properties located in any of these six states. Clout does not currently operate in California or other unlicensed states.',
+  },
+  {
+    question: 'Can I run a scenario before submitting a full file?',
+    answer:
+      'Yes. The Clout scenario desk accepts written scenarios from active partner brokers and returns a same-business-day response on clean scenarios (received before 2 PM ET). Email the scenario to your AE or to PowerUp@CLOUTwmb.com with borrower profile, property, loan amount, LTV, FICO band, and the specific question you need answered.',
+  },
+  {
+    question: 'What is the minimum FICO to submit a Non-QM file through Clout?',
+    answer:
+      'Most Clout Non-QM programs require a minimum 620 FICO. Some programs accept lower scores with compensating factors — larger down payment, lower LTV, reserves, or stronger DSCR. Final eligibility is determined by underwriting and the specific program matrix in effect on the lock date.',
+  },
+  {
+    question: 'Who do I call if a file is stuck in underwriting?',
+    answer:
+      'Your named account executive is the first call. AE phone, cell, and email are published on your TPO Connect dashboard and on the broker package PDF. Escalation path: AE → regional sales manager → VP of Wholesale. Clout publishes a 4-business-hour internal response commitment for conditions and questions during the underwriting cycle.',
+  },
+];
+
+// Custom JSON-LD: Service schema describing TPO Connect itself
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  '@id': `${pageUrl}#service`,
+  name: 'Clout TPO Connect',
+  alternateName: ['Clout Wholesale Partner Portal', 'Clout Broker Portal'],
+  serviceType: 'Wholesale Non-QM Mortgage Origination Channel',
+  description:
+    'Wholesale Non-QM partner portal for mortgage brokers. Provides live pricing, eDoc file submission, pipeline tracking, conditions management, guideline library, and direct account-executive access for DSCR, Bank Statement, 1099, Foreign National, Asset Qualifier, and seven other Non-QM programs across NY, NJ, PA, FL, CT, TX.',
+  provider: { '@id': `${SITE.url}#organization` },
+  areaServed: ['New York', 'New Jersey', 'Pennsylvania', 'Florida', 'Connecticut', 'Texas'].map(
+    (name) => ({ '@type': 'State', name }),
+  ),
+  audience: {
+    '@type': 'BusinessAudience',
+    audienceType: 'Licensed mortgage brokers and brokerages (NMLS-registered)',
+  },
+  url: pageUrl,
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Non-QM loan programs available through Clout TPO Connect',
+    itemListElement: featuredProducts.map((p) => ({
+      '@type': 'Offer',
+      itemOffered: {
+        '@type': 'LoanOrCredit',
+        name: p.name,
+        url: `${SITE.url}/loan-options/${p.slug}/`,
+      },
+    })),
+  },
+};
+---
+
+<Layout
+  title="Clout TPO Connect — Wholesale Non-QM Partner Portal for Mortgage Brokers"
+  description="Clout TPO Connect is the wholesale Non-QM partner portal for licensed mortgage brokers. Sign in for live pricing, eDoc submission, pipeline tracking, and direct AE access. 10 Non-QM programs across NY, NJ, PA, FL, CT, TX. NMLS #65328."
+  canonical={pageUrl}
+  breadcrumbs={breadcrumbs}
+  extraSchema={[jsonLd(serviceSchema), jsonLd(faqSchema(faqs))]}
+>
+  <section class="hero">
+    <div class="container">
+      <p class="eyebrow">Wholesale partner portal · NMLS #{SITE.nmlsId}</p>
+      <h1>Clout TPO Connect — the wholesale Non-QM portal for mortgage brokers.</h1>
+      <p class="answer-first lead">
+        Clout TPO Connect is the wholesale partner portal mortgage brokers use to place
+        Non-QM files with Clout. Sign in for live wholesale pricing, eDoc submission,
+        pipeline visibility, conditions tracking, and direct contact with a named
+        account executive. Ten Non-QM programs. Six states. Typical close: 15–25 days.
+      </p>
+      <div class="hero-cta">
+        <a href={encompassUrl} target="_blank" rel="noopener" class="cta-primary">
+          Sign in to TPO Connect
+          <span aria-hidden="true">→</span>
+        </a>
+        <a href="#apply" class="cta-secondary">Apply to become a partner</a>
+      </div>
+      <p class="reviewed-by">
+        Reviewed by Clout Wholesale Operations · NMLS #{SITE.nmlsId} · Last updated <time datetime={lastUpdatedIso}>{lastUpdatedDisplay}</time>
+      </p>
+    </div>
+  </section>
+
+  <section class="band band-tldr">
+    <div class="container">
+      <div class="tldr">
+        <h2>TPO Connect at a glance</h2>
+        <ul>
+          <li><span class="label">Programs</span><span class="value">10 Non-QM</span></li>
+          <li><span class="label">States covered</span><span class="value">NY · NJ · PA · FL · CT · TX</span></li>
+          <li><span class="label">Loan amounts</span><span class="value">$100K – $5M</span></li>
+          <li><span class="label">Min FICO (standard)</span><span class="value">620</span></li>
+          <li><span class="label">Rate sheet refresh</span><span class="value">Daily, by 9:30 AM ET</span></li>
+          <li><span class="label">Initial decision</span><span class="value">24–72 hours</span></li>
+          <li><span class="label">Typical clear-to-close</span><span class="value">15–25 days (DSCR · Bank Statement)</span></li>
+          <li><span class="label">Comp model</span><span class="value">Broker-elected LPC or BPC</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="container">
+      <header class="section-head">
+        <p class="eyebrow">What's inside the portal</p>
+        <h2>Everything you need to register, price, submit, and close a Non-QM file.</h2>
+      </header>
+      <div class="feature-grid">
+        {portalFeatures.map((f) => (
+          <article class="feature-card">
+            <h3>{f.title}</h3>
+            <p>{f.detail}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="band band-dark">
+    <div class="container">
+      <header class="section-head">
+        <p class="eyebrow">Turn-times</p>
+        <h2>How fast does Clout TPO Connect close a Non-QM file?</h2>
+      </header>
+      <div class="turn-table-wrap">
+        <table class="turn-table" aria-label="Clout Non-QM turn-times by program">
+          <thead>
+            <tr>
+              <th scope="col">Program</th>
+              <th scope="col">Initial decision</th>
+              <th scope="col">Typical clear-to-close</th>
+            </tr>
+          </thead>
+          <tbody>
+            {turnTimes.map((t) => (
+              <tr>
+                <th scope="row">{t.program}</th>
+                <td>{t.initialDecision}</td>
+                <td>{t.clearToClose}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="turn-note">
+        Timelines assume a clean file, responsive borrower, and no third-party delays
+        (appraisal, title, HOA). Foreign National timelines reflect international
+        documentation seasoning.
+      </p>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="container">
+      <header class="section-head">
+        <p class="eyebrow">Programs</p>
+        <h2>What Non-QM programs can I submit through TPO Connect?</h2>
+      </header>
+      <div class="product-grid">
+        {featuredProducts.map((p) => (
+          <a href={`/loan-options/${p.slug}/`} class="product-card">
+            <div class="product-card-head">
+              <span class="product-tier">Tier {p.tier}</span>
+              <h3>{p.shortName}</h3>
+            </div>
+            <p>{p.shortDescription}</p>
+            <span class="product-link">Program details →</span>
+          </a>
+        ))}
+      </div>
+      <p class="tier4-note">
+        Plus three narrow-use programs:
+        {PRODUCTS.filter((p) => p.tier === 4).map((p, i, arr) => (
+          <>
+            <a href={`/loan-options/${p.slug}/`}>{p.shortName}</a>{i < arr.length - 1 && ', '}
+          </>
+        ))}.
+      </p>
+    </div>
+  </section>
+
+  <section class="band band-surface">
+    <div class="container">
+      <header class="section-head">
+        <p class="eyebrow">Onboarding</p>
+        <h2>How do I become a Clout wholesale partner?</h2>
+      </header>
+      <ol class="step-list">
+        {onboardingSteps.map((step) => (
+          <li class="step">
+            <span class="step-n">{step.n}</span>
+            <div>
+              <h3>{step.title}</h3>
+              <p>{step.body}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+      <div class="step-cta">
+        <a href="#apply" class="cta-primary">Start the application</a>
+        <a href={`tel:${SITE.phone}`} class="cta-secondary">Call {SITE.phoneDisplay}</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="container">
+      <header class="section-head">
+        <p class="eyebrow">Scenario desk</p>
+        <h2>Run a scenario before you submit.</h2>
+      </header>
+      <div class="scenario-desk">
+        <div class="scenario-desk-copy">
+          <p>
+            Active partner brokers can submit a written scenario to the Clout scenario
+            desk and receive a same-business-day response (clean scenarios received before
+            2 PM ET). Send the following so we can answer in one pass:
+          </p>
+          <ul class="checklist">
+            <li>Borrower profile — entity vs personal, citizenship, occupancy</li>
+            <li>Property — address or zip, type, purchase or refi, value</li>
+            <li>Loan request — amount, LTV, term, purpose</li>
+            <li>Income or qualifying basis — DSCR, bank statements, 1099, assets</li>
+            <li>FICO band and any credit-event history (BK, FC, SS) with dates</li>
+            <li>The specific question — "will you approve," "best program," "max LTV"</li>
+          </ul>
+        </div>
+        <aside class="scenario-desk-card">
+          <p class="eyebrow">Submit a scenario</p>
+          <p class="desk-line">
+            <a href={`mailto:${SITE.email}?subject=Scenario%20desk%20%E2%80%94%20[Program]%20%E2%80%94%20[State]`}>{SITE.email}</a>
+          </p>
+          <p class="desk-line">
+            <a href={`tel:${SITE.phone}`}>{SITE.phoneDisplay}</a>
+          </p>
+          <p class="desk-meta">Response window: same business day before 2 PM ET · next business day after 2 PM ET</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="band band-dark">
+    <div class="container">
+      <header class="section-head">
+        <p class="eyebrow">Recent closings</p>
+        <h2>What kinds of files clear through TPO Connect.</h2>
+      </header>
+      <div class="scenario-grid">
+        {scenarios.map((s) => (
+          <article class="scenario scenario-dark">
+            <p class="scenario-eyebrow">{s.program}</p>
+            <h3>{s.headline}</h3>
+            <dl>
+              {s.facts.map(([k, v]) => (
+                <>
+                  <dt>{k}</dt>
+                  <dd>{v}</dd>
+                </>
+              ))}
+            </dl>
+          </article>
+        ))}
+      </div>
+      <p class="scenarios-note">
+        Scenarios are anonymized and representative. Borrower and property details have
+        been altered to protect privacy. Past closings are not a guarantee of future
+        eligibility on similar files.
+      </p>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="container">
+      <header class="section-head">
+        <p class="eyebrow">Account executives</p>
+        <h2>Who's your AE?</h2>
+      </header>
+      <div class="ae-grid">
+        {aeDesks.map((desk) => (
+          <article class="ae-card">
+            <h3>{desk.name}</h3>
+            <p class="ae-coverage">{desk.coverage}</p>
+            <p>{desk.note}</p>
+            <div class="ae-contact">
+              <a href={`tel:${SITE.phone}`}>{desk.phone}</a>
+              <a href={`mailto:${desk.email}`}>{desk.email}</a>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section id="apply" class="band band-surface">
+    <div class="container">
+      <header class="section-head">
+        <p class="eyebrow">Apply</p>
+        <h2>Become a Clout wholesale broker partner.</h2>
+      </header>
+      <div class="apply-grid">
+        <div class="apply-copy">
+          <p>
+            Email the items below to <a href={`mailto:${SITE.email}?subject=New%20Broker%20Partner%20Application`}>{SITE.email}</a> — or
+            call <a href={`tel:${SITE.phone}`}>{SITE.phoneDisplay}</a> and an AE will
+            walk you through it. We respond to every application within one business day.
+          </p>
+          <ul class="checklist">
+            <li>Company name + NMLS</li>
+            <li>States you originate in</li>
+            <li>Expected Non-QM volume (annual)</li>
+            <li>Primary contact + cell</li>
+            <li>E&O insurance certificate</li>
+            <li>Company NMLS license</li>
+            <li>Broker AML policy</li>
+            <li>Principal(s) NMLS + resumes</li>
+          </ul>
+        </div>
+        <aside class="apply-card">
+          <p class="apply-card-title">What happens next</p>
+          <ol class="apply-next">
+            <li><strong>Day 1.</strong> Acknowledgment + AE assignment.</li>
+            <li><strong>Day 2–3.</strong> Broker package review + compliance check.</li>
+            <li><strong>Day 4–5.</strong> Onboarding call + TPO Connect access provisioning.</li>
+            <li><strong>Day 5–7.</strong> First scenario or first file submission.</li>
+          </ol>
+          <a href={`mailto:${SITE.email}?subject=New%20Broker%20Partner%20Application`} class="cta-primary">Email {SITE.email}</a>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="container">
+      <header class="section-head">
+        <p class="eyebrow">Frequently asked</p>
+        <h2>Questions about Clout TPO Connect.</h2>
+      </header>
+      <div class="faq" itemscope itemtype="https://schema.org/FAQPage">
+        {faqs.map((f) => (
+          <details itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+            <summary itemprop="name">{f.question}</summary>
+            <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+              <p itemprop="text">{f.answer}</p>
+            </div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="band band-compliance">
+    <div class="container">
+      <p class="compliance-row">
+        Clout Wholesale Mortgage Bankers is a division of Cliffco Mortgage Bankers.
+        NMLS <a href={SITE.nmlsUrl} rel="noopener" target="_blank">#{SITE.nmlsId}</a>.
+        Equal Housing Lender. Licensed by the New York State Department of Financial
+        Services, New Jersey Department of Banking and Insurance, Pennsylvania
+        Department of Banking and Securities, Florida Office of Financial Regulation,
+        Connecticut Department of Banking, and Texas Department of Savings and Mortgage
+        Lending / OCCC. This portal is available to NMLS-registered mortgage brokers
+        and brokerages only. Programs, rates, and turn-times are subject to change
+        without notice. Page last updated <time datetime={lastUpdatedIso}>{lastUpdatedDisplay}</time>.
+      </p>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .container { max-width: 1180px; margin: 0 auto; padding: 0 1.5rem; }
+
+  /* Hero */
+  .hero {
+    padding: 5rem 0 3.5rem;
+    background:
+      radial-gradient(1100px 480px at 18% -10%, color-mix(in srgb, var(--color-brand-bright) 18%, transparent) 0%, transparent 60%),
+      linear-gradient(180deg, var(--color-paper) 0%, var(--color-surface) 100%);
+  }
+  .hero h1 {
+    font-size: clamp(2rem, 4.6vw, 3.25rem);
+    line-height: 1.08;
+    margin: 0 0 1.25rem;
+    max-width: 22ch;
+  }
+  .hero .lead { max-width: 64ch; margin: 0 0 1.75rem; }
+  .hero-cta { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+  .hero .cta-primary span { transition: transform 120ms ease; }
+  .hero .cta-primary:hover span { transform: translateX(3px); }
+  .hero .reviewed-by { margin: 1.5rem 0 0; }
+
+  /* Bands */
+  .band { padding: 4rem 0; }
+  .band-tldr { padding-top: 0; margin-top: -1.5rem; position: relative; z-index: 1; }
+  .band-surface { background: var(--color-surface); }
+  .band-dark { background: var(--color-brand-deep); color: var(--color-paper); }
+  .band-dark .eyebrow { color: var(--color-brand-bright); }
+  .band-dark h2, .band-dark h3 { color: var(--color-paper); }
+  .band-compliance { padding: 2rem 0 3.5rem; }
+
+  /* TLDR (override grid for 2-up) */
+  .band-tldr .tldr { background: var(--color-paper); box-shadow: 0 12px 40px -24px rgba(0, 65, 70, 0.18); }
+  .band-tldr .tldr ul {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0;
+    column-gap: 2.5rem;
+  }
+  @media (max-width: 720px) { .band-tldr .tldr ul { grid-template-columns: 1fr; } }
+
+  .section-head { margin: 0 0 2.5rem; max-width: 56ch; }
+  .section-head h2 { font-size: clamp(1.5rem, 3vw, 2.25rem); line-height: 1.2; margin: 0; }
+
+  /* Inside the portal — feature grid */
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+  .feature-card {
+    padding: 1.5rem;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    background: var(--color-paper);
+    transition: border-color 120ms ease, transform 120ms ease, box-shadow 120ms ease;
+  }
+  .feature-card:hover {
+    border-color: var(--color-brand);
+    transform: translateY(-2px);
+    box-shadow: 0 14px 28px -18px rgba(1, 128, 118, 0.22);
+  }
+  .feature-card h3 { font-size: 1.0625rem; margin: 0 0 0.5rem; color: var(--color-brand-deep); }
+  .feature-card p { margin: 0; color: var(--color-ink-soft); font-size: var(--text-small); line-height: 1.6; }
+
+  /* Turn-time table */
+  .turn-table-wrap { overflow-x: auto; }
+  .turn-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-small);
+    color: var(--color-paper);
+  }
+  .turn-table thead th {
+    text-align: left;
+    padding: 0.875rem 1rem;
+    font-weight: 600;
+    color: var(--color-brand-bright);
+    font-size: var(--text-meta);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-brand-bright) 30%, transparent);
+  }
+  .turn-table tbody th, .turn-table tbody td {
+    padding: 1rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-paper) 12%, transparent);
+    vertical-align: top;
+  }
+  .turn-table tbody th { font-weight: 600; text-align: left; }
+  .turn-note {
+    margin-top: 1rem;
+    font-size: var(--text-meta);
+    color: color-mix(in srgb, var(--color-paper) 70%, transparent);
+    max-width: 64ch;
+  }
+
+  /* Product cards */
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+  .product-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1.5rem;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    background: var(--color-paper);
+    text-decoration: none;
+    color: var(--color-ink);
+    transition: border-color 120ms ease, transform 120ms ease, box-shadow 120ms ease;
+  }
+  .product-card:hover {
+    border-color: var(--color-brand);
+    transform: translateY(-2px);
+    box-shadow: 0 16px 32px -16px rgba(1, 128, 118, 0.18);
+  }
+  .product-card-head { display: flex; align-items: baseline; gap: 0.75rem; }
+  .product-tier {
+    font-size: var(--text-micro);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-mid);
+    font-weight: 600;
+  }
+  .product-card h3 { font-size: 1.125rem; margin: 0; }
+  .product-card p { margin: 0; color: var(--color-ink-soft); font-size: var(--text-small); }
+  .product-link { color: var(--color-brand-deep); font-weight: 600; margin-top: auto; font-size: var(--text-small); }
+  .tier4-note { color: var(--color-mid); margin-top: 1.5rem; font-size: var(--text-small); }
+  .tier4-note a { color: var(--color-ink-soft); }
+
+  /* Onboarding steps */
+  .step-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+  }
+  .step {
+    background: var(--color-paper);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    position: relative;
+  }
+  .step-n {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--color-brand-warmth);
+    letter-spacing: 0.18em;
+  }
+  .step h3 { margin: 0; font-size: 1.0625rem; color: var(--color-brand-deep); }
+  .step p { margin: 0; color: var(--color-ink-soft); font-size: var(--text-small); line-height: 1.6; }
+  .step-cta { margin-top: 2rem; display: flex; gap: 0.75rem; flex-wrap: wrap; }
+
+  /* Scenario desk */
+  .scenario-desk {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 1.5rem;
+    align-items: start;
+  }
+  .scenario-desk-copy p { margin: 0 0 1rem; }
+  .checklist {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 0.5rem;
+  }
+  .checklist li {
+    position: relative;
+    padding-left: 1.5rem;
+    color: var(--color-ink-soft);
+    font-size: var(--text-small);
+  }
+  .checklist li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-brand);
+  }
+  .scenario-desk-card {
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    padding: 1.75rem;
+    background: var(--color-paper);
+    box-shadow: 0 16px 36px -24px rgba(0, 65, 70, 0.14);
+  }
+  .scenario-desk-card .eyebrow { margin: 0 0 0.75rem; }
+  .desk-line {
+    margin: 0 0 0.5rem;
+    font-size: 1.0625rem;
+    font-weight: 600;
+  }
+  .desk-line a { color: var(--color-brand-deep); }
+  .desk-meta { font-size: var(--text-meta); color: var(--color-mid); margin: 0.75rem 0 0; }
+
+  /* Scenarios (dark) */
+  .scenario-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+  .scenario-dark {
+    border: 1px solid color-mix(in srgb, var(--color-brand-bright) 24%, transparent);
+    background: color-mix(in srgb, var(--color-paper) 6%, transparent);
+    color: var(--color-paper);
+  }
+  .scenario-dark h3 { color: var(--color-paper); font-size: 1.0625rem; }
+  .scenario-dark dt { color: color-mix(in srgb, var(--color-paper) 60%, transparent); }
+  .scenario-dark dd { color: var(--color-paper); }
+  .scenarios-note {
+    margin-top: 1.25rem;
+    font-size: var(--text-meta);
+    color: color-mix(in srgb, var(--color-paper) 70%, transparent);
+    max-width: 72ch;
+  }
+
+  /* AE directory */
+  .ae-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+  .ae-card {
+    padding: 1.75rem;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    background: var(--color-paper);
+  }
+  .ae-card h3 { font-size: 1.125rem; margin: 0 0 0.25rem; color: var(--color-brand-deep); }
+  .ae-coverage {
+    margin: 0 0 0.75rem;
+    font-size: var(--text-micro);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-brand-warmth);
+    font-weight: 700;
+  }
+  .ae-card p { color: var(--color-ink-soft); font-size: var(--text-small); line-height: 1.6; margin: 0 0 1rem; }
+  .ae-contact { display: flex; flex-direction: column; gap: 0.25rem; font-weight: 600; }
+
+  /* Apply */
+  .apply-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 1.5rem;
+    align-items: start;
+  }
+  .apply-copy p { margin: 0 0 1rem; }
+  .apply-card {
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    padding: 1.75rem;
+    background: var(--color-paper);
+    box-shadow: 0 16px 36px -24px rgba(0, 65, 70, 0.14);
+  }
+  .apply-card-title {
+    font-size: var(--text-micro);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-brand-deep);
+    font-weight: 700;
+    margin: 0 0 0.75rem;
+  }
+  .apply-next {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.5rem;
+    display: grid;
+    gap: 0.5rem;
+    font-size: var(--text-small);
+    color: var(--color-ink-soft);
+  }
+  .apply-next strong { color: var(--color-ink); font-weight: 700; }
+
+  /* Compliance */
+  .band-compliance .compliance-row { max-width: 96ch; }
+
+  /* Responsive */
+  @media (max-width: 960px) {
+    .feature-grid { grid-template-columns: repeat(2, 1fr); }
+    .product-grid { grid-template-columns: repeat(2, 1fr); }
+    .step-list { grid-template-columns: repeat(2, 1fr); }
+    .scenario-grid { grid-template-columns: 1fr; }
+    .ae-grid { grid-template-columns: 1fr; }
+    .scenario-desk { grid-template-columns: 1fr; }
+    .apply-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 560px) {
+    .feature-grid { grid-template-columns: 1fr; }
+    .product-grid { grid-template-columns: 1fr; }
+    .step-list { grid-template-columns: 1fr; }
+  }
+</style>

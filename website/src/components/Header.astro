@@ -49,6 +49,7 @@ const featuredProducts = [...tier1Products, ...tier2Products];
         <li><a href="/investors/">Investors</a></li>
         <li><a href="/resources/">Resources</a></li>
         <li><a href="/about/">About</a></li>
+        <li><a href="/tpo-connect/" class="nav-portal">TPO Connect</a></li>
       </ul>
     </nav>
 
@@ -156,6 +157,16 @@ const featuredProducts = [...tier1Products, ...tier2Products];
     text-align: right;
   }
   .menu-foot a { color: var(--color-brand-deep); font-weight: 600; }
+
+  .nav-portal {
+    color: var(--color-brand-deep) !important;
+    border: 1px solid var(--color-line);
+    margin-left: 0.25rem;
+  }
+  .nav-portal:hover {
+    border-color: var(--color-brand);
+    background: var(--color-surface) !important;
+  }
 
   .header-cta {
     display: flex;
