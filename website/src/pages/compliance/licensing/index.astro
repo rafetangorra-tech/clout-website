@@ -1,0 +1,109 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import { SITE, STATES } from '../../../data/site';
+
+const pageUrl = `${SITE.url}/compliance/licensing/`;
+const breadcrumbs = [
+  { name: 'Home', url: SITE.url },
+  { name: 'Compliance', url: `${SITE.url}/compliance/` },
+  { name: 'State Licensing', url: pageUrl },
+];
+---
+
+<Layout
+  title="State Licensing"
+  description={`Clout state licensing under NMLS #${SITE.nmlsId}. Licensed in NY, NJ, PA, FL, CT, and TX. State-specific regulator and disclosure details.`}
+  canonical={pageUrl}
+  breadcrumbs={breadcrumbs}
+>
+  <article class="page">
+    <div class="container">
+      <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span aria-hidden="true">/</span>
+        <a href="/compliance/">Compliance</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">State Licensing</span>
+      </nav>
+
+      <p class="eyebrow">Compliance · State Licensing</p>
+      <h1>Clout state licensing.</h1>
+      <p class="answer-first">
+        Clout operates under NMLS #{SITE.nmlsId} and holds active licensing in six
+        states. Below is the canonical list with regulator + license-number placeholders
+        — full state-specific disclosures available on each state's page.
+      </p>
+
+      <div class="state-grid">
+        {STATES.map((s) => (
+          <a href={`/compliance/licensing/${s.slug}/`} class="state-card">
+            <p class="state-abbr">{s.abbr}</p>
+            <h2>{s.name}</h2>
+            <p>NMLS #{SITE.nmlsId} · State-specific disclosure →</p>
+          </a>
+        ))}
+      </div>
+
+      <p class="footer-note">
+        For Clout's full licensing record, view our profile on
+        <a href={SITE.nmlsUrl} target="_blank" rel="noopener">NMLS Consumer Access</a>.
+      </p>
+    </div>
+  </article>
+</Layout>
+
+<style>
+  .container { max-width: 920px; margin: 0 auto; padding: 0 1.5rem; }
+  .page { padding: 3rem 0 4rem; }
+  .breadcrumbs {
+    font-size: var(--text-meta);
+    color: var(--color-mid);
+    margin-bottom: 2rem;
+  }
+  .breadcrumbs a { color: var(--color-ink-soft); text-decoration: none; }
+  .breadcrumbs a:hover { color: var(--color-brand-deep); }
+  .breadcrumbs span[aria-hidden] { margin: 0 0.5rem; color: var(--color-line); }
+  .eyebrow {
+    font-size: var(--text-micro);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-brand-warmth);
+    font-weight: 700;
+    margin: 0 0 1rem;
+  }
+  h1 { font-size: clamp(2rem, 4vw, 2.5rem); margin: 0 0 1.25rem; }
+  .answer-first { max-width: 60ch; margin: 0 0 2rem; }
+
+  .state-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin: 2rem 0;
+  }
+  .state-card {
+    display: block;
+    padding: 1.25rem;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md);
+    background: var(--color-paper);
+    color: var(--color-ink);
+    text-decoration: none;
+    transition: border-color 120ms ease;
+  }
+  .state-card:hover { border-color: var(--color-brand); }
+  .state-abbr {
+    font-size: var(--text-micro);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-brand-warmth);
+    margin: 0;
+    font-weight: 700;
+  }
+  .state-card h2 { font-size: 1.125rem; margin: 0.25rem 0; }
+  .state-card p { font-size: var(--text-small); color: var(--color-mid); margin: 0; }
+
+  .footer-note { font-size: var(--text-meta); color: var(--color-mid); margin-top: 2rem; }
+  .footer-note a { color: var(--color-ink-soft); text-decoration: underline; }
+
+  @media (max-width: 560px) { .state-grid { grid-template-columns: 1fr; } }
+</style>

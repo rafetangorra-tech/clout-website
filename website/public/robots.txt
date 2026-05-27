@@ -1,0 +1,67 @@
+# Clout · robots.txt · 2026
+# Posture: allow all major search + AI crawlers (training + retrieval + RAG)
+# See ~/clout-website/seo-aeo-research/02-aeo-llm-optimization.md for rationale
+
+# --- OpenAI ---
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+# --- Anthropic ---
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+# --- Perplexity ---
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+# --- Google AI ---
+User-agent: Google-Extended
+Allow: /
+
+# --- Meta / Llama ---
+User-agent: Meta-ExternalAgent
+Allow: /
+
+User-agent: FacebookBot
+Allow: /
+
+# --- Apple ---
+User-agent: Applebot-Extended
+Allow: /
+
+# --- Amazon ---
+User-agent: Amazonbot
+Allow: /
+
+# --- Common Crawl (training corpus for many models) ---
+User-agent: CCBot
+Allow: /
+
+# --- DuckDuckGo Assist ---
+User-agent: DuckAssistBot
+Allow: /
+
+# --- Default for all other bots ---
+User-agent: *
+Disallow: /admin/
+Disallow: /api/
+Disallow: /draft/
+Disallow: /search/
+Disallow: /filter/
+
+Sitemap: https://cloutwmb.com/sitemap-index.xml

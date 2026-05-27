@@ -1,0 +1,296 @@
+@import "tailwindcss";
+
+/* ============================================================
+   Clout brand design tokens
+   Locked palette: teal anchor + rust accent
+   See ~/.claude/projects/-Users-rtangorra/memory/project_clout_brand_research.md
+   ============================================================ */
+
+@theme {
+  /* Brand */
+  --color-brand-deep:    #004146;
+  --color-brand:         #018076;
+  --color-brand-bright:  #03BFB5;
+  --color-brand-warmth:  #C4572A;
+
+  /* Neutrals */
+  --color-ink:           #1A1F22;
+  --color-ink-soft:      #2E3338;
+  --color-mid:           #949398;
+  --color-line:          #D9DEE2;
+  --color-surface:       #EFF5F9;
+  --color-paper:         #FFFFFF;
+
+  /* Type scale (rem) */
+  --text-display: 3.5rem;
+  --text-h1: 2.5rem;
+  --text-h2: 1.875rem;
+  --text-h3: 1.375rem;
+  --text-body: 1.0625rem;
+  --text-small: 0.9375rem;
+  --text-meta: 0.8125rem;
+  --text-micro: 0.6875rem;
+
+  /* Spacing rhythm — use multiples of 4px */
+  --spacing-1: 0.25rem;
+  --spacing-2: 0.5rem;
+  --spacing-3: 0.75rem;
+  --spacing-4: 1rem;
+  --spacing-6: 1.5rem;
+  --spacing-8: 2rem;
+  --spacing-12: 3rem;
+  --spacing-16: 4rem;
+  --spacing-24: 6rem;
+
+  /* Type stack — system fallback until licensed kit is loaded */
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "SF Pro Display",
+               "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-serif: ui-serif, Georgia, "Times New Roman", serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Monaco, Consolas, monospace;
+
+  /* Radius */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+  --radius-xl: 16px;
+}
+
+/* ============================================================
+   Base resets + global rhythm
+   ============================================================ */
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Selection */
+::selection {
+  background: color-mix(in srgb, var(--color-brand) 24%, transparent);
+  color: var(--color-ink);
+}
+
+/* Focus — meets WCAG 2.2 AA focus appearance */
+:focus-visible {
+  outline: 3px solid var(--color-brand-bright);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* Skip-to-main link */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  padding: var(--spacing-3) var(--spacing-4);
+  background: var(--color-ink);
+  color: var(--color-paper);
+  z-index: 9999;
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+}
+.skip-link:focus {
+  left: 0;
+}
+
+/* Typography defaults */
+h1, h2, h3, h4 {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  color: var(--color-ink);
+}
+
+a {
+  color: var(--color-brand);
+  text-decoration-color: color-mix(in srgb, var(--color-brand) 30%, transparent);
+  text-underline-offset: 2px;
+  transition: color 120ms ease, text-decoration-color 120ms ease;
+}
+a:hover {
+  color: var(--color-brand-deep);
+  text-decoration-color: var(--color-brand-deep);
+}
+
+/* Code / mono */
+code, pre, kbd {
+  font-family: var(--font-mono);
+  font-size: 0.94em;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ============================================================
+   Reusable patterns from the AEO playbook
+   ============================================================ */
+
+.answer-first {
+  font-size: 1.1875rem;
+  line-height: 1.55;
+  color: var(--color-ink);
+  max-width: 64ch;
+}
+
+.tldr {
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-6);
+  background: var(--color-surface);
+}
+.tldr h2 {
+  font-size: var(--text-micro);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-brand-deep);
+  margin: 0 0 var(--spacing-4) 0;
+}
+.tldr ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: var(--spacing-2);
+}
+.tldr li {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--spacing-4);
+  padding: var(--spacing-2) 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-line) 60%, transparent);
+}
+.tldr li:last-child { border-bottom: none; }
+.tldr li .label { color: var(--color-ink-soft); }
+.tldr li .value { font-weight: 600; color: var(--color-ink); }
+
+.reviewed-by {
+  font-size: var(--text-meta);
+  color: var(--color-mid);
+  letter-spacing: 0.02em;
+  margin: var(--spacing-2) 0 var(--spacing-6) 0;
+}
+.reviewed-by a { color: var(--color-ink-soft); }
+
+.faq {
+  border-top: 1px solid var(--color-line);
+}
+.faq details {
+  border-bottom: 1px solid var(--color-line);
+  padding: var(--spacing-4) 0;
+}
+.faq summary {
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1.0625rem;
+  color: var(--color-ink);
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--spacing-4);
+}
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after {
+  content: '+';
+  font-size: 1.5rem;
+  color: var(--color-brand);
+  transition: transform 120ms ease;
+}
+.faq details[open] summary::after { content: '–'; }
+.faq details > div { padding-top: var(--spacing-3); color: var(--color-ink-soft); }
+
+.scenario {
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-6);
+  background: var(--color-paper);
+}
+.scenario .scenario-eyebrow {
+  font-size: var(--text-micro);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-brand-warmth);
+  font-weight: 600;
+}
+.scenario h3 {
+  font-size: 1.125rem;
+  margin: var(--spacing-2) 0 var(--spacing-3) 0;
+}
+.scenario dl {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: var(--spacing-2) var(--spacing-4);
+  font-size: var(--text-small);
+}
+.scenario dt { color: var(--color-mid); }
+.scenario dd { color: var(--color-ink); margin: 0; font-weight: 500; }
+
+.compliance-row {
+  font-size: var(--text-meta);
+  color: var(--color-mid);
+  line-height: 1.6;
+}
+.compliance-row a {
+  color: var(--color-ink-soft);
+  text-decoration: underline;
+  text-decoration-color: var(--color-line);
+}
+.compliance-row a:hover {
+  color: var(--color-brand);
+  text-decoration-color: var(--color-brand);
+}
+
+.cta-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-2);
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--radius-md);
+  background: var(--color-brand);
+  color: var(--color-paper);
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 120ms ease;
+  border: 1px solid var(--color-brand);
+}
+.cta-primary:hover {
+  background: var(--color-brand-deep);
+  color: var(--color-paper);
+  border-color: var(--color-brand-deep);
+}
+
+.cta-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-2);
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--color-brand-deep);
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid var(--color-brand);
+  transition: background 120ms ease, color 120ms ease;
+}
+.cta-secondary:hover {
+  background: var(--color-brand);
+  color: var(--color-paper);
+}

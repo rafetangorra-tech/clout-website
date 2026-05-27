@@ -1,0 +1,30 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import StubPage from '../../../components/StubPage.astro';
+import { SITE } from '../../../data/site';
+
+const pageUrl = `${SITE.url}/compliance/privacy/`;
+const breadcrumbs = [
+  { name: 'Home', url: SITE.url },
+  { name: 'Compliance', url: `${SITE.url}/compliance/` },
+  { name: 'Privacy', url: pageUrl },
+];
+---
+
+<Layout
+  title="Privacy Policy"
+  description="Clout privacy policy: how we collect, use, store, and share information. CCPA / CT / FL / NY / TX state-privacy compatible."
+  canonical={pageUrl}
+  breadcrumbs={breadcrumbs}
+>
+  <StubPage
+    eyebrow="Compliance · Privacy"
+    title="Privacy policy."
+    lead={`This is where Clout's full privacy policy will live: how we collect, use, store, and share information; rights under CCPA, CTDPA, FL Digital Bill of Rights, NY SHIELD, and TX TDPSA; cookie usage; and contact channels for privacy requests.`}
+    breadcrumbs={[
+      { label: 'Compliance', href: '/compliance/' },
+      { label: 'Privacy' },
+    ]}
+    notice="Privacy policy in legal review. Contact Clout for current data-handling practices in the meantime."
+  />
+</Layout>

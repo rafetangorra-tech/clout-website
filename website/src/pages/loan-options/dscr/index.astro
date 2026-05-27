@@ -1,0 +1,541 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import { SITE, STATES, PRODUCTS } from '../../../data/site';
+import {
+  mortgageLoanSchema,
+  faqSchema,
+  articleSchema,
+  jsonLd,
+} from '../../../data/schema';
+
+const product = PRODUCTS.find((p) => p.slug === 'dscr')!;
+const pageUrl = `${SITE.url}/loan-options/dscr/`;
+const datePublished = '2026-05-27';
+const dateModified = '2026-05-27';
+
+const tldr = [
+  { label: 'Who it\'s for', value: 'Real estate investors qualifying on rental income' },
+  { label: 'Income docs', value: 'None — qualify on the property, not your W-2' },
+  { label: 'Min DSCR', value: '0.75 (program-dependent)' },
+  { label: 'Loan amount', value: 'Up to $3.5M+ (program-dependent)' },
+  { label: 'Min FICO', value: '620' },
+  { label: 'Max LTV', value: 'Up to 80% (purchase), 75% (cash-out)' },
+  { label: 'Term', value: '30 or 40 year fixed · Interest Only available' },
+  { label: 'Typical close', value: '15–25 days for clean files' },
+];
+
+const scenarios = [
+  {
+    eyebrow: 'Houston, TX · Single-family rental',
+    title: 'Out-of-state NJ investor buying 1.05 DSCR Spring TX rental',
+    profile: 'NJ-based investor, 740 FICO, 4 existing rentals',
+    property: '3BR SFR, Spring TX, $310K purchase, $2,450/mo projected rent',
+    loan: '$248K, 80% LTV, 30Y fixed, IO option declined',
+    dscr: '1.05 (qualifying minimum for tier)',
+    close: '17 days from approval',
+  },
+  {
+    eyebrow: 'Orlando, FL · STR / Disney corridor',
+    title: 'Polk County Airbnb in Davenport, FL',
+    profile: 'Florida LLC, 760 FICO, first STR purchase',
+    property: '4BR townhome, Champion\'s Gate, $485K, AirDNA-validated $58K annual rent',
+    loan: '$364K, 75% LTV, 30Y fixed, IO',
+    dscr: '1.22 (validated via AirDNA + 12-mo competitive set)',
+    close: '21 days',
+  },
+  {
+    eyebrow: 'Brooklyn, NY · 2-4 unit',
+    title: 'Brooklyn 3-family for Long Island broker\'s client',
+    profile: 'Native NY investor LLC, 700 FICO, 6 existing properties',
+    property: '3-family brownstone, Bed-Stuy, $1.4M purchase',
+    loan: '$980K, 70% LTV (cash-out refi), 30Y fixed',
+    dscr: '1.18 (combined unit rents)',
+    close: '24 days (attorney-closing state)',
+  },
+];
+
+const faqs = [
+  {
+    question: 'What is a DSCR loan?',
+    answer:
+      'A DSCR (Debt Service Coverage Ratio) loan is a Non-QM mortgage for real estate investors that qualifies the borrower based on the rental income of the property, not the borrower\'s personal income. The lender calculates DSCR by dividing the property\'s monthly rental income by its monthly debt service (P&I + taxes + insurance + HOA). A DSCR of 1.0 means the property breaks even; most lenders want 1.10–1.25 minimum, though Clout offers programs down to 0.75.',
+  },
+  {
+    question: 'How is DSCR calculated?',
+    answer:
+      'DSCR = Monthly Gross Rental Income ÷ Monthly PITIA (Principal + Interest + Taxes + Insurance + Association dues). Example: a property generating $2,500/month in rent against $2,000/month PITIA has a DSCR of 1.25. For short-term rentals (STR/Airbnb), Clout uses AirDNA or a documented 12-month rent roll to establish rental income.',
+  },
+  {
+    question: 'Who qualifies for a Clout DSCR loan?',
+    answer:
+      'Real estate investors purchasing or refinancing investment properties — single-family rentals, 2–4 unit properties, condos, and short-term rentals. Investors can hold title in a personal name or LLC. First-time investors are eligible. Borrowers do not need W-2 income, tax returns, or employment verification.',
+  },
+  {
+    question: 'What\'s the minimum DSCR for a Clout loan?',
+    answer:
+      'Clout offers DSCR programs starting at 0.75 with stronger compensating factors (higher down payment, lower LTV, stronger FICO, reserves). Standard pricing tiers start at 1.0 DSCR; the best pricing is at 1.25+ DSCR.',
+  },
+  {
+    question: 'How much down payment do I need?',
+    answer:
+      'Most Clout DSCR programs require 20% down for purchase loans. Cash-out refinances are typically capped at 75% LTV. Higher down payments (25–30%) unlock better pricing and looser DSCR requirements.',
+  },
+  {
+    question: 'Can I use a DSCR loan for short-term rentals (Airbnb / VRBO)?',
+    answer:
+      'Yes. Clout uses AirDNA reports, documented 12-month rent rolls, or comparable-market analysis to establish STR income. Programs are available for Disney-area Florida, Texas Gulf Coast, NY Hamptons, NJ Jersey Shore, and CT shoreline markets.',
+  },
+  {
+    question: 'Are DSCR loans available for first-time investors?',
+    answer:
+      'Yes. Clout does not require prior investment property ownership. First-time investors typically need 20–25% down, a 680+ FICO, and 6 months of PITIA reserves. The deal qualifies primarily on the property\'s cash flow.',
+  },
+  {
+    question: 'Can foreign nationals use a Clout DSCR loan?',
+    answer:
+      'Yes. Clout\'s DSCR program accepts foreign national borrowers. Foreign nationals typically need 30%+ down, 12 months reserves, and assets seasoned 60+ days in a US FDIC-insured account. See our Foreign National Mortgage program for the full requirements.',
+  },
+  {
+    question: 'How fast does Clout close a DSCR loan?',
+    answer:
+      'For clean files, Clout DSCR loans typically close in 15–25 days from approval. Attorney-closing states (NY, NJ, CT) may add 3–5 days. Short-term rental files with AirDNA validation may add 5–7 days for income documentation review.',
+  },
+  {
+    question: 'Can I get a DSCR loan in an LLC?',
+    answer:
+      'Yes. Clout DSCR loans can close in a single-member LLC, multi-member LLC, or personal name. LLC closings require operating agreement review and personal guarantees from beneficial owners.',
+  },
+  {
+    question: 'Does Clout do DSCR cash-out refinances?',
+    answer:
+      'Yes. Clout DSCR cash-out refinances are typically capped at 75% LTV (purchase max is 80%). Cash-out proceeds can be used for any business purpose — additional property purchases, renovations, debt consolidation against the investor portfolio.',
+  },
+  {
+    question: 'What states does Clout offer DSCR loans in?',
+    answer:
+      'Clout offers DSCR loans in New York, New Jersey, Pennsylvania, Florida, Connecticut, and Texas. Each state has specific licensing disclosures and underwriting nuances (e.g., FL insurance crisis adjustments, NYC co-op eligibility limits, attorney-closing in NY/NJ/CT).',
+  },
+  {
+    question: 'What\'s the difference between a DSCR loan and a conventional investment property mortgage?',
+    answer:
+      'Conventional investment mortgages (Fannie/Freddie) qualify the borrower on their personal income, debt-to-income ratio, and tax returns. DSCR loans qualify on the property\'s rental income only — no personal income docs required. DSCR is typically priced 1–2% higher than conventional but enables investors who can\'t qualify on personal income or have hit Fannie/Freddie property limits.',
+  },
+  {
+    question: 'Can I get a DSCR loan with a 0.75 DSCR?',
+    answer:
+      'Yes — Clout offers a sub-1.0 DSCR program for properties down to 0.75 DSCR with compensating factors: higher down payment (typically 25–30%), 12+ months reserves, 680+ FICO, and a clean credit history. The program is priced higher than the standard 1.0+ DSCR tiers.',
+  },
+];
+
+const comparisonRows = [
+  {
+    feature: 'Income documentation required',
+    dscr: 'None (property qualifies)',
+    conventional: 'W-2s, tax returns, paystubs',
+    hardMoney: 'Light — asset/equity focus',
+  },
+  {
+    feature: 'Property type',
+    dscr: 'SFR, 2-4 unit, condo, STR',
+    conventional: 'SFR, 2-4 unit, condo',
+    hardMoney: 'Any (incl. distressed)',
+  },
+  {
+    feature: 'Min FICO',
+    dscr: '620 (some programs lower)',
+    conventional: '620–700',
+    hardMoney: '600+ (asset-driven)',
+  },
+  {
+    feature: 'Max LTV (purchase)',
+    dscr: 'Up to 80%',
+    conventional: 'Up to 85%',
+    hardMoney: '65–75%',
+  },
+  {
+    feature: 'Typical rate',
+    dscr: 'Conventional + 1–2%',
+    conventional: 'Lowest available',
+    hardMoney: 'Conventional + 4–8%',
+  },
+  {
+    feature: 'Term',
+    dscr: '30 or 40 year',
+    conventional: '15 or 30 year',
+    hardMoney: '6–24 months',
+  },
+  {
+    feature: 'Typical close',
+    dscr: '15–25 days',
+    conventional: '30–45 days',
+    hardMoney: '5–14 days',
+  },
+];
+
+const breadcrumbs = [
+  { name: 'Home', url: SITE.url },
+  { name: 'Loan Options', url: `${SITE.url}/loan-options/` },
+  { name: 'DSCR Loan', url: pageUrl },
+];
+
+const productSchema = mortgageLoanSchema({
+  name: product.name,
+  description:
+    'Non-QM mortgage for real estate investors that qualifies based on rental cash flow (debt service coverage ratio), not personal income.',
+  loanType: 'Non-Qualified Mortgage / DSCR',
+  loanTerm: ['P30Y', 'P40Y'],
+  interestRateMin: 6.5,
+  interestRateMax: 9.5,
+  amountMin: 100000,
+  amountMax: 3500000,
+  downPaymentMinPercent: 20,
+  url: pageUrl,
+});
+
+const article = articleSchema({
+  headline: 'DSCR Loans for Real Estate Investors — Clout',
+  description:
+    'Complete guide to Clout\'s DSCR loan program: qualifying criteria, calculation methodology, scenarios, state availability, and FAQ.',
+  url: pageUrl,
+  datePublished,
+  dateModified,
+  reviewedByName: 'Clout Underwriting Team',
+});
+---
+
+<Layout
+  title="DSCR Loans for Real Estate Investors"
+  description="DSCR loans from Clout — qualify on rental cash flow, not W-2s. Programs from 0.75 DSCR, up to $3.5M, 15–25 day close. Available in NY, NJ, PA, FL, CT, TX."
+  canonical={pageUrl}
+  breadcrumbs={breadcrumbs}
+  extraSchema={[
+    jsonLd(productSchema),
+    jsonLd(faqSchema(faqs)),
+    jsonLd(article),
+  ]}
+>
+  <article class="pillar">
+    <header class="pillar-header container">
+      <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span aria-hidden="true">/</span>
+        <a href="/loan-options/">Loan Options</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">DSCR Loan</span>
+      </nav>
+
+      <p class="eyebrow">Tier 1 · Investor + Broker</p>
+      <h1>DSCR loans for real estate investors.</h1>
+
+      <p class="reviewed-by">
+        Reviewed by <a href="/about/leadership/">Clout Underwriting Team</a> ·
+        NMLS #{SITE.nmlsId} · Last updated <time datetime={dateModified}>May 27, 2026</time>
+      </p>
+
+      <p class="answer-first">
+        A DSCR loan is a Non-QM mortgage that qualifies real estate investors on the
+        rental cash flow of the property — not on the borrower's W-2s or tax returns.
+        Clout offers DSCR programs from 0.75 DSCR up to $3.5M+, with 15–25 day closings
+        across NY, NJ, PA, FL, CT, and TX.
+      </p>
+
+      <div class="hero-cta">
+        <a href="/contact/" class="cta-primary">Get pre-qualified</a>
+        <a href="/calculators/dscr/" class="cta-secondary">Use the DSCR calculator</a>
+      </div>
+    </header>
+
+    <section class="container">
+      <div class="tldr">
+        <h2>DSCR at a glance</h2>
+        <ul>
+          {tldr.map((item) => (
+            <li>
+              <span class="label">{item.label}</span>
+              <span class="value">{item.value}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <section class="container body">
+      <h2 id="how-dscr-works">How does a DSCR loan work?</h2>
+      <p>
+        Conventional investment mortgages require W-2s, tax returns, paystubs, and a
+        debt-to-income calculation that includes every other mortgage and rental property
+        the investor owns. For investors with five or more financed properties, complex
+        Schedule E income, or self-employed income that doesn't show well on tax returns,
+        conventional underwriting becomes a wall.
+      </p>
+      <p>
+        A DSCR loan steps around that wall. The lender qualifies the property on its
+        own: <strong>gross monthly rent divided by monthly PITIA</strong> (principal,
+        interest, taxes, insurance, association dues). If the ratio meets the program's
+        minimum, the deal moves forward — regardless of the borrower's personal income.
+      </p>
+
+      <h2 id="dscr-calculation">How is DSCR calculated?</h2>
+      <p>The formula is simple:</p>
+      <pre class="formula">DSCR = Monthly Gross Rent ÷ Monthly PITIA</pre>
+      <p>
+        <strong>Example:</strong> A property in Spring, TX rents for $2,450/month. Monthly
+        PITIA on a $248,000 loan at 7.5% is approximately $2,310 (P&I $1,734 + taxes $410 +
+        insurance $128 + HOA $38). DSCR = 2,450 ÷ 2,310 = <strong>1.06</strong>.
+      </p>
+      <p>
+        For short-term rentals (Airbnb/VRBO), Clout uses one of three rent sources:
+        an <a href="https://www.airdna.co/" target="_blank" rel="noopener">AirDNA</a>
+        report on comparable nightly rates, a documented 12-month rent roll for an
+        existing operation, or a market-rent appraisal from a licensed appraiser.
+      </p>
+
+      <h2 id="qualifying">Who qualifies for a Clout DSCR loan?</h2>
+      <ul>
+        <li>Investors purchasing or refinancing investment property</li>
+        <li>SFR, 2–4 unit, condo, and short-term rental properties</li>
+        <li>First-time investors are eligible (with 20–25% down)</li>
+        <li>LLC or personal name title</li>
+        <li>620+ FICO minimum (lower with compensating factors)</li>
+        <li>Foreign national investors accepted (separate program rules)</li>
+      </ul>
+
+      <h2 id="comparison">DSCR vs. conventional investment vs. hard money</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Feature</th>
+              <th scope="col">DSCR (Clout)</th>
+              <th scope="col">Conventional</th>
+              <th scope="col">Hard money</th>
+            </tr>
+          </thead>
+          <tbody>
+            {comparisonRows.map((row) => (
+              <tr>
+                <th scope="row">{row.feature}</th>
+                <td>{row.dscr}</td>
+                <td>{row.conventional}</td>
+                <td>{row.hardMoney}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <h2 id="scenarios">Recent Clout DSCR closings</h2>
+      <p class="scenarios-intro">
+        Anonymized examples drawn from recent Clout DSCR closings. Borrower identities,
+        addresses, and identifying details removed; loan structure and numbers preserved.
+      </p>
+      <div class="scenarios">
+        {scenarios.map((s) => (
+          <div class="scenario">
+            <p class="scenario-eyebrow">{s.eyebrow}</p>
+            <h3>{s.title}</h3>
+            <dl>
+              <dt>Borrower</dt><dd>{s.profile}</dd>
+              <dt>Property</dt><dd>{s.property}</dd>
+              <dt>Loan</dt><dd>{s.loan}</dd>
+              <dt>DSCR</dt><dd>{s.dscr}</dd>
+              <dt>Close</dt><dd>{s.close}</dd>
+            </dl>
+          </div>
+        ))}
+      </div>
+
+      <h2 id="states">DSCR loans by state</h2>
+      <p>
+        Clout offers DSCR loans across all six licensed states. Each state has unique
+        market characteristics — Texas leads on investor volume, Florida on STR demand,
+        Connecticut on Fairfield County jumbo, and the Northeast on attorney-closing
+        process discipline.
+      </p>
+      <ul class="state-list">
+        {STATES.map((s) => (
+          <li>
+            <a href={`/locations/${s.slug}/dscr/`}>DSCR loans in {s.name}</a>
+            <span class="state-list-metros">{s.topMetros.slice(0, 3).join(' · ')}</span>
+          </li>
+        ))}
+      </ul>
+
+      <h2 id="faq">Frequently asked questions</h2>
+      <div class="faq" itemscope itemtype="https://schema.org/FAQPage">
+        {faqs.map((f) => (
+          <details itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+            <summary itemprop="name">{f.question}</summary>
+            <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+              <p itemprop="text">{f.answer}</p>
+            </div>
+          </details>
+        ))}
+      </div>
+
+      <section class="end-cta">
+        <h2>Ready to run a DSCR scenario?</h2>
+        <p>
+          Tell us about the property and the investor — we'll come back with a same-day
+          eligibility read and an indicative term sheet. Brokers, place files through our
+          wholesale partner portal.
+        </p>
+        <div class="hero-cta">
+          <a href="/contact/" class="cta-primary">Get pre-qualified</a>
+          <a href="/brokers/" class="cta-secondary">Broker partner channel</a>
+        </div>
+      </section>
+
+      <p class="compliance-note">
+        This is a Non-Qualified Mortgage (Non-QM) loan program; it does not meet the CFPB
+        Qualified Mortgage definition. DSCR loans are business-purpose loans for investment
+        property only. Underwriting criteria, pricing, and program availability subject to
+        change. Rates and terms shown are illustrative; actual terms determined at
+        underwriting. Equal Housing Lender.
+        {SITE.legalName} · NMLS #{SITE.nmlsId} · <a href={SITE.nmlsUrl} target="_blank" rel="noopener">NMLS Consumer Access</a>.
+      </p>
+    </section>
+  </article>
+</Layout>
+
+<style>
+  .container { max-width: 920px; margin: 0 auto; padding: 0 1.5rem; }
+  .pillar-header { padding-top: 3rem; padding-bottom: 2rem; }
+  .breadcrumbs {
+    font-size: var(--text-meta);
+    color: var(--color-mid);
+    margin-bottom: 2rem;
+  }
+  .breadcrumbs a { color: var(--color-ink-soft); text-decoration: none; }
+  .breadcrumbs a:hover { color: var(--color-brand-deep); }
+  .breadcrumbs span[aria-hidden] { margin: 0 0.5rem; color: var(--color-line); }
+
+  .eyebrow {
+    font-size: var(--text-micro);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-brand-warmth);
+    font-weight: 700;
+    margin: 0 0 1rem;
+  }
+  h1 {
+    font-size: clamp(2rem, 4.5vw, 3.25rem);
+    line-height: 1.1;
+    margin: 0 0 0.5rem;
+    max-width: 22ch;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+  }
+
+  .body { padding: 2rem 0 4rem; }
+  .body h2 {
+    font-size: clamp(1.375rem, 2.5vw, 1.875rem);
+    margin: 3rem 0 1rem;
+    scroll-margin-top: 80px;
+  }
+  .body p, .body li { font-size: 1.0625rem; line-height: 1.7; }
+  .body ul { padding-left: 1.5rem; }
+  .body ul li { margin-bottom: 0.5rem; }
+
+  .formula {
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    padding: 1rem 1.25rem;
+    border-radius: var(--radius-md);
+    font-family: var(--font-mono);
+    font-size: 0.94rem;
+    margin: 1rem 0;
+    overflow-x: auto;
+  }
+
+  .table-wrap { overflow-x: auto; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-small);
+    margin: 1rem 0;
+  }
+  th, td {
+    text-align: left;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--color-line);
+    vertical-align: top;
+  }
+  th[scope="col"] {
+    background: var(--color-surface);
+    font-size: var(--text-meta);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-ink-soft);
+    border-bottom: 2px solid var(--color-line);
+  }
+  th[scope="row"] { font-weight: 600; }
+
+  .scenarios-intro {
+    color: var(--color-mid);
+    font-size: var(--text-small);
+    margin-top: 0;
+  }
+  .scenarios {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin: 1rem 0 2rem;
+  }
+
+  .state-list {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+    margin: 1rem 0;
+  }
+  .state-list li {
+    padding: 0.875rem 1rem;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md);
+    background: var(--color-paper);
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .state-list a {
+    font-weight: 600;
+    color: var(--color-brand-deep);
+  }
+  .state-list-metros {
+    font-size: var(--text-meta);
+    color: var(--color-mid);
+  }
+
+  .end-cta {
+    background: var(--color-surface);
+    padding: 2.5rem;
+    border-radius: var(--radius-lg);
+    margin-top: 3rem;
+    text-align: left;
+  }
+  .end-cta h2 { margin-top: 0; }
+  .end-cta p { margin: 0 0 1rem; max-width: 56ch; }
+
+  .compliance-note {
+    margin-top: 3rem;
+    padding: 1.25rem;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md);
+    font-size: var(--text-meta);
+    color: var(--color-mid);
+    background: var(--color-surface);
+  }
+  .compliance-note a { color: var(--color-ink-soft); text-decoration: underline; }
+
+  @media (max-width: 720px) {
+    .state-list { grid-template-columns: 1fr; }
+  }
+</style>

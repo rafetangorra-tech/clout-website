@@ -1,0 +1,97 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { SITE, STATES } from '../../data/site';
+
+const pageUrl = `${SITE.url}/locations/`;
+const breadcrumbs = [
+  { name: 'Home', url: SITE.url },
+  { name: 'Locations', url: pageUrl },
+];
+---
+
+<Layout
+  title="Clout Locations — Licensed in NY, NJ, PA, FL, CT, TX"
+  description="Clout serves real estate investors and mortgage brokers across six states: New York, New Jersey, Pennsylvania, Florida, Connecticut, and Texas. Local market depth in each."
+  canonical={pageUrl}
+  breadcrumbs={breadcrumbs}
+>
+  <section class="header-band">
+    <div class="container">
+      <p class="eyebrow">Locations</p>
+      <h1>Six states. Local market depth in each.</h1>
+      <p class="answer-first">
+        Clout is licensed in New York, New Jersey, Pennsylvania, Florida, Connecticut,
+        and Texas. Each market has its own competitive landscape, investor demographics,
+        REIA ecosystem, and compliance posture — and Clout's local content reflects that.
+      </p>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="container">
+      <div class="state-grid">
+        {STATES.map((s) => (
+          <a href={`/locations/${s.slug}/`} class="state-card">
+            <p class="state-abbr">{s.abbr}{s.hqState && ' · HQ'}</p>
+            <h2>{s.name}</h2>
+            <p class="state-metros">{s.topMetros.join(' · ')}</p>
+            <p class="state-meta">
+              Top products: {s.topProducts.slice(0, 3).join(', ').toUpperCase()}
+            </p>
+            <span class="link-arrow">Explore {s.name} →</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .container { max-width: 1080px; margin: 0 auto; padding: 0 1.5rem; }
+  .header-band { padding: 4rem 0 2rem; background: linear-gradient(180deg, transparent 0, var(--color-surface) 100%); }
+  .eyebrow {
+    font-size: var(--text-micro);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-brand-warmth);
+    font-weight: 700;
+    margin: 0 0 1rem;
+  }
+  h1 { font-size: clamp(2rem, 4.5vw, 3rem); margin: 0 0 1.25rem; max-width: 22ch; }
+  .answer-first { max-width: 60ch; margin: 0; }
+
+  .band { padding: 3rem 0 5rem; }
+  .state-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+  .state-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1.75rem;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    background: var(--color-paper);
+    color: var(--color-ink);
+    text-decoration: none;
+    transition: border-color 120ms ease, transform 120ms ease;
+  }
+  .state-card:hover { border-color: var(--color-brand); transform: translateY(-2px); }
+  .state-abbr {
+    font-size: 0.75rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-brand-warmth);
+    margin: 0;
+    font-weight: 700;
+  }
+  .state-card h2 { font-size: 1.5rem; margin: 0; color: var(--color-ink); }
+  .state-metros { font-size: var(--text-small); color: var(--color-ink-soft); margin: 0; }
+  .state-meta { font-size: var(--text-meta); color: var(--color-mid); margin: 0.5rem 0 0; letter-spacing: 0.04em; }
+  .link-arrow { font-weight: 600; color: var(--color-brand-deep); margin-top: auto; }
+
+  @media (max-width: 960px) { .state-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 560px) { .state-grid { grid-template-columns: 1fr; } }
+</style>

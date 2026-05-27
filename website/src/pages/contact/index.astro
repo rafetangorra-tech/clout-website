@@ -1,0 +1,118 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { SITE } from '../../data/site';
+
+const pageUrl = `${SITE.url}/contact/`;
+const breadcrumbs = [
+  { name: 'Home', url: SITE.url },
+  { name: 'Contact', url: pageUrl },
+];
+---
+
+<Layout
+  title="Contact Clout"
+  description={`Reach Clout: ${SITE.phoneDisplay} · ${SITE.email}. Wholesale Non-QM partners and real estate investors can request a same-day eligibility read.`}
+  canonical={pageUrl}
+  breadcrumbs={breadcrumbs}
+>
+  <section class="header-band">
+    <div class="container">
+      <p class="eyebrow">Contact</p>
+      <h1>Talk to Clout.</h1>
+      <p class="answer-first">
+        Reach us by phone, email, or partner portal. Same-day response on broker partner
+        inquiries and investor pre-qualification requests during business hours.
+      </p>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="container">
+      <div class="contact-grid">
+        <div class="contact-card">
+          <h2>Phone</h2>
+          <a href={`tel:${SITE.phone}`} class="contact-value">{SITE.phoneDisplay}</a>
+          <p class="contact-note">Monday–Friday, 8 AM – 6 PM ET</p>
+        </div>
+        <div class="contact-card">
+          <h2>Email</h2>
+          <a href={`mailto:${SITE.email}`} class="contact-value">{SITE.email}</a>
+          <p class="contact-note">Same-day response for partners</p>
+        </div>
+        <div class="contact-card">
+          <h2>Headquarters</h2>
+          <address class="contact-value">
+            {SITE.hq.streetAddress}<br />
+            {SITE.hq.addressLocality}, {SITE.hq.addressRegion} {SITE.hq.postalCode}
+          </address>
+        </div>
+        <div class="contact-card">
+          <h2>Partner portal</h2>
+          <a href="https://1866701084.encompasstpoconnect.com/" target="_blank" rel="noopener" class="contact-value">Encompass TPO Connect</a>
+          <p class="contact-note">Existing partners — submit new files</p>
+        </div>
+      </div>
+
+      <p class="stub-message">Full contact + pre-qualification form coming soon.</p>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .container { max-width: 1080px; margin: 0 auto; padding: 0 1.5rem; }
+  .header-band { padding: 4rem 0 2rem; background: linear-gradient(180deg, transparent 0, var(--color-surface) 100%); }
+  .eyebrow {
+    font-size: var(--text-micro);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-brand-warmth);
+    font-weight: 700;
+    margin: 0 0 1rem;
+  }
+  h1 { font-size: clamp(2rem, 4.5vw, 3rem); margin: 0 0 1.25rem; max-width: 22ch; }
+  .answer-first { max-width: 60ch; margin: 0; }
+  .band { padding: 3rem 0; }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-bottom: 3rem;
+  }
+  .contact-card {
+    padding: 1.5rem;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    background: var(--color-paper);
+  }
+  .contact-card h2 {
+    font-size: var(--text-micro);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-mid);
+    margin: 0 0 0.5rem;
+  }
+  .contact-value {
+    display: block;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--color-ink);
+    text-decoration: none;
+    font-style: normal;
+    line-height: 1.5;
+  }
+  .contact-value:hover { color: var(--color-brand-deep); }
+  .contact-note {
+    margin: 0.5rem 0 0;
+    font-size: var(--text-meta);
+    color: var(--color-mid);
+  }
+  .stub-message {
+    color: var(--color-mid);
+    border: 1px dashed var(--color-line);
+    padding: 1.5rem;
+    border-radius: var(--radius-lg);
+    text-align: center;
+  }
+  @media (max-width: 720px) { .contact-grid { grid-template-columns: 1fr; } }
+</style>

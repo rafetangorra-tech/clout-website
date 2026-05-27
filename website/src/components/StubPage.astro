@@ -1,0 +1,133 @@
+---
+/**
+ * Generic stub-page component used to bootstrap routes that have schema/IA value
+ * but whose full content hasn't been written yet. Keeps the URL structure live so
+ * sitemap, internal linking, and AEO crawling reflect the planned IA.
+ */
+
+import { SITE } from '../data/site';
+
+interface Props {
+  eyebrow: string;
+  title: string;
+  lead: string;
+  breadcrumbs?: Array<{ label: string; href?: string }>;
+  /** Optional bullet list (rendered above the "in development" notice). */
+  highlights?: string[];
+  /** Optional follow-up notice text. Defaults to "in development" message. */
+  notice?: string;
+}
+
+const {
+  eyebrow,
+  title,
+  lead,
+  breadcrumbs = [],
+  highlights = [],
+  notice = "We're building this page out. In the meantime, reach Clout directly for specifics.",
+} = Astro.props;
+---
+
+<article class="stub-page">
+  <div class="container">
+    {breadcrumbs.length > 0 && (
+      <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        {breadcrumbs.map((b) => (
+          <>
+            <span aria-hidden="true">/</span>
+            {b.href ? <a href={b.href}>{b.label}</a> : <span aria-current="page">{b.label}</span>}
+          </>
+        ))}
+      </nav>
+    )}
+
+    <p class="eyebrow">{eyebrow}</p>
+    <h1>{title}</h1>
+    <p class="answer-first">{lead}</p>
+
+    {highlights.length > 0 && (
+      <ul class="highlights">
+        {highlights.map((h) => (<li>{h}</li>))}
+      </ul>
+    )}
+
+    <section class="notice">
+      <p class="eyebrow">In development</p>
+      <p>{notice}</p>
+      <div class="cta-row">
+        <a href="/contact/" class="cta-primary">Contact Clout</a>
+        <a href="/" class="cta-secondary">Back to home</a>
+      </div>
+    </section>
+
+    <p class="compliance-note">
+      {SITE.legalName} · NMLS #{SITE.nmlsId} ·
+      <a href={SITE.nmlsUrl} target="_blank" rel="noopener">NMLS Consumer Access</a> ·
+      Equal Housing Lender · Licensed in NY · NJ · PA · FL · CT · TX.
+    </p>
+  </div>
+</article>
+
+<style>
+  .container { max-width: 920px; margin: 0 auto; padding: 0 1.5rem; }
+  .stub-page { padding: 3rem 0 4rem; }
+  .breadcrumbs {
+    font-size: var(--text-meta);
+    color: var(--color-mid);
+    margin-bottom: 2rem;
+  }
+  .breadcrumbs a { color: var(--color-ink-soft); text-decoration: none; }
+  .breadcrumbs a:hover { color: var(--color-brand-deep); }
+  .breadcrumbs span[aria-hidden] { margin: 0 0.5rem; color: var(--color-line); }
+  .eyebrow {
+    font-size: var(--text-micro);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-brand-warmth);
+    font-weight: 700;
+    margin: 0 0 1rem;
+  }
+  h1 {
+    font-size: clamp(2rem, 4.5vw, 3rem);
+    margin: 0 0 1.25rem;
+    max-width: 22ch;
+  }
+  .answer-first { max-width: 60ch; margin: 0; }
+
+  .highlights {
+    list-style: none;
+    padding: 0;
+    margin: 2rem 0;
+    display: grid;
+    gap: 0.5rem;
+  }
+  .highlights li {
+    padding: 0.75rem 1rem;
+    border-left: 3px solid var(--color-brand);
+    background: var(--color-surface);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  }
+
+  .notice {
+    margin: 3rem 0 2rem;
+    padding: 2rem;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+  }
+  .notice .eyebrow { color: var(--color-mid); margin-bottom: 0.5rem; }
+  .notice p:nth-of-type(2) { margin: 0 0 1.5rem; max-width: 56ch; color: var(--color-ink-soft); }
+  .cta-row { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+
+  .compliance-note {
+    margin-top: 2rem;
+    padding: 1.25rem;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md);
+    font-size: var(--text-meta);
+    color: var(--color-mid);
+    background: var(--color-paper);
+  }
+  .compliance-note a { color: var(--color-ink-soft); text-decoration: underline; }
+</style>

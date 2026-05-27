@@ -1,0 +1,33 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import StubPage from '../../components/StubPage.astro';
+import { SITE } from '../../data/site';
+
+const pageUrl = `${SITE.url}/compliance/`;
+const breadcrumbs = [
+  { name: 'Home', url: SITE.url },
+  { name: 'Compliance', url: pageUrl },
+];
+---
+
+<Layout
+  title="Compliance & Disclosures"
+  description="Clout regulatory compliance: NMLS licensing, state licenses, privacy policy, accessibility statement, TCPA compliance, fair lending statement, editorial policy."
+  canonical={pageUrl}
+  breadcrumbs={breadcrumbs}
+>
+  <StubPage
+    eyebrow="Compliance"
+    title="Clout compliance & disclosures."
+    lead={`Clout operates under NMLS #${SITE.nmlsId} with state licensing in NY, NJ, PA, FL, CT, and TX. This is the home for our regulatory disclosures, privacy policy, accessibility statement, TCPA compliance, fair lending statement, and editorial policy.`}
+    breadcrumbs={[{ label: 'Compliance' }]}
+    highlights={[
+      'State licensing — full enumeration by state regulator',
+      'Privacy policy — CCPA, CT, FL, NY, TX state-privacy compatible',
+      'Accessibility statement — WCAG 2.2 AA conformance',
+      'TCPA SMS consent — explicit opt-in record-keeping',
+      'Fair lending statement — Equal Housing Lender',
+      'Editorial + AI usage policies',
+    ]}
+  />
+</Layout>

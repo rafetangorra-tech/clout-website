@@ -1,0 +1,176 @@
+---
+import { SITE, PRODUCTS, STATES } from '../data/site';
+
+const tier1Products = PRODUCTS.filter((p) => p.tier === 1);
+const tier2Products = PRODUCTS.filter((p) => p.tier === 2);
+const featuredProducts = [...tier1Products, ...tier2Products];
+---
+
+<header class="site-header">
+  <div class="header-row">
+    <a href="/" class="brand" aria-label={`${SITE.name} home`}>
+      <img src="/brand/logo-primary.svg" alt={`${SITE.name} logo`} width="180" height="51" />
+    </a>
+
+    <nav class="primary-nav" aria-label="Primary">
+      <ul>
+        <li class="has-menu">
+          <button type="button" aria-haspopup="true" aria-expanded="false">Loan Options</button>
+          <div class="menu-panel">
+            <div class="menu-grid">
+              {featuredProducts.map((p) => (
+                <a href={`/loan-options/${p.slug}/`} class="menu-item">
+                  <span class="menu-name">{p.shortName}</span>
+                  <span class="menu-desc">{p.shortDescription}</span>
+                </a>
+              ))}
+            </div>
+            <div class="menu-foot">
+              <a href="/loan-options/">All loan programs →</a>
+            </div>
+          </div>
+        </li>
+        <li class="has-menu">
+          <button type="button" aria-haspopup="true" aria-expanded="false">Locations</button>
+          <div class="menu-panel">
+            <div class="menu-grid menu-grid-states">
+              {STATES.map((s) => (
+                <a href={`/locations/${s.slug}/`} class="menu-item">
+                  <span class="menu-name">{s.name}</span>
+                  <span class="menu-desc">
+                    {s.topMetros.slice(0, 3).join(' · ')}
+                  </span>
+                </a>
+              ))}
+            </div>
+          </div>
+        </li>
+        <li><a href="/brokers/">Brokers</a></li>
+        <li><a href="/investors/">Investors</a></li>
+        <li><a href="/resources/">Resources</a></li>
+        <li><a href="/about/">About</a></li>
+      </ul>
+    </nav>
+
+    <div class="header-cta">
+      <a href={`tel:${SITE.phone}`} class="phone-link">{SITE.phoneDisplay}</a>
+      <a href="/contact/" class="cta-primary">Get pre-qualified</a>
+    </div>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--color-paper);
+    border-bottom: 1px solid var(--color-line);
+  }
+  .header-row {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0.875rem 1.5rem;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 2rem;
+  }
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+  }
+  .brand img { display: block; height: 36px; width: auto; }
+
+  .primary-nav { font-size: 0.96rem; }
+  .primary-nav ul {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    justify-content: center;
+  }
+  .primary-nav a,
+  .primary-nav button {
+    display: inline-block;
+    padding: 0.625rem 0.875rem;
+    color: var(--color-ink-soft);
+    background: transparent;
+    border: 0;
+    font: inherit;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    border-radius: var(--radius-sm);
+  }
+  .primary-nav a:hover,
+  .primary-nav button:hover {
+    color: var(--color-brand-deep);
+    background: var(--color-surface);
+  }
+
+  .has-menu { position: relative; }
+  .menu-panel {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    min-width: 540px;
+    background: var(--color-paper);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 12px 32px -8px rgba(0,0,0,0.08);
+    padding: 1.25rem;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-4px);
+    transition: opacity 120ms ease, transform 120ms ease, visibility 120ms ease;
+  }
+  .has-menu:hover .menu-panel,
+  .has-menu:focus-within .menu-panel {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  .menu-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.25rem 1rem;
+  }
+  .menu-grid-states { grid-template-columns: 1fr 1fr 1fr; }
+  .menu-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 0.625rem 0.75rem;
+    border-radius: var(--radius-sm);
+  }
+  .menu-name { font-weight: 600; color: var(--color-ink); }
+  .menu-desc { font-size: 0.8125rem; color: var(--color-mid); line-height: 1.4; }
+  .menu-foot {
+    border-top: 1px solid var(--color-line);
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    text-align: right;
+  }
+  .menu-foot a { color: var(--color-brand-deep); font-weight: 600; }
+
+  .header-cta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .phone-link {
+    color: var(--color-ink);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .phone-link:hover { color: var(--color-brand-deep); }
+
+  @media (max-width: 960px) {
+    .primary-nav, .phone-link { display: none; }
+    .header-row { grid-template-columns: auto 1fr; }
+  }
+</style>

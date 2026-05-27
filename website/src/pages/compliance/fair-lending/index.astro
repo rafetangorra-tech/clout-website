@@ -1,0 +1,36 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import StubPage from '../../../components/StubPage.astro';
+import { SITE } from '../../../data/site';
+
+const pageUrl = `${SITE.url}/compliance/fair-lending/`;
+const breadcrumbs = [
+  { name: 'Home', url: SITE.url },
+  { name: 'Compliance', url: `${SITE.url}/compliance/` },
+  { name: 'Fair Lending', url: pageUrl },
+];
+---
+
+<Layout
+  title="Fair Lending Statement"
+  description="Clout fair lending statement. Equal Housing Lender. ECOA / Reg B compliance. Lending decisions based on creditworthiness and program eligibility — never protected class."
+  canonical={pageUrl}
+  breadcrumbs={breadcrumbs}
+>
+  <StubPage
+    eyebrow="Compliance · Fair Lending"
+    title="Fair lending statement."
+    lead={`Clout is an Equal Housing Lender. We make lending decisions based solely on creditworthiness, program eligibility, and property characteristics — never on race, color, religion, national origin, sex, marital status, age, disability, familial status, or any other characteristic protected by federal, state, or local law.`}
+    breadcrumbs={[
+      { label: 'Compliance', href: '/compliance/' },
+      { label: 'Fair Lending' },
+    ]}
+    highlights={[
+      'Equal Credit Opportunity Act (ECOA / Reg B)',
+      'Fair Housing Act',
+      'HMDA reporting',
+      'Anti-predatory lending compliance per state',
+    ]}
+    notice="Full fair lending policy with complaint contact + escalation path coming after compliance review."
+  />
+</Layout>

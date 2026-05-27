@@ -1,0 +1,348 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { SITE, PRODUCTS, STATES } from '../data/site';
+import { faqSchema, jsonLd } from '../data/schema';
+
+const tier1Products = PRODUCTS.filter((p) => p.tier === 1);
+const tier2Products = PRODUCTS.filter((p) => p.tier === 2);
+const tier3Products = PRODUCTS.filter((p) => p.tier === 3);
+const featuredProducts = [...tier1Products, ...tier2Products, ...tier3Products];
+
+const faqs = [
+  {
+    question: 'What is a Non-QM mortgage?',
+    answer:
+      'A Non-QM (non-qualified mortgage) is a home loan that does not meet the strict CFPB Qualified Mortgage standards. Non-QM programs use alternative income documentation — bank statements, 1099s, asset depletion, or property cash flow — to qualify self-employed borrowers, real estate investors, and other non-traditional applicants.',
+  },
+  {
+    question: 'Is Clout a wholesale lender or a direct-to-consumer lender?',
+    answer:
+      'Both. Clout operates a wholesale Non-QM channel for mortgage brokers and a direct-to-investor channel for real estate investors. Brokers can place files with Clout through our wholesale partner portal; investors can apply directly.',
+  },
+  {
+    question: 'Which states is Clout licensed in?',
+    answer:
+      'Clout is licensed in New York, New Jersey, Pennsylvania, Florida, Connecticut, and Texas under NMLS #65328. We are not currently licensed for activity in California.',
+  },
+  {
+    question: 'How fast can Clout close a Non-QM loan?',
+    answer:
+      'Typical Clout DSCR and Bank Statement closings run 15–25 days from approval to funding for clean files. Foreign national and Asset Qualifier programs can take longer due to documentation seasoning requirements.',
+  },
+  {
+    question: 'What credit score do I need for a Clout Non-QM loan?',
+    answer:
+      'Most Clout Non-QM programs require a minimum 620 FICO. Some programs accept lower scores with stronger compensating factors (larger down payment, lower DSCR, reserves). Final eligibility is determined by underwriting.',
+  },
+  {
+    question: 'How is Clout different from Cliffco Mortgage Bankers?',
+    answer:
+      'Clout is the wholesale and direct-to-investor channel of Cliffco Mortgage Bankers. Cliffco focuses on retail mortgage lending; Clout focuses on Non-QM programs delivered through mortgage broker partners and directly to real estate investors. Both share NMLS #65328 and Cliffco\'s three decades of Non-QM expertise.',
+  },
+];
+---
+
+<Layout
+  title={`${SITE.name} — Wholesale Non-QM lender for brokers and real estate investors`}
+  description="Clout is a wholesale Non-QM mortgage lender and direct-to-investor lender licensed in NY, NJ, PA, FL, CT, TX. DSCR, bank statement, 1099, foreign national, and asset qualifier loans built for brokers and investors. NMLS #65328."
+  extraSchema={[jsonLd(faqSchema(faqs))]}
+>
+  <section class="hero">
+    <div class="container">
+      <p class="eyebrow">Wholesale Non-QM · Direct-to-Investor</p>
+      <h1>Non-QM lending built for brokers and real estate investors.</h1>
+      <p class="answer-first lead">
+        Clout funds Non-QM mortgages in NY, NJ, PA, FL, CT, and TX — DSCR, bank statement,
+        1099, foreign national, and asset qualifier programs delivered through wholesale
+        broker partners and directly to real estate investors. NMLS #65328. A division of
+        Cliffco Mortgage Bankers.
+      </p>
+      <div class="hero-cta">
+        <a href="/contact/" class="cta-primary">Get pre-qualified</a>
+        <a href="/brokers/" class="cta-secondary">Become a broker partner</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="container">
+      <div class="tldr">
+        <h2>What Clout does</h2>
+        <ul>
+          <li><span class="label">Products</span><span class="value">10 Non-QM programs</span></li>
+          <li><span class="label">States</span><span class="value">NY · NJ · PA · FL · CT · TX</span></li>
+          <li><span class="label">Audiences</span><span class="value">Mortgage brokers · Real estate investors</span></li>
+          <li><span class="label">Typical close</span><span class="value">15–25 days, DSCR and Bank Statement</span></li>
+          <li><span class="label">NMLS</span><span class="value">#{SITE.nmlsId}</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="container">
+      <header class="section-head">
+        <p class="eyebrow">Loan programs</p>
+        <h2>Pick the Non-QM program your borrower or deal needs.</h2>
+      </header>
+      <div class="product-grid">
+        {featuredProducts.map((p) => (
+          <a href={`/loan-options/${p.slug}/`} class="product-card">
+            <div class="product-card-head">
+              <span class="product-tier">Tier {p.tier}</span>
+              <h3>{p.shortName}</h3>
+            </div>
+            <p>{p.shortDescription}</p>
+            <span class="product-link">Explore {p.shortName} →</span>
+          </a>
+        ))}
+      </div>
+      <p class="tier4-note">
+        Plus three additional programs for narrow use cases:
+        {PRODUCTS.filter((p) => p.tier === 4).map((p, i, arr) => (
+          <>
+            <a href={`/loan-options/${p.slug}/`}>{p.shortName}</a>{i < arr.length - 1 && ', '}
+          </>
+        ))}.
+      </p>
+    </div>
+  </section>
+
+  <section class="band band-dark">
+    <div class="container">
+      <header class="section-head">
+        <p class="eyebrow">Locations</p>
+        <h2>Six states. Local market depth in each.</h2>
+      </header>
+      <div class="state-grid">
+        {STATES.map((s) => (
+          <a href={`/locations/${s.slug}/`} class="state-card">
+            <p class="state-abbr">{s.abbr}</p>
+            <h3>{s.name}</h3>
+            <p class="state-metros">{s.topMetros.join(' · ')}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="container two-col">
+      <header class="section-head">
+        <p class="eyebrow">Two paths</p>
+        <h2>Whether you place loans or invest in them — Clout has a channel for you.</h2>
+      </header>
+      <div class="dual-cta">
+        <a href="/brokers/" class="dual-card">
+          <h3>For mortgage brokers</h3>
+          <p>
+            Place Non-QM files with a wholesale lender that closes in 15–25 days,
+            publishes program guides openly, and pays compensation on your terms.
+          </p>
+          <span class="product-link">Broker partner channel →</span>
+        </a>
+        <a href="/investors/" class="dual-card">
+          <h3>For real estate investors</h3>
+          <p>
+            Qualify on property cash flow, business income, or assets — not W-2s.
+            DSCR, bank statement, and foreign national programs built for portfolio
+            builders.
+          </p>
+          <span class="product-link">Investor channel →</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="container">
+      <header class="section-head">
+        <p class="eyebrow">Frequently asked</p>
+        <h2>What people ask about Clout.</h2>
+      </header>
+      <div class="faq" itemscope itemtype="https://schema.org/FAQPage">
+        {faqs.map((f) => (
+          <details itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+            <summary itemprop="name">{f.question}</summary>
+            <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+              <p itemprop="text">{f.answer}</p>
+            </div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+  .hero {
+    padding: 5rem 0 4rem;
+    background:
+      linear-gradient(180deg, transparent 0, var(--color-surface) 100%);
+  }
+  .eyebrow {
+    font-size: var(--text-micro);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-brand-warmth);
+    font-weight: 700;
+    margin: 0 0 1rem;
+  }
+  .hero h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    line-height: 1.1;
+    margin: 0 0 1.25rem;
+    max-width: 22ch;
+  }
+  .hero .lead {
+    max-width: 56ch;
+    margin: 0 0 2rem;
+  }
+  .hero-cta {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .band { padding: 4rem 0; }
+  .band-dark {
+    background: var(--color-brand-deep);
+    color: var(--color-paper);
+  }
+  .band-dark .eyebrow { color: var(--color-brand-bright); }
+  .band-dark h2 { color: var(--color-paper); }
+
+  .section-head {
+    margin: 0 0 2.5rem;
+    max-width: 56ch;
+  }
+  .section-head h2 {
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    line-height: 1.2;
+    margin: 0;
+  }
+
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+  .product-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1.5rem;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    background: var(--color-paper);
+    text-decoration: none;
+    color: var(--color-ink);
+    transition: border-color 120ms ease, transform 120ms ease, box-shadow 120ms ease;
+  }
+  .product-card:hover {
+    border-color: var(--color-brand);
+    transform: translateY(-2px);
+    box-shadow: 0 16px 32px -16px rgba(1, 128, 118, 0.18);
+  }
+  .product-card-head {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+  }
+  .product-tier {
+    font-size: var(--text-micro);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-mid);
+    font-weight: 600;
+  }
+  .product-card h3 { font-size: 1.25rem; margin: 0; }
+  .product-card p { margin: 0; color: var(--color-ink-soft); }
+  .product-link {
+    color: var(--color-brand-deep);
+    font-weight: 600;
+    margin-top: auto;
+  }
+  .tier4-note {
+    color: var(--color-mid);
+    margin-top: 1.5rem;
+    font-size: var(--text-small);
+  }
+  .tier4-note a { color: var(--color-ink-soft); text-decoration: underline; }
+
+  .state-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+  .state-card {
+    display: block;
+    padding: 1.5rem;
+    border: 1px solid color-mix(in srgb, var(--color-surface) 18%, transparent);
+    border-radius: var(--radius-lg);
+    background: color-mix(in srgb, var(--color-paper) 6%, transparent);
+    color: var(--color-surface);
+    text-decoration: none;
+    transition: border-color 120ms ease, background 120ms ease;
+  }
+  .state-card:hover {
+    border-color: var(--color-brand-bright);
+    background: color-mix(in srgb, var(--color-paper) 12%, transparent);
+    color: var(--color-paper);
+  }
+  .state-abbr {
+    font-size: 0.75rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-brand-bright);
+    margin: 0 0 0.5rem;
+    font-weight: 700;
+  }
+  .state-card h3 {
+    color: var(--color-paper);
+    font-size: 1.5rem;
+    margin: 0 0 0.5rem;
+  }
+  .state-metros {
+    color: color-mix(in srgb, var(--color-surface) 70%, transparent);
+    font-size: var(--text-small);
+    margin: 0;
+  }
+
+  .two-col .section-head { max-width: 64ch; }
+  .dual-cta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  .dual-card {
+    padding: 2rem;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    background: var(--color-paper);
+    text-decoration: none;
+    color: var(--color-ink);
+    transition: border-color 120ms ease, transform 120ms ease;
+  }
+  .dual-card:hover {
+    border-color: var(--color-brand);
+    transform: translateY(-2px);
+  }
+  .dual-card h3 { margin: 0 0 0.75rem; font-size: 1.5rem; }
+  .dual-card p { margin: 0 0 1rem; color: var(--color-ink-soft); }
+
+  @media (max-width: 960px) {
+    .product-grid { grid-template-columns: repeat(2, 1fr); }
+    .state-grid { grid-template-columns: repeat(2, 1fr); }
+    .dual-cta { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 560px) {
+    .product-grid { grid-template-columns: 1fr; }
+    .state-grid { grid-template-columns: 1fr; }
+  }
+</style>

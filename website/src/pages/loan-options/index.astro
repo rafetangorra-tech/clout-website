@@ -1,0 +1,128 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { SITE, PRODUCTS } from '../../data/site';
+
+const pageUrl = `${SITE.url}/loan-options/`;
+const breadcrumbs = [
+  { name: 'Home', url: SITE.url },
+  { name: 'Loan Options', url: pageUrl },
+];
+
+const tiers = [1, 2, 3, 4] as const;
+const tierLabel = {
+  1: 'Foundation programs',
+  2: 'High-priority programs',
+  3: 'Specialty programs',
+  4: 'Supporting programs',
+} as const;
+---
+
+<Layout
+  title="Loan Options — 10 Non-QM programs from Clout"
+  description="Clout offers 10 Non-QM mortgage programs for brokers and real estate investors: DSCR, bank statement, 1099, foreign national, asset qualifier, P&L only, and more. Licensed in NY, NJ, PA, FL, CT, TX."
+  canonical={pageUrl}
+  breadcrumbs={breadcrumbs}
+>
+  <section class="header-band">
+    <div class="container">
+      <p class="eyebrow">Loan Options</p>
+      <h1>Ten Non-QM programs for brokers and investors.</h1>
+      <p class="answer-first">
+        Clout offers ten Non-QM mortgage programs across NY, NJ, PA, FL, CT, and TX —
+        from DSCR for investors and bank statement for the self-employed to foreign
+        national, asset qualifier, and CPA-prepared P&L Only. Match the program to the
+        borrower; let underwriting handle the rest.
+      </p>
+    </div>
+  </section>
+
+  {tiers.map((tier) => {
+    const products = PRODUCTS.filter((p) => p.tier === tier);
+    if (products.length === 0) return null;
+    return (
+      <section class="band">
+        <div class="container">
+          <header class="section-head">
+            <p class="eyebrow">Tier {tier}</p>
+            <h2>{tierLabel[tier]}</h2>
+          </header>
+          <div class="product-grid">
+            {products.map((p) => (
+              <a href={`/loan-options/${p.slug}/`} class="product-card">
+                <h3>{p.name}</h3>
+                <p>{p.shortDescription}</p>
+                <ul class="audience-tags">
+                  {p.audience.map((a) => (<li>{a}</li>))}
+                </ul>
+                <span class="product-link">Explore {p.shortName} →</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  })}
+</Layout>
+
+<style>
+  .container { max-width: 1080px; margin: 0 auto; padding: 0 1.5rem; }
+  .header-band { padding: 4rem 0 2rem; background: linear-gradient(180deg, transparent 0, var(--color-surface) 100%); }
+  .eyebrow {
+    font-size: var(--text-micro);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-brand-warmth);
+    font-weight: 700;
+    margin: 0 0 1rem;
+  }
+  h1 { font-size: clamp(2rem, 4.5vw, 3rem); margin: 0 0 1.25rem; max-width: 22ch; }
+  .answer-first { max-width: 60ch; margin: 0; }
+
+  .band { padding: 3rem 0; }
+  .section-head { margin: 0 0 1.5rem; }
+  .section-head h2 { font-size: 1.5rem; margin: 0; }
+
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+  .product-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1.5rem;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    text-decoration: none;
+    color: var(--color-ink);
+    background: var(--color-paper);
+    transition: border-color 120ms ease, transform 120ms ease;
+  }
+  .product-card:hover { border-color: var(--color-brand); transform: translateY(-2px); }
+  .product-card h3 { font-size: 1.25rem; margin: 0; }
+  .product-card p { margin: 0; color: var(--color-ink-soft); }
+  .audience-tags {
+    display: flex;
+    gap: 0.375rem;
+    list-style: none;
+    padding: 0;
+    margin: 0.25rem 0;
+    flex-wrap: wrap;
+  }
+  .audience-tags li {
+    font-size: var(--text-micro);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.5rem;
+    border: 1px solid var(--color-line);
+    border-radius: 999px;
+    color: var(--color-mid);
+  }
+  .product-link {
+    color: var(--color-brand-deep);
+    font-weight: 600;
+    margin-top: auto;
+  }
+  @media (max-width: 720px) { .product-grid { grid-template-columns: 1fr; } }
+</style>

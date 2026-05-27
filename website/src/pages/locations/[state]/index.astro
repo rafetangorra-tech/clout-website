@@ -1,0 +1,218 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import { SITE, STATES, PRODUCTS } from '../../../data/site';
+import { jsonLd, articleSchema } from '../../../data/schema';
+
+export function getStaticPaths() {
+  return STATES.map((s) => ({
+    params: { state: s.slug },
+    props: { state: s },
+  }));
+}
+
+const { state } = Astro.props;
+const pageUrl = `${SITE.url}/locations/${state.slug}/`;
+const dateModified = '2026-05-27';
+
+const breadcrumbs = [
+  { name: 'Home', url: SITE.url },
+  { name: 'Locations', url: `${SITE.url}/locations/` },
+  { name: state.name, url: pageUrl },
+];
+
+const topProducts = state.topProducts
+  .map((slug) => PRODUCTS.find((p) => p.slug === slug))
+  .filter((p): p is NonNullable<typeof p> => Boolean(p));
+
+const article = articleSchema({
+  headline: `Non-QM Lending in ${state.name} — Clout`,
+  description: `Clout offers Non-QM mortgage programs in ${state.name} for brokers and real estate investors. Local market coverage of ${state.topMetros.join(', ')}.`,
+  url: pageUrl,
+  datePublished: dateModified,
+  dateModified,
+});
+---
+
+<Layout
+  title={`Non-QM Lending in ${state.name}`}
+  description={`Clout offers DSCR, bank statement, 1099, foreign national, and asset qualifier Non-QM mortgages in ${state.name}. Serving ${state.topMetros.join(', ')}. NMLS #${SITE.nmlsId}.`}
+  canonical={pageUrl}
+  breadcrumbs={breadcrumbs}
+  extraSchema={[jsonLd(article)]}
+>
+  <article class="stub">
+    <div class="container">
+      <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span aria-hidden="true">/</span>
+        <a href="/locations/">Locations</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">{state.name}</span>
+      </nav>
+
+      <p class="eyebrow">{state.abbr}{state.hqState && ' · Headquarters'}</p>
+      <h1>Non-QM lending in {state.name}.</h1>
+
+      <p class="reviewed-by">
+        Reviewed by <a href="/about/leadership/">Clout Underwriting Team</a> · NMLS #{SITE.nmlsId} ·
+        Last updated <time datetime={dateModified}>May 27, 2026</time>
+      </p>
+
+      <p class="answer-first">
+        Clout serves {state.name} mortgage brokers and real estate investors across
+        {' '}{state.topMetros.join(', ')}. We offer the full Clout Non-QM program suite —
+        DSCR, bank statement, 1099, foreign national, and asset qualifier — with local
+        attention to {state.name}'s licensing, closing process, and market dynamics.
+      </p>
+
+      <div class="hero-cta">
+        <a href="/contact/" class="cta-primary">Get pre-qualified</a>
+        <a href="/loan-options/" class="cta-secondary">Compare programs</a>
+      </div>
+
+      <section class="stub-notice">
+        <p class="eyebrow">In development</p>
+        <h2>Full {state.name} market guide coming soon.</h2>
+        <p>
+          We're building the complete {state.name} state hub — local competitor map,
+          metro deep dives, REIA partnerships, local press features, market commentary,
+          and state-specific compliance disclosures. In the meantime, the program
+          shortlist below shows what closes most often in {state.name}.
+        </p>
+      </section>
+
+      <section class="top-products">
+        <h2>Top programs in {state.name}</h2>
+        <div class="product-grid">
+          {topProducts.map((p, i) => (
+            <a href={`/loan-options/${p.slug}/`} class="product-card">
+              <span class="rank">#{i + 1}</span>
+              <h3>{p.shortName}</h3>
+              <p>{p.shortDescription}</p>
+              <span class="product-link">Explore →</span>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      <section class="metros">
+        <h2>{state.name} markets we serve</h2>
+        <ul class="metro-list">
+          {state.topMetros.map((metro) => (<li>{metro}</li>))}
+        </ul>
+      </section>
+
+      <p class="compliance-note">
+        Clout is licensed by the {state.name} mortgage regulator under NMLS #{SITE.nmlsId}.
+        State-specific licensing details available at
+        <a href={`/compliance/licensing/${state.slug}/`}> /compliance/licensing/{state.slug}/</a>.
+        Equal Housing Lender.
+        {SITE.legalName} ·
+        <a href={SITE.nmlsUrl} target="_blank" rel="noopener">NMLS Consumer Access</a>.
+      </p>
+    </div>
+  </article>
+</Layout>
+
+<style>
+  .container { max-width: 920px; margin: 0 auto; padding: 0 1.5rem; }
+  .stub { padding: 3rem 0 4rem; }
+  .breadcrumbs {
+    font-size: var(--text-meta);
+    color: var(--color-mid);
+    margin-bottom: 2rem;
+  }
+  .breadcrumbs a { color: var(--color-ink-soft); text-decoration: none; }
+  .breadcrumbs a:hover { color: var(--color-brand-deep); }
+  .breadcrumbs span[aria-hidden] { margin: 0 0.5rem; color: var(--color-line); }
+
+  .eyebrow {
+    font-size: var(--text-micro);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-brand-warmth);
+    font-weight: 700;
+    margin: 0 0 1rem;
+  }
+  h1 {
+    font-size: clamp(2rem, 4.5vw, 3rem);
+    margin: 0 0 0.5rem;
+    max-width: 22ch;
+  }
+  .answer-first { max-width: 60ch; margin: 1.5rem 0 0; }
+  .hero-cta { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 2rem; }
+
+  .stub-notice {
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    padding: 2rem;
+    border-radius: var(--radius-lg);
+    margin: 3rem 0;
+  }
+  .stub-notice h2 { margin: 0.25rem 0 1rem; font-size: 1.5rem; }
+  .stub-notice p { margin: 0; color: var(--color-ink-soft); max-width: 56ch; }
+
+  .top-products { margin: 3rem 0; }
+  .top-products h2 { font-size: 1.5rem; margin: 0 0 1.5rem; }
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+  .product-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1.5rem;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    background: var(--color-paper);
+    color: var(--color-ink);
+    text-decoration: none;
+    transition: border-color 120ms ease, transform 120ms ease;
+  }
+  .product-card:hover { border-color: var(--color-brand); transform: translateY(-2px); }
+  .product-card .rank {
+    position: absolute;
+    top: 1.25rem; right: 1.5rem;
+    font-size: var(--text-micro);
+    letter-spacing: 0.08em;
+    color: var(--color-mid);
+    font-weight: 700;
+  }
+  .product-card h3 { margin: 0; font-size: 1.25rem; }
+  .product-card p { margin: 0; color: var(--color-ink-soft); }
+  .product-link { color: var(--color-brand-deep); font-weight: 600; margin-top: auto; }
+
+  .metros { margin: 3rem 0; }
+  .metros h2 { font-size: 1.5rem; margin: 0 0 1rem; }
+  .metro-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .metro-list li {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--color-line);
+    border-radius: 999px;
+    background: var(--color-paper);
+    font-size: var(--text-small);
+  }
+
+  .compliance-note {
+    margin-top: 3rem;
+    padding: 1.25rem;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md);
+    font-size: var(--text-meta);
+    color: var(--color-mid);
+    background: var(--color-surface);
+  }
+  .compliance-note a { color: var(--color-ink-soft); text-decoration: underline; }
+
+  @media (max-width: 720px) { .product-grid { grid-template-columns: 1fr; } }
+</style>

@@ -1,0 +1,36 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import StubPage from '../../../components/StubPage.astro';
+import { SITE } from '../../../data/site';
+
+const pageUrl = `${SITE.url}/compliance/accessibility/`;
+const breadcrumbs = [
+  { name: 'Home', url: SITE.url },
+  { name: 'Compliance', url: `${SITE.url}/compliance/` },
+  { name: 'Accessibility', url: pageUrl },
+];
+---
+
+<Layout
+  title="Accessibility Statement"
+  description="Clout's commitment to WCAG 2.2 AA accessibility. Compliance conformance, known issues, remediation timeline, and accessibility contact."
+  canonical={pageUrl}
+  breadcrumbs={breadcrumbs}
+>
+  <StubPage
+    eyebrow="Compliance · Accessibility"
+    title="Accessibility statement."
+    lead={`Clout is committed to WCAG 2.2 AA conformance on cloutwmb.com. We test with axe-core, perform manual VPATs per release, and welcome feedback when our site falls short.`}
+    breadcrumbs={[
+      { label: 'Compliance', href: '/compliance/' },
+      { label: 'Accessibility' },
+    ]}
+    highlights={[
+      'WCAG 2.2 AA conformance target',
+      'Tested with axe-core in CI + manual review',
+      'All nine 2.2 success criteria honored (focus, target size, dragging, consistency, redundant entry, accessible authentication)',
+      'Accessibility contact: ' + SITE.email,
+    ]}
+    notice="Full accessibility statement (audit date, known issues, remediation timeline) coming after first production audit."
+  />
+</Layout>

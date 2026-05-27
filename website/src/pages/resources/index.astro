@@ -1,0 +1,31 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import StubPage from '../../components/StubPage.astro';
+import { SITE } from '../../data/site';
+
+const pageUrl = `${SITE.url}/resources/`;
+const breadcrumbs = [
+  { name: 'Home', url: SITE.url },
+  { name: 'Resources', url: pageUrl },
+];
+---
+
+<Layout
+  title="Resources"
+  description="Clout Non-QM education library: guides, anonymized scenarios, market commentary, and glossary for brokers and real estate investors."
+  canonical={pageUrl}
+  breadcrumbs={breadcrumbs}
+>
+  <StubPage
+    eyebrow="Resources"
+    title="Non-QM education for brokers and investors."
+    lead={`The Clout resources library — guides, anonymized scenarios, market commentary, and a Non-QM glossary — is the home for evergreen content that helps brokers and investors learn the products and the markets.`}
+    breadcrumbs={[{ label: 'Resources' }]}
+    highlights={[
+      'Guides — long-form educational content per product',
+      'Scenarios — anonymized broker + investor closings',
+      'Market commentary — rate environment, regulatory updates',
+      'Glossary — Non-QM terms with plain-language definitions',
+    ]}
+  />
+</Layout>

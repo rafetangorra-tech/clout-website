@@ -1,0 +1,35 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import StubPage from '../../../components/StubPage.astro';
+import { SITE } from '../../../data/site';
+
+const pageUrl = `${SITE.url}/compliance/ai-usage/`;
+const breadcrumbs = [
+  { name: 'Home', url: SITE.url },
+  { name: 'Compliance', url: `${SITE.url}/compliance/` },
+  { name: 'AI Usage', url: pageUrl },
+];
+---
+
+<Layout
+  title="AI Usage Policy"
+  description="How Clout uses AI in content creation. Human review required on every published page; AI never publishes unedited."
+  canonical={pageUrl}
+  breadcrumbs={breadcrumbs}
+>
+  <StubPage
+    eyebrow="Compliance · AI Usage"
+    title="AI usage policy."
+    lead={`Clout uses AI tools to assist in drafting, research, and content production. AI-assisted drafts are reviewed and verified by named, NMLS-licensed Clout staff before publication. We do not publish unreviewed AI output, and we do not permit AI to make underwriting or pricing decisions.`}
+    breadcrumbs={[
+      { label: 'Compliance', href: '/compliance/' },
+      { label: 'AI Usage' },
+    ]}
+    highlights={[
+      'AI may assist with drafting, research, and summarization',
+      'No AI-assisted content publishes without human review by a Clout reviewer',
+      'AI is not used in lending decisions, pricing, or compliance disclosures',
+      'AI-trained models reading our public content do so under our open robots.txt + llms.txt policy',
+    ]}
+  />
+</Layout>

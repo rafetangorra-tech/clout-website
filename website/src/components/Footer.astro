@@ -1,0 +1,182 @@
+---
+import { SITE, PRODUCTS, STATES } from '../data/site';
+
+const year = new Date().getFullYear();
+const topProducts = PRODUCTS.filter((p) => p.tier <= 2);
+---
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <img src="/brand/logo-mono-white.svg" alt={`${SITE.name} logo`} height="36" />
+        <p class="footer-tagline">{SITE.description}</p>
+        <p class="footer-contact">
+          <a href={`tel:${SITE.phone}`}>{SITE.phoneDisplay}</a>
+          <span>·</span>
+          <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+        </p>
+        <address class="footer-address">
+          {SITE.hq.streetAddress}<br />
+          {SITE.hq.addressLocality}, {SITE.hq.addressRegion} {SITE.hq.postalCode}
+        </address>
+      </div>
+
+      <div class="footer-col">
+        <h3>Loan options</h3>
+        <ul>
+          {topProducts.map((p) => (
+            <li><a href={`/loan-options/${p.slug}/`}>{p.shortName}</a></li>
+          ))}
+          <li><a href="/loan-options/">All loan programs</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h3>Locations</h3>
+        <ul>
+          {STATES.map((s) => (
+            <li><a href={`/locations/${s.slug}/`}>{s.name}</a></li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h3>Company</h3>
+        <ul>
+          <li><a href="/about/">About Clout</a></li>
+          <li><a href="/about/leadership/">Leadership</a></li>
+          <li><a href="/brokers/">Broker partners</a></li>
+          <li><a href="/investors/">Real estate investors</a></li>
+          <li><a href="/resources/">Resources</a></li>
+          <li><a href="/contact/">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <hr class="footer-divider" />
+
+    <div class="compliance-row">
+      <p>
+        <strong>{SITE.legalName}</strong> · NMLS #{SITE.nmlsId} ·
+        <a href={SITE.nmlsUrl} target="_blank" rel="noopener">NMLS Consumer Access</a>
+        ·
+        <a href="/compliance/licensing/">State Licensing</a>
+        ·
+        <a href="/compliance/privacy/">Privacy Policy</a>
+        ·
+        <a href="/compliance/accessibility/">Accessibility</a>
+        ·
+        <a href="/compliance/tcpa/">TCPA</a>
+        ·
+        <a href="/compliance/fair-lending/">Fair Lending</a>
+      </p>
+      <p>
+        Equal Housing Lender · Licensed in {STATES.map((s) => s.abbr).join(' · ')}
+      </p>
+      <p>
+        Clout is the wholesale and direct-to-investor channel of
+        {' '}<a href={SITE.parentOrg.url} target="_blank" rel="noopener">{SITE.parentOrg.name}</a>.
+      </p>
+      <p class="footer-copy">© {year} {SITE.legalName}. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--color-ink);
+    color: var(--color-surface);
+    margin-top: 6rem;
+  }
+  .footer-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 4rem 1.5rem 2rem;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr 1fr 1fr;
+    gap: 3rem;
+  }
+  .footer-brand img { height: 36px; margin-bottom: 1rem; }
+  .footer-tagline {
+    color: color-mix(in srgb, var(--color-surface) 70%, transparent);
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    max-width: 38ch;
+    margin: 0 0 1rem;
+  }
+  .footer-contact {
+    margin: 0 0 0.5rem;
+    font-size: 0.9375rem;
+  }
+  .footer-contact a {
+    color: var(--color-paper);
+    text-decoration: none;
+  }
+  .footer-contact a:hover { color: var(--color-brand-bright); }
+  .footer-contact span {
+    margin: 0 0.5rem;
+    color: color-mix(in srgb, var(--color-surface) 40%, transparent);
+  }
+  .footer-address {
+    font-style: normal;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: color-mix(in srgb, var(--color-surface) 60%, transparent);
+  }
+
+  .footer-col h3 {
+    color: var(--color-paper);
+    font-size: 0.8125rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin: 0 0 1rem;
+  }
+  .footer-col ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.5rem;
+  }
+  .footer-col a {
+    color: color-mix(in srgb, var(--color-surface) 75%, transparent);
+    text-decoration: none;
+    font-size: 0.9375rem;
+  }
+  .footer-col a:hover { color: var(--color-brand-bright); }
+
+  .footer-divider {
+    border: 0;
+    height: 1px;
+    background: color-mix(in srgb, var(--color-surface) 12%, transparent);
+    margin: 3rem 0 1.5rem;
+  }
+
+  .compliance-row {
+    font-size: 0.8125rem;
+    line-height: 1.7;
+    color: color-mix(in srgb, var(--color-surface) 60%, transparent);
+  }
+  .compliance-row p { margin: 0 0 0.5rem; }
+  .compliance-row a {
+    color: color-mix(in srgb, var(--color-surface) 80%, transparent);
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, var(--color-surface) 20%, transparent);
+  }
+  .compliance-row a:hover { color: var(--color-brand-bright); }
+  .footer-copy {
+    margin-top: 1rem !important;
+    color: color-mix(in srgb, var(--color-surface) 40%, transparent);
+  }
+
+  @media (max-width: 960px) {
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 2rem; }
+  }
+  @media (max-width: 560px) {
+    .footer-grid { grid-template-columns: 1fr; }
+  }
+</style>

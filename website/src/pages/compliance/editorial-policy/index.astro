@@ -1,0 +1,35 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import StubPage from '../../../components/StubPage.astro';
+import { SITE } from '../../../data/site';
+
+const pageUrl = `${SITE.url}/compliance/editorial-policy/`;
+const breadcrumbs = [
+  { name: 'Home', url: SITE.url },
+  { name: 'Compliance', url: `${SITE.url}/compliance/` },
+  { name: 'Editorial Policy', url: pageUrl },
+];
+---
+
+<Layout
+  title="Editorial Policy"
+  description="How Clout writes, reviews, and updates content. Author bylines, reviewer credentials, source citations, and revision discipline for our Non-QM educational content."
+  canonical={pageUrl}
+  breadcrumbs={breadcrumbs}
+>
+  <StubPage
+    eyebrow="Compliance · Editorial Policy"
+    title="Editorial policy."
+    lead={`Clout's content is reviewed by NMLS-licensed Clout staff before publication. Every product, state, and educational page carries a "Reviewed by" stamp with reviewer name and NMLS number, plus a last-updated date. Primary sources (NMLS, CFPB, state regulators, agency guidelines) are cited inline.`}
+    breadcrumbs={[
+      { label: 'Compliance', href: '/compliance/' },
+      { label: 'Editorial Policy' },
+    ]}
+    highlights={[
+      'NMLS-licensed reviewer on every content page',
+      'Last-updated dates visible on every published page',
+      'Inline citation to primary sources (NMLS, CFPB, state regulators, Fannie / Freddie guidelines)',
+      'Quarterly review cadence on product pages; weekly on rate-driven content',
+    ]}
+  />
+</Layout>

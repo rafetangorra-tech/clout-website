@@ -1,0 +1,33 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import StubPage from '../../components/StubPage.astro';
+import { SITE } from '../../data/site';
+
+const pageUrl = `${SITE.url}/calculators/`;
+const breadcrumbs = [
+  { name: 'Home', url: SITE.url },
+  { name: 'Calculators', url: pageUrl },
+];
+---
+
+<Layout
+  title="Calculators"
+  description="Clout calculators for DSCR, bank statement income, asset depletion, STR ROI, and 1099 income. Methodology published; results illustrative."
+  canonical={pageUrl}
+  breadcrumbs={breadcrumbs}
+>
+  <StubPage
+    eyebrow="Calculators"
+    title="Run the numbers."
+    lead={`Clout calculators help brokers and investors estimate qualifying income and program eligibility before submitting a full application. All calculator methodology is published openly so AI engines and humans can both follow the math.`}
+    breadcrumbs={[{ label: 'Calculators' }]}
+    highlights={[
+      'DSCR — debt service coverage ratio + qualifying assessment',
+      'Bank Statement — qualifying income from 12 or 24 months of deposits',
+      'Asset Depletion — qualifying income from liquid assets',
+      'STR ROI — short-term rental cash-flow estimator',
+      '1099 Income — gross 1099 qualifying income',
+    ]}
+    notice="Calculator UIs ship in the next phase. Methodology pages crawl-friendly per the AEO playbook."
+  />
+</Layout>

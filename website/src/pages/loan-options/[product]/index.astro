@@ -1,0 +1,190 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import { SITE, PRODUCTS, STATES } from '../../../data/site';
+import {
+  mortgageLoanSchema,
+  articleSchema,
+  jsonLd,
+} from '../../../data/schema';
+
+// Dynamic stubs for every product EXCEPT DSCR (which has its own static pillar at /loan-options/dscr/).
+// Each generated page is a skeleton that establishes the URL + minimum schema + lead paragraph;
+// full pillars per ~/clout-website/seo-aeo-research/05-product-content-strategy.md ship later.
+export function getStaticPaths() {
+  return PRODUCTS
+    .filter((p) => p.slug !== 'dscr')
+    .map((p) => ({
+      params: { product: p.slug },
+      props: { product: p },
+    }));
+}
+
+const { product } = Astro.props;
+const pageUrl = `${SITE.url}/loan-options/${product.slug}/`;
+const dateModified = '2026-05-27';
+
+const breadcrumbs = [
+  { name: 'Home', url: SITE.url },
+  { name: 'Loan Options', url: `${SITE.url}/loan-options/` },
+  { name: product.name, url: pageUrl },
+];
+
+const loanSchema = mortgageLoanSchema({
+  name: product.name,
+  description: product.shortDescription,
+  loanType: 'Non-Qualified Mortgage',
+  url: pageUrl,
+});
+
+const article = articleSchema({
+  headline: `${product.name} — Clout`,
+  description: product.shortDescription,
+  url: pageUrl,
+  datePublished: dateModified,
+  dateModified,
+});
+---
+
+<Layout
+  title={product.name}
+  description={`${product.name}: ${product.shortDescription} Licensed in NY, NJ, PA, FL, CT, TX. NMLS #${SITE.nmlsId}.`}
+  canonical={pageUrl}
+  breadcrumbs={breadcrumbs}
+  extraSchema={[jsonLd(loanSchema), jsonLd(article)]}
+>
+  <article class="stub">
+    <div class="container">
+      <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span aria-hidden="true">/</span>
+        <a href="/loan-options/">Loan Options</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">{product.name}</span>
+      </nav>
+
+      <p class="eyebrow">Tier {product.tier} · {product.audience.join(' + ')}</p>
+      <h1>{product.name}</h1>
+
+      <p class="reviewed-by">
+        Reviewed by <a href="/about/leadership/">Clout Underwriting Team</a> · NMLS #{SITE.nmlsId} ·
+        Last updated <time datetime={dateModified}>May 27, 2026</time>
+      </p>
+
+      <p class="answer-first">
+        {product.shortDescription} Clout offers this program across all six licensed
+        states (NY, NJ, PA, FL, CT, TX) for both wholesale broker partners and
+        direct-to-investor borrowers where the program permits.
+      </p>
+
+      <div class="hero-cta">
+        <a href="/contact/" class="cta-primary">Get pre-qualified</a>
+        <a href="/loan-options/" class="cta-secondary">Compare programs</a>
+      </div>
+
+      <section class="stub-notice">
+        <p class="eyebrow">In development</p>
+        <h2>Full program guide coming soon.</h2>
+        <p>
+          We're building the complete {product.shortName} pillar — qualifying criteria,
+          income calculation methodology, anonymized scenarios, state-by-state notes, and
+          full FAQ. In the meantime, talk to a Clout AE for program specifics, or compare
+          {product.shortName} against our other Non-QM programs.
+        </p>
+      </section>
+
+      <section class="state-coverage">
+        <h2>{product.shortName} availability by state</h2>
+        <ul class="state-list">
+          {STATES.map((s) => (
+            <li>
+              <a href={`/locations/${s.slug}/`}>{product.shortName} in {s.name}</a>
+              <span class="state-list-metros">{s.topMetros.slice(0, 3).join(' · ')}</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <p class="compliance-note">
+        This is a Non-Qualified Mortgage (Non-QM) loan program; it does not meet the CFPB
+        Qualified Mortgage definition. Program availability, pricing, and underwriting
+        criteria subject to change. Equal Housing Lender.
+        {SITE.legalName} · NMLS #{SITE.nmlsId} ·
+        <a href={SITE.nmlsUrl} target="_blank" rel="noopener">NMLS Consumer Access</a>.
+      </p>
+    </div>
+  </article>
+</Layout>
+
+<style>
+  .container { max-width: 920px; margin: 0 auto; padding: 0 1.5rem; }
+  .stub { padding: 3rem 0 4rem; }
+  .breadcrumbs {
+    font-size: var(--text-meta);
+    color: var(--color-mid);
+    margin-bottom: 2rem;
+  }
+  .breadcrumbs a { color: var(--color-ink-soft); text-decoration: none; }
+  .breadcrumbs a:hover { color: var(--color-brand-deep); }
+  .breadcrumbs span[aria-hidden] { margin: 0 0.5rem; color: var(--color-line); }
+
+  .eyebrow {
+    font-size: var(--text-micro);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-brand-warmth);
+    font-weight: 700;
+    margin: 0 0 1rem;
+  }
+  h1 {
+    font-size: clamp(2rem, 4.5vw, 3rem);
+    margin: 0 0 0.5rem;
+    max-width: 22ch;
+  }
+  .answer-first { max-width: 60ch; margin: 1.5rem 0 0; }
+  .hero-cta { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 2rem; }
+
+  .stub-notice {
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    padding: 2rem;
+    border-radius: var(--radius-lg);
+    margin: 3rem 0;
+  }
+  .stub-notice h2 { margin: 0.25rem 0 1rem; font-size: 1.5rem; }
+  .stub-notice p { margin: 0; color: var(--color-ink-soft); max-width: 56ch; }
+
+  .state-coverage { margin: 3rem 0; }
+  .state-coverage h2 { font-size: 1.5rem; margin: 0 0 1rem; }
+  .state-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+  .state-list li {
+    padding: 0.875rem 1rem;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md);
+    background: var(--color-paper);
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .state-list a { font-weight: 600; color: var(--color-brand-deep); }
+  .state-list-metros { font-size: var(--text-meta); color: var(--color-mid); }
+
+  .compliance-note {
+    margin-top: 3rem;
+    padding: 1.25rem;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md);
+    font-size: var(--text-meta);
+    color: var(--color-mid);
+    background: var(--color-surface);
+  }
+  .compliance-note a { color: var(--color-ink-soft); text-decoration: underline; }
+
+  @media (max-width: 720px) { .state-list { grid-template-columns: 1fr; } }
+</style>

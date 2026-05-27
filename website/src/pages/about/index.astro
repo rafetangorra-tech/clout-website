@@ -1,0 +1,65 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { SITE, STATES } from '../../data/site';
+
+const pageUrl = `${SITE.url}/about/`;
+const breadcrumbs = [
+  { name: 'Home', url: SITE.url },
+  { name: 'About', url: pageUrl },
+];
+---
+
+<Layout
+  title={`About ${SITE.name}`}
+  description={`${SITE.name} is the wholesale Non-QM and direct-to-investor channel of Cliffco Mortgage Bankers — three decades of Non-QM expertise delivered through broker partners and directly to real estate investors.`}
+  canonical={pageUrl}
+  breadcrumbs={breadcrumbs}
+>
+  <section class="header-band">
+    <div class="container">
+      <p class="eyebrow">About Clout</p>
+      <h1>The wholesale Non-QM channel of Cliffco — direct to brokers and investors.</h1>
+      <p class="answer-first">
+        Clout is the wholesale Non-QM channel and direct-to-investor lender of
+        {' '}<a href={SITE.parentOrg.url} target="_blank" rel="noopener">{SITE.parentOrg.name}</a>,
+        which has been originating Non-QM mortgages for more than three decades.
+        We're licensed in {STATES.map((s) => s.abbr).join(', ')} under NMLS #{SITE.nmlsId},
+        headquartered at {SITE.hq.streetAddress}, {SITE.hq.addressLocality}, {SITE.hq.addressRegion} {SITE.hq.postalCode}.
+      </p>
+      <div class="hero-cta">
+        <a href="/about/leadership/" class="cta-primary">Meet the team</a>
+        <a href="/contact/" class="cta-secondary">Get in touch</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="container">
+      <p class="stub-message">Full About page — origin story, parent relationship to Cliffco, mission, vision, values, leadership bios, press placements, awards, and community partnerships — coming soon.</p>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .container { max-width: 920px; margin: 0 auto; padding: 0 1.5rem; }
+  .header-band { padding: 4rem 0 2rem; background: linear-gradient(180deg, transparent 0, var(--color-surface) 100%); }
+  .eyebrow {
+    font-size: var(--text-micro);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-brand-warmth);
+    font-weight: 700;
+    margin: 0 0 1rem;
+  }
+  h1 { font-size: clamp(2rem, 4.5vw, 3rem); margin: 0 0 1.25rem; max-width: 22ch; }
+  .answer-first { max-width: 60ch; margin: 0 0 2rem; }
+  .hero-cta { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+  .band { padding: 3rem 0; }
+  .stub-message {
+    color: var(--color-mid);
+    border: 1px dashed var(--color-line);
+    padding: 1.5rem;
+    border-radius: var(--radius-lg);
+    text-align: center;
+  }
+</style>

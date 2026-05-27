@@ -1,0 +1,64 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { SITE } from '../../data/site';
+
+const pageUrl = `${SITE.url}/investors/`;
+const breadcrumbs = [
+  { name: 'Home', url: SITE.url },
+  { name: 'Investors', url: pageUrl },
+];
+---
+
+<Layout
+  title="For Real Estate Investors — Direct Non-QM Lending"
+  description="Real estate investor financing without W-2s or tax returns. DSCR, bank statement, foreign national, and asset qualifier loans direct from Clout. NY · NJ · PA · FL · CT · TX."
+  canonical={pageUrl}
+  breadcrumbs={breadcrumbs}
+>
+  <section class="header-band">
+    <div class="container">
+      <p class="eyebrow">For real estate investors</p>
+      <h1>Investor lending without W-2s, tax returns, or excuses.</h1>
+      <p class="answer-first">
+        Clout funds real estate investors directly in NY, NJ, PA, FL, CT, and TX. DSCR
+        on rental cash flow, bank statement for self-employed, foreign national without a
+        US SSN, asset qualifier on liquid wealth. Same underwriting team that powers our
+        wholesale channel — just direct to you.
+      </p>
+      <div class="hero-cta">
+        <a href="/contact/" class="cta-primary">Get pre-qualified</a>
+        <a href="/loan-options/dscr/" class="cta-secondary">Start with DSCR</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="container">
+      <p class="stub-message">Full investor channel — scenario library, calculators, cross-state funnel pages, BiggerPockets-style content — coming soon.</p>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .container { max-width: 920px; margin: 0 auto; padding: 0 1.5rem; }
+  .header-band { padding: 4rem 0 2rem; background: linear-gradient(180deg, transparent 0, var(--color-surface) 100%); }
+  .eyebrow {
+    font-size: var(--text-micro);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-brand-warmth);
+    font-weight: 700;
+    margin: 0 0 1rem;
+  }
+  h1 { font-size: clamp(2rem, 4.5vw, 3rem); margin: 0 0 1.25rem; max-width: 22ch; }
+  .answer-first { max-width: 60ch; margin: 0 0 2rem; }
+  .hero-cta { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+  .band { padding: 3rem 0; }
+  .stub-message {
+    color: var(--color-mid);
+    border: 1px dashed var(--color-line);
+    padding: 1.5rem;
+    border-radius: var(--radius-lg);
+    text-align: center;
+  }
+</style>

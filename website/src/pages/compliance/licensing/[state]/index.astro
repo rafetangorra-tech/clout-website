@@ -1,0 +1,46 @@
+---
+import Layout from '../../../../layouts/Layout.astro';
+import StubPage from '../../../../components/StubPage.astro';
+import { SITE, STATES } from '../../../../data/site';
+
+export function getStaticPaths() {
+  return STATES.map((s) => ({
+    params: { state: s.slug },
+    props: { state: s },
+  }));
+}
+
+const { state } = Astro.props;
+const pageUrl = `${SITE.url}/compliance/licensing/${state.slug}/`;
+const breadcrumbs = [
+  { name: 'Home', url: SITE.url },
+  { name: 'Compliance', url: `${SITE.url}/compliance/` },
+  { name: 'State Licensing', url: `${SITE.url}/compliance/licensing/` },
+  { name: state.name, url: pageUrl },
+];
+---
+
+<Layout
+  title={`${state.name} Licensing`}
+  description={`Clout licensing disclosure for ${state.name}. NMLS #${SITE.nmlsId}. State-specific regulator information, license number, and required disclosures.`}
+  canonical={pageUrl}
+  breadcrumbs={breadcrumbs}
+>
+  <StubPage
+    eyebrow={`Compliance · ${state.abbr} Licensing`}
+    title={`Clout licensing in ${state.name}.`}
+    lead={`Clout (${SITE.legalName}) is licensed to originate mortgages in ${state.name} under NMLS #${SITE.nmlsId}. The state-specific regulator, license number, and required disclosures will be enumerated here once final compliance review is complete.`}
+    breadcrumbs={[
+      { label: 'Compliance', href: '/compliance/' },
+      { label: 'State Licensing', href: '/compliance/licensing/' },
+      { label: state.name },
+    ]}
+    highlights={[
+      `Active licensing — ${state.name}`,
+      `NMLS #${SITE.nmlsId} (parent: ${SITE.parentOrg.name})`,
+      `State regulator + license number — pending compliance verification`,
+      'Equal Housing Lender — applies to all ' + state.name + ' loan activity',
+    ]}
+    notice="Full state-specific disclosure pending compliance review. Reach Clout for the verified license number and regulator details in the meantime."
+  />
+</Layout>

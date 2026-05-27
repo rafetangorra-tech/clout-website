@@ -1,0 +1,30 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import StubPage from '../../../components/StubPage.astro';
+import { SITE } from '../../../data/site';
+
+const pageUrl = `${SITE.url}/compliance/tcpa/`;
+const breadcrumbs = [
+  { name: 'Home', url: SITE.url },
+  { name: 'Compliance', url: `${SITE.url}/compliance/` },
+  { name: 'TCPA', url: pageUrl },
+];
+---
+
+<Layout
+  title="TCPA Compliance"
+  description="Clout TCPA (Telephone Consumer Protection Act) compliance. SMS / call consent, opt-out, and record-keeping practices."
+  canonical={pageUrl}
+  breadcrumbs={breadcrumbs}
+>
+  <StubPage
+    eyebrow="Compliance · TCPA"
+    title="TCPA compliance."
+    lead={`Clout follows TCPA requirements for SMS and call consent. Every lead form requires explicit opt-in language; consent is stored with timestamp. Brokers and investors can opt out at any time by reply or by contacting ${SITE.email}.`}
+    breadcrumbs={[
+      { label: 'Compliance', href: '/compliance/' },
+      { label: 'TCPA' },
+    ]}
+    notice="Full TCPA policy language pending legal review."
+  />
+</Layout>
