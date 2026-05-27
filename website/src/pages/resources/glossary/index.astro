@@ -1,0 +1,735 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import { SITE } from '../../../data/site';
+import { jsonLd } from '../../../data/schema';
+
+const pageUrl = `${SITE.url}/resources/glossary/`;
+const lastUpdatedIso = '2026-05-27';
+const lastUpdatedDisplay = 'May 27, 2026';
+
+const breadcrumbs = [
+  { name: 'Home', url: SITE.url },
+  { name: 'Resources', url: `${SITE.url}/resources/` },
+  { name: 'Glossary', url: pageUrl },
+];
+
+type Term = {
+  slug: string;
+  term: string;
+  alternateName?: string;
+  definition: string;
+  seeAlso?: Array<{ label: string; href: string }>;
+};
+
+// Alphabetical (numeric section first, then A–Z). Scoped to Clout: Non-QM
+// programs, wholesale channel, underwriting, real estate investor metrics,
+// regulatory + documentation.
+const terms: Term[] = [
+  {
+    slug: 'urla-1003',
+    term: '1003 (Uniform Residential Loan Application)',
+    alternateName: 'URLA',
+    definition:
+      'The standardized residential mortgage loan application used by Fannie Mae, Freddie Mac, and nearly every US lender, including Clout. Also called Form 1003 or URLA. Collects borrower identity, employment, income, assets, liabilities, property details, and loan terms. Brokers submit a completed 1003 with every Clout file through TPO Connect.',
+    seeAlso: [{ label: 'TPO Connect submission flow', href: '/tpo-connect/' }],
+  },
+  {
+    slug: '1099-only-mortgage',
+    term: '1099 Only Mortgage',
+    definition:
+      'A Non-QM program for independent contractors and gig workers that qualifies on gross 1099 income from one or two years of 1099 forms — not on net Schedule C profit (which is typically much lower after deductions). Common for high-income contractors who write off heavily. Clout offers 1099 Only across all six licensed states.',
+    seeAlso: [{ label: '1099 Only program', href: '/loan-options/1099-only/' }],
+  },
+  {
+    slug: 'ae',
+    term: 'Account Executive (AE)',
+    definition:
+      'The named wholesale-channel representative assigned to a partner broker. The AE owns rate quoting, scenario review, pipeline conversations, and condition escalations for files the broker submits. Clout assigns one AE per partner brokerage and publishes the AE\'s cell phone, email, and a 4-business-hour internal response commitment.',
+    seeAlso: [{ label: 'AE directory', href: '/tpo-connect/' }],
+  },
+  {
+    slug: 'asset-depletion',
+    term: 'Asset Depletion',
+    definition:
+      'A Non-QM qualifying method that divides a borrower\'s liquid assets (cash, brokerage, retirement) by a fixed number of months to produce a monthly "income" figure for DTI calculation. Used when a high-net-worth borrower has substantial reserves but limited documented earned income. Clout offers asset depletion through the Asset Qualifier program.',
+    seeAlso: [{ label: 'Asset Qualifier program', href: '/loan-options/asset-qualifier/' }],
+  },
+  {
+    slug: 'asset-qualifier-loan',
+    term: 'Asset Qualifier Loan',
+    definition:
+      'A Non-QM program that qualifies a borrower using liquid assets instead of W-2 or tax-return income. The lender divides eligible assets by a fixed term to derive qualifying income. Useful for retirees, executives between roles, and high-net-worth borrowers with thin income documentation.',
+    seeAlso: [{ label: 'Asset Qualifier program', href: '/loan-options/asset-qualifier/' }],
+  },
+  {
+    slug: 'atr',
+    term: 'ATR (Ability-to-Repay rule)',
+    definition:
+      'The federal regulation (CFPB Reg Z, 12 CFR 1026.43) requiring lenders to make a reasonable, good-faith determination that a borrower can repay a residential mortgage. Non-QM loans satisfy ATR through alternative documentation (bank statements, 1099s, DSCR, assets) — they do not meet the Qualified Mortgage safe-harbor but still comply with ATR.',
+  },
+  {
+    slug: 'aus',
+    term: 'AUS (Automated Underwriting System)',
+    definition:
+      'Software that runs an automated credit decision on a mortgage file. Common engines include Fannie Mae\'s Desktop Underwriter (DU) and Freddie Mac\'s Loan Product Advisor (LPA). All Clout Non-QM programs are manually underwritten and do not run through AUS — part of why Non-QM accommodates non-standard income.',
+  },
+  {
+    slug: 'bank-statement-loan',
+    term: 'Bank Statement Loan',
+    definition:
+      'A Non-QM program that qualifies self-employed borrowers using 12 or 24 months of business or personal bank statements instead of tax returns or W-2s. The lender computes qualifying income from deposit history with an expense-factor haircut. Clout offers Bank Statement loans across all six licensed states.',
+    seeAlso: [{ label: 'Bank Statement program', href: '/loan-options/bank-statement/' }],
+  },
+  {
+    slug: 'bpc',
+    term: 'BPC (Borrower-Paid Compensation)',
+    definition:
+      'A broker-compensation model where the borrower pays the broker directly (typically through closing) instead of the lender adding broker comp to the rate. Brokers elect either BPC or LPC per investor and per file. At Clout, comp is paid on the broker-elected plan filed with the company.',
+    seeAlso: [{ label: 'LPC', href: '#lpc' }],
+  },
+  {
+    slug: 'brrrr',
+    term: 'BRRRR',
+    definition:
+      'Buy, Rehab, Rent, Refinance, Repeat — a real-estate-investor strategy of acquiring distressed property with cash or short-term financing, renovating, leasing, then refinancing with a long-term loan (often DSCR) to extract equity for the next purchase. Clout\'s DSCR program is commonly used for the refi leg of the BRRRR cycle.',
+    seeAlso: [{ label: 'DSCR program', href: '/loan-options/dscr/' }],
+  },
+  {
+    slug: 'cap-rate',
+    term: 'Cap Rate',
+    definition:
+      'Capitalization rate. The ratio of a rental property\'s net operating income (NOI) to its purchase price or market value, expressed as a percentage. A quick yield metric investors use to compare deals. Clout uses NOI inputs (not cap rate directly) when underwriting DSCR loans.',
+    seeAlso: [{ label: 'NOI', href: '#noi' }, { label: 'DSCR', href: '#dscr' }],
+  },
+  {
+    slug: 'cd',
+    term: 'CD (Closing Disclosure)',
+    definition:
+      'A five-page federal disclosure form delivered to the borrower at least three business days before closing, listing final loan terms, projected payments, and closing costs. Required by TRID. The CD replaced the HUD-1 in 2015 and must reconcile against the Loan Estimate within prescribed tolerances.',
+    seeAlso: [{ label: 'LE', href: '#le' }, { label: 'TRID', href: '#trid' }],
+  },
+  {
+    slug: 'cfpb',
+    term: 'CFPB (Consumer Financial Protection Bureau)',
+    definition:
+      'The federal agency created by the Dodd-Frank Act that supervises consumer-financial-services compliance, including mortgage origination. The CFPB writes the QM rule, ATR rule, RESPA Reg X, TILA Reg Z, and equal-credit Reg B. Clout (NMLS #65328) operates under CFPB-administered rules across all six licensed states.',
+  },
+  {
+    slug: 'clear-to-close',
+    term: 'Clear-to-Close (CTC)',
+    definition:
+      'The underwriting milestone at which all loan conditions are satisfied and the file is approved to schedule closing. After CTC, the lender prepares closing documents, the borrower receives the Closing Disclosure, and the file moves to settlement. Typical Clout DSCR purchase clear-to-close: 15–20 days from submission.',
+    seeAlso: [{ label: 'Turn-time table', href: '/tpo-connect/' }],
+  },
+  {
+    slug: 'compensating-factors',
+    term: 'Compensating Factors',
+    definition:
+      'Underwriting strengths that offset weaknesses in a file — larger down payment, stronger reserves, higher FICO, lower DTI, or longer self-employment history. Non-QM programs lean heavily on compensating factors because they accommodate borrowers who fall outside conforming guidelines.',
+  },
+  {
+    slug: 'conditions',
+    term: 'Conditions',
+    definition:
+      'Specific items an underwriter requires the borrower or broker to provide before final approval. Common conditions: updated paystubs, recent bank statements, executed leases, gift letters, or explanation letters for credit events. Clout publishes a 4-business-hour internal response commitment for condition review during the underwriting cycle.',
+  },
+  {
+    slug: 'conforming-loan',
+    term: 'Conforming Loan',
+    definition:
+      'A mortgage that meets Fannie Mae or Freddie Mac purchase guidelines, including loan-amount limits set annually by FHFA. Conforming loans are typically Qualified Mortgages. Non-QM loans, including all Clout programs, fall outside conforming criteria — usually by income documentation, property type, or loan structure.',
+  },
+  {
+    slug: 'debt-yield',
+    term: 'Debt Yield',
+    definition:
+      'A commercial-real-estate metric calculated as NOI divided by loan amount. Used alongside DSCR by some commercial lenders to gauge loan risk independent of cap rate. Less common in residential Non-QM DSCR programs, where lenders typically focus on DSCR ratio and LTV.',
+  },
+  {
+    slug: 'direct-to-investor',
+    term: 'Direct-to-Investor',
+    definition:
+      'Clout\'s channel that originates Non-QM loans directly to real estate investors rather than through a wholesale broker. Investors apply, submit documentation, and close directly with Clout. Distinct from the wholesale channel where brokers place files on behalf of borrowers.',
+    seeAlso: [{ label: 'For investors', href: '/investors/' }],
+  },
+  {
+    slug: 'dscr',
+    term: 'DSCR (Debt Service Coverage Ratio)',
+    definition:
+      'The ratio of a rental property\'s net operating income to its annual debt service (PITIA). Calculated as NOI ÷ debt service. A 1.0 DSCR means rent exactly covers the mortgage payment. Clout DSCR loans qualify on property cash flow rather than borrower income — minimum DSCR varies by program and LTV.',
+    seeAlso: [{ label: 'NOI', href: '#noi' }, { label: 'PITIA', href: '#pitia' }, { label: 'DSCR program', href: '/loan-options/dscr/' }],
+  },
+  {
+    slug: 'dscr-loan',
+    term: 'DSCR Loan',
+    definition:
+      'A Non-QM rental-property loan that qualifies on the property\'s cash flow (DSCR ratio) instead of the investor\'s personal income, W-2s, or tax returns. The investor\'s FICO and reserves still matter, but DTI is not calculated. Clout\'s flagship program — see the DSCR program page for current parameters.',
+    seeAlso: [{ label: 'DSCR program', href: '/loan-options/dscr/' }],
+  },
+  {
+    slug: 'dti',
+    term: 'DTI (Debt-to-Income)',
+    definition:
+      'The ratio of a borrower\'s monthly debt obligations to gross monthly income, expressed as a percentage. Conforming loans typically cap DTI around 43–50%. Non-QM allows higher DTI with compensating factors. DSCR loans do not calculate DTI because they qualify on property cash flow.',
+  },
+  {
+    slug: 'ecoa',
+    term: 'ECOA (Equal Credit Opportunity Act)',
+    definition:
+      'Federal law prohibiting credit discrimination on the basis of race, color, religion, national origin, sex, marital status, age, public-assistance source, or exercise of consumer rights. Implemented through CFPB Regulation B. Clout originates under ECOA and is an Equal Housing Lender.',
+    seeAlso: [{ label: 'Reg B', href: '#reg-b' }],
+  },
+  {
+    slug: 'edoc-submission',
+    term: 'eDoc Submission',
+    definition:
+      'Electronic document submission inside TPO Connect. Brokers upload the 1003, credit, income documentation, and supporting files directly to the loan record. Clout does not accept paper submissions, faxes, or FTP transfers.',
+    seeAlso: [{ label: 'TPO Connect', href: '/tpo-connect/' }],
+  },
+  {
+    slug: 'equal-housing-lender',
+    term: 'Equal Housing Lender',
+    definition:
+      'A lender that has pledged compliance with the Fair Housing Act and ECOA — not to discriminate in extending housing-related credit. The Equal Housing Lender designation is required on mortgage advertising. Clout is an Equal Housing Lender across all six licensed states.',
+  },
+  {
+    slug: 'fico',
+    term: 'FICO',
+    definition:
+      'The credit score model developed by Fair Isaac Corporation, the dominant scoring system used in US mortgage underwriting. Mortgage lenders typically use the mid-score from three bureau pulls (Experian, Equifax, TransUnion). Minimum FICO on Clout\'s standard Non-QM programs is 620, with exceptions on stronger compensating-factor files.',
+  },
+  {
+    slug: 'foreign-national-mortgage',
+    term: 'Foreign National Mortgage',
+    definition:
+      'A Non-QM program for non-US citizens (no US Social Security Number) investing in US real estate. Qualifies on international credit equivalent, foreign income documentation, and asset reserves. Clout offers Foreign National DSCR loans — common use case: Canadian, UK, or Latin American investors buying Florida vacation rentals.',
+    seeAlso: [{ label: 'Foreign National program', href: '/loan-options/foreign-national/' }],
+  },
+  {
+    slug: 'full-doc-non-qm',
+    term: 'Full Doc Non-QM',
+    definition:
+      'A Non-QM program for borrowers with full income documentation (W-2s, tax returns, paystubs) whose file falls outside conforming or QM criteria for non-income reasons — large loan amount, property type, debt structure, or credit event. Lets full-doc borrowers access Non-QM flexibility.',
+    seeAlso: [{ label: 'Full Doc program', href: '/loan-options/full-doc/' }],
+  },
+  {
+    slug: 'initial-decision',
+    term: 'Initial Decision',
+    definition:
+      'The first underwriting determination on a submitted file, indicating whether the loan can move forward (with conditions) or is declined. Clout publishes an initial-decision turnaround of 24–72 hours across most Non-QM programs.',
+    seeAlso: [{ label: 'Turn-times by program', href: '/tpo-connect/' }],
+  },
+  {
+    slug: 'le',
+    term: 'LE (Loan Estimate)',
+    definition:
+      'The three-page TRID disclosure delivered to the borrower within three business days of application, listing estimated loan terms, projected payments, and closing costs. The LE replaced the GFE in 2015 and must be reasonably consistent with the final Closing Disclosure.',
+    seeAlso: [{ label: 'CD', href: '#cd' }, { label: 'TRID', href: '#trid' }],
+  },
+  {
+    slug: 'lite-doc-loan',
+    term: 'Lite Doc Loan',
+    definition:
+      'A Non-QM program for W-2 employees with limited documentation — typically 1 year of W-2 plus a Verification of Employment and a year-to-date paystub, in lieu of two years of returns. Used by borrowers who recently restarted employment after self-employment, school, or a career change.',
+    seeAlso: [{ label: 'Lite Doc program', href: '/loan-options/lite-doc/' }],
+  },
+  {
+    slug: 'lpc',
+    term: 'LPC (Lender-Paid Compensation)',
+    definition:
+      'A broker-compensation model where the lender pays the broker out of loan proceeds rather than the borrower paying directly. The borrower sees a slightly higher rate; the broker is paid at funding. Brokers elect either LPC or BPC per investor. Clout pays comp on the broker-elected plan filed with the company.',
+    seeAlso: [{ label: 'BPC', href: '#bpc' }],
+  },
+  {
+    slug: 'ltv',
+    term: 'LTV (Loan-to-Value)',
+    definition:
+      'The ratio of loan amount to property value, expressed as a percentage. An 80% LTV on a $500K property is a $400K loan. Non-QM programs typically cap at 75–80% LTV on purchases and lower on cash-out refinances. Higher LTV usually requires stronger FICO, lower DTI, or other compensating factors.',
+  },
+  {
+    slug: 'nmls',
+    term: 'NMLS (Nationwide Multistate Licensing System)',
+    definition:
+      'The national registry of licensed mortgage loan originators, brokerages, and lenders. Every mortgage broker, brokerage, and lender doing business in the US must hold an NMLS ID. Clout operates under NMLS #65328, jointly with parent Cliffco Mortgage Bankers. NMLS Consumer Access is the public lookup.',
+    seeAlso: [{ label: 'NMLS Consumer Access', href: SITE.nmlsUrl }],
+  },
+  {
+    slug: 'noi',
+    term: 'NOI (Net Operating Income)',
+    definition:
+      'A rental property\'s annual income from operations after operating expenses but before debt service and taxes. Calculated as gross rental income minus vacancy, operating expenses (insurance, maintenance, management, HOA) — but excluding mortgage interest and depreciation. The numerator in DSCR.',
+    seeAlso: [{ label: 'DSCR', href: '#dscr' }, { label: 'Cap rate', href: '#cap-rate' }],
+  },
+  {
+    slug: 'non-agency-second-home',
+    term: 'Non-Agency Second Home',
+    definition:
+      'A Non-QM program for second-home or vacation-property purchases that fall outside Fannie Mae\'s second-home guidelines — often by property type (short-term-rental zoning), occupancy pattern, or loan size. Clout originates Non-Agency Second Home loans for Florida, Long Island, and Texas vacation markets.',
+    seeAlso: [{ label: 'Non-Agency Second Home program', href: '/loan-options/non-agency-second-home/' }],
+  },
+  {
+    slug: 'non-qm',
+    term: 'Non-QM (Non-Qualified Mortgage)',
+    definition:
+      'A residential mortgage that does not meet the CFPB Qualified Mortgage (QM) safe-harbor criteria — typically because the underwriting uses alternative income documentation (bank statements, 1099s, DSCR, assets) instead of standard W-2 or tax-return verification. Non-QM still satisfies the ATR rule. All ten Clout programs are Non-QM.',
+    seeAlso: [{ label: 'QM', href: '#qm' }, { label: 'ATR', href: '#atr' }, { label: 'All programs', href: '/loan-options/' }],
+  },
+  {
+    slug: 'pl-only-loan',
+    term: 'P&L Only Loan',
+    definition:
+      'A Non-QM program for business owners qualifying on a CPA-prepared profit-and-loss statement in lieu of full tax returns. The P&L must be signed by a third-party CPA and typically covers 12 or 24 months. Useful for business owners who write off heavily and have low Schedule C net income.',
+    seeAlso: [{ label: 'P&L Only program', href: '/loan-options/pl-only/' }],
+  },
+  {
+    slug: 'pitia',
+    term: 'PITIA',
+    definition:
+      'Principal, Interest, Taxes, Insurance, and Association dues — the five components of a borrower\'s total monthly housing payment. Used in DTI calculation and as the denominator in DSCR (annualized). Sometimes written PITI when there is no HOA.',
+    seeAlso: [{ label: 'DTI', href: '#dti' }, { label: 'DSCR', href: '#dscr' }],
+  },
+  {
+    slug: 'portfolio-loan',
+    term: 'Portfolio Loan',
+    definition:
+      'A loan a lender originates and holds on its own balance sheet rather than selling to the secondary market (Fannie, Freddie, Ginnie, or PLS aggregators). Portfolio lenders can write flexible product because they are not bound to agency or investor guidelines. Many Non-QM lenders sell to specialty Non-QM investors rather than hold.',
+  },
+  {
+    slug: 'pre-qualification',
+    term: 'Pre-Qualification',
+    definition:
+      'An informal lender review of a borrower\'s stated income, assets, and credit profile to estimate loan size and eligibility — typically without document verification or underwriter sign-off. Distinct from a pre-approval, which involves credit pull and underwriter review. Clout offers pre-qualification through the contact page.',
+    seeAlso: [{ label: 'Contact Clout', href: '/contact/' }],
+  },
+  {
+    slug: 'qm',
+    term: 'QM (Qualified Mortgage)',
+    definition:
+      'A mortgage meeting the CFPB safe-harbor criteria under the ATR rule — verified income, capped points and fees, DTI under defined limits, and no risky features (no negative amortization, no interest-only, no balloon, no 40-year term). QM loans get a presumption of ATR compliance. Non-QM loans satisfy ATR but do not qualify for the QM safe harbor.',
+    seeAlso: [{ label: 'Non-QM', href: '#non-qm' }, { label: 'ATR', href: '#atr' }],
+  },
+  {
+    slug: 'rate-lock',
+    term: 'Rate Lock',
+    definition:
+      'A binding commitment by the lender to fund a loan at a specified interest rate within a defined window (typically 15, 30, 45, or 60 days). Locks are recorded on a Lock Confirmation issued by the lender. Clout issues lock confirmations same business day at the rate sheet in effect at submission.',
+    seeAlso: [{ label: 'Rate sheet', href: '#rate-sheet' }],
+  },
+  {
+    slug: 'rate-sheet',
+    term: 'Rate Sheet',
+    definition:
+      'A daily document published by the wholesale lender listing current pricing across loan products, terms, LTV bands, FICO bands, and lock periods. Brokers price scenarios off the rate sheet before locking. Clout refreshes wholesale rate sheets daily by 9:30 AM ET, posted inside TPO Connect.',
+    seeAlso: [{ label: 'TPO Connect', href: '/tpo-connect/' }],
+  },
+  {
+    slug: 'reg-b',
+    term: 'Reg B',
+    definition:
+      'The CFPB regulation implementing ECOA — prohibits credit discrimination and prescribes notice and recordkeeping requirements (including the Adverse Action Notice). Originators must follow Reg B in every credit decision.',
+    seeAlso: [{ label: 'ECOA', href: '#ecoa' }],
+  },
+  {
+    slug: 'reg-z',
+    term: 'Reg Z',
+    definition:
+      'The CFPB regulation implementing the Truth in Lending Act (TILA) — governs disclosure of mortgage terms, ATR / QM, TRID, advertising rules, and consumer right of rescission on certain refinances. Reg Z is the primary regulatory substrate for residential mortgage origination.',
+    seeAlso: [{ label: 'ATR', href: '#atr' }, { label: 'TRID', href: '#trid' }],
+  },
+  {
+    slug: 'reserves',
+    term: 'Reserves',
+    definition:
+      'Liquid assets the borrower retains after closing, expressed in months of housing payment (PITIA). Non-QM programs typically require 3 to 12 months of reserves depending on program, LTV, and property count. Higher reserves are a key compensating factor for files with weaker income documentation.',
+  },
+  {
+    slug: 'respa',
+    term: 'RESPA (Real Estate Settlement Procedures Act)',
+    definition:
+      'The federal law (implemented through CFPB Reg X) governing residential real-estate settlement disclosures, escrow account administration, kickback prohibitions, and servicer transfer notices. RESPA and TILA jointly underpin the TRID disclosure regime.',
+    seeAlso: [{ label: 'TRID', href: '#trid' }],
+  },
+  {
+    slug: 'scenario-desk',
+    term: 'Scenario Desk',
+    definition:
+      'A wholesale-lender service that returns a written eligibility opinion on a hypothetical loan scenario before a full file is submitted — saving brokers time on borderline deals. Clout\'s scenario desk returns same-business-day responses on clean scenarios received before 2 PM ET.',
+    seeAlso: [{ label: 'Submit a scenario', href: '/tpo-connect/' }],
+  },
+  {
+    slug: 'seasoning',
+    term: 'Seasoning',
+    definition:
+      'The required minimum age of a document, asset, or condition before a lender will accept it for underwriting. Examples: 60-day seasoning on bank deposits before they count as reserves; 12-month seasoning on a Chapter 7 bankruptcy discharge before some Non-QM programs accept the file.',
+  },
+  {
+    slug: 'self-employed-borrower',
+    term: 'Self-Employed Borrower',
+    definition:
+      'A borrower whose primary income comes from self-employment (sole proprietorship, partnership, S-corp, LLC, or 1099 contracting) rather than W-2 wages. Self-employed borrowers commonly use Bank Statement, 1099 Only, P&L Only, or DSCR programs because tax-return-based qualification understates true income.',
+    seeAlso: [{ label: 'Bank Statement', href: '/loan-options/bank-statement/' }, { label: '1099 Only', href: '/loan-options/1099-only/' }],
+  },
+  {
+    slug: 'title-insurance',
+    term: 'Title Insurance',
+    definition:
+      'A one-time-premium insurance policy issued at closing that protects against loss from defects in title, undisclosed liens, or competing claims. Two policies are typically issued — lender\'s title (required by every mortgage lender) and owner\'s title (optional, protects the buyer).',
+  },
+  {
+    slug: 'tpo',
+    term: 'TPO (Third Party Origination)',
+    definition:
+      'The wholesale-mortgage channel where a third party — a licensed mortgage broker — originates a loan on behalf of a borrower and submits it to a wholesale lender for underwriting and funding. Distinct from retail origination, where the lender\'s own loan officer originates. Clout operates a TPO channel for Non-QM.',
+    seeAlso: [{ label: 'TPO Connect', href: '#tpo-connect' }, { label: 'Wholesale channel', href: '#wholesale-channel' }],
+  },
+  {
+    slug: 'tpo-connect',
+    term: 'TPO Connect',
+    definition:
+      'Clout\'s wholesale partner portal. Brokers use TPO Connect to register, price, submit, and track Non-QM files — see the portal hub page for portal features, onboarding steps, and turn-times. Powered by ICE Mortgage Technology\'s Encompass platform.',
+    seeAlso: [{ label: 'TPO Connect hub', href: '/tpo-connect/' }],
+  },
+  {
+    slug: 'trid',
+    term: 'TRID (TILA-RESPA Integrated Disclosure)',
+    definition:
+      'The 2015 CFPB rule combining TILA and RESPA disclosures into two documents: the Loan Estimate (LE, delivered within 3 business days of application) and the Closing Disclosure (CD, delivered at least 3 business days before closing). TRID governs disclosure timing, tolerances between LE and CD, and re-disclosure triggers.',
+    seeAlso: [{ label: 'LE', href: '#le' }, { label: 'CD', href: '#cd' }],
+  },
+  {
+    slug: 'udaap',
+    term: 'UDAAP (Unfair, Deceptive, or Abusive Acts or Practices)',
+    definition:
+      'A CFPB enforcement standard prohibiting unfair, deceptive, or abusive acts in consumer financial services. UDAAP risk shapes mortgage advertising, comparison claims, and disclosure practices. Lenders and brokers avoid superlative or comparative claims that cannot be substantiated.',
+  },
+  {
+    slug: 'underwriting',
+    term: 'Underwriting',
+    definition:
+      'The lender process of evaluating a borrower\'s creditworthiness, the property\'s collateral value, and the loan\'s compliance with program guidelines before issuing approval. Non-QM underwriting is manual (not AUS-driven) and involves judgment on compensating factors. One Clout underwriting team handles all 10 programs.',
+  },
+  {
+    slug: 'voe',
+    term: 'VOE (Verification of Employment)',
+    definition:
+      'A document or process by which an employer verifies a borrower\'s employment, position, dates, and income. Comes in two forms: Written VOE (paper form signed by employer) and Verbal VOE (lender phone call to HR, documented in the file). Some Non-QM programs accept Written VOE in lieu of paystubs and W-2s.',
+    seeAlso: [{ label: 'WVOE', href: '#wvoe' }],
+  },
+  {
+    slug: 'wholesale-channel',
+    term: 'Wholesale Channel',
+    definition:
+      'The mortgage-origination channel in which licensed mortgage brokers place loans with a wholesale lender on behalf of borrowers, rather than the lender\'s own loan officers originating directly. Distinguished from retail and correspondent channels. Clout operates a wholesale Non-QM channel for brokers across NY, NJ, PA, FL, CT, TX.',
+    seeAlso: [{ label: 'For brokers', href: '/brokers/' }],
+  },
+  {
+    slug: 'wholesale-lender',
+    term: 'Wholesale Lender',
+    definition:
+      'A mortgage lender that funds loans submitted by independent mortgage brokers rather than originating retail. The wholesale lender publishes rate sheets, sets program guidelines, and underwrites and funds the loan; the broker handles the borrower relationship. Clout is a wholesale Non-QM lender.',
+  },
+  {
+    slug: 'wvoe',
+    term: 'WVOE (Written VOE Only)',
+    definition:
+      'A Non-QM program that qualifies a W-2 borrower using an employer-completed Written Verification of Employment (signed VOE form) in lieu of paystubs, W-2s, or tax returns. Used when standard income documents are unavailable or inadequate.',
+    seeAlso: [{ label: 'Written VOE Only program', href: '/loan-options/wvoe/' }],
+  },
+];
+
+// Group terms by first letter for the A-Z index. Numeric goes under "#".
+const groups: Array<{ letter: string; items: Term[] }> = [];
+const letterOf = (t: Term): string => {
+  const c = t.term[0];
+  return /[0-9]/.test(c) ? '#' : c.toUpperCase();
+};
+for (const t of terms) {
+  const letter = letterOf(t);
+  let g = groups.find((x) => x.letter === letter);
+  if (!g) {
+    g = { letter, items: [] };
+    groups.push(g);
+  }
+  g.items.push(t);
+}
+// Preserve original order within group, sort group order (# first, then A-Z)
+groups.sort((a, b) => {
+  if (a.letter === '#') return -1;
+  if (b.letter === '#') return 1;
+  return a.letter.localeCompare(b.letter);
+});
+
+const presentLetters = new Set(groups.map((g) => g.letter));
+const allLetters = ['#', ...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')];
+
+// DefinedTermSet schema — every term becomes a DefinedTerm
+const glossarySchema = {
+  '@context': 'https://schema.org',
+  '@type': 'DefinedTermSet',
+  '@id': `${pageUrl}#glossary`,
+  name: 'Clout Non-QM Wholesale Mortgage Glossary',
+  description:
+    'Glossary of terms used in Non-QM wholesale mortgage lending — covering program names (DSCR, Bank Statement, 1099, Foreign National, Asset Qualifier), wholesale-channel terms (TPO, AE, rate sheet, scenario desk), underwriting concepts (ATR, QM, FICO, LTV, DTI), real-estate-investor metrics (NOI, cap rate, BRRRR), and regulatory frameworks (CFPB, ECOA, Reg Z, TRID, RESPA, NMLS).',
+  url: pageUrl,
+  publisher: { '@id': `${SITE.url}#organization` },
+  hasDefinedTerm: terms.map((t) => ({
+    '@type': 'DefinedTerm',
+    '@id': `${pageUrl}#${t.slug}`,
+    name: t.term,
+    ...(t.alternateName && { alternateName: t.alternateName }),
+    description: t.definition,
+    url: `${pageUrl}#${t.slug}`,
+    inDefinedTermSet: `${pageUrl}#glossary`,
+  })),
+};
+---
+
+<Layout
+  title="Non-QM Wholesale Mortgage Glossary — Clout"
+  description={`A ${terms.length}-term glossary of Non-QM wholesale mortgage terminology — DSCR, ATR/QM, TPO, LTV, NOI, TRID, RESPA, and the program names used across Clout's 10 Non-QM products. Plain-language definitions for brokers and real estate investors.`}
+  canonical={pageUrl}
+  breadcrumbs={breadcrumbs}
+  extraSchema={[jsonLd(glossarySchema)]}
+>
+  <section class="hero">
+    <div class="container">
+      <p class="eyebrow">Resources · Glossary</p>
+      <h1>Non-QM wholesale mortgage glossary.</h1>
+      <p class="answer-first lead">
+        Plain-language definitions for the {terms.length} terms that come up most often
+        in Clout files — Non-QM program names, wholesale-channel mechanics, underwriting
+        concepts, real-estate-investor metrics, and regulatory frameworks. Written for
+        mortgage brokers and real estate investors who need a precise answer fast.
+      </p>
+      <p class="reviewed-by">
+        Reviewed by Clout Wholesale Operations · NMLS #{SITE.nmlsId} · Last updated <time datetime={lastUpdatedIso}>{lastUpdatedDisplay}</time>
+      </p>
+    </div>
+  </section>
+
+  <nav class="azbar" aria-label="Glossary A to Z">
+    <div class="container">
+      <ul>
+        {allLetters.map((L) => (
+          <li>
+            {presentLetters.has(L)
+              ? <a href={`#letter-${L === '#' ? 'num' : L}`}>{L}</a>
+              : <span aria-hidden="true">{L}</span>
+            }
+          </li>
+        ))}
+      </ul>
+    </div>
+  </nav>
+
+  <section class="band">
+    <div class="container">
+      <div class="glossary">
+        {groups.map((g) => (
+          <section class="letter-block" id={`letter-${g.letter === '#' ? 'num' : g.letter}`}>
+            <h2 class="letter-heading">{g.letter}</h2>
+            <div class="entries">
+              {g.items.map((t) => (
+                <article class="entry" id={t.slug}>
+                  <h3>
+                    <a href={`#${t.slug}`} class="entry-anchor" aria-label={`Permalink to ${t.term}`}>
+                      <span class="entry-term">{t.term}</span>
+                      <span class="anchor-hash" aria-hidden="true">#</span>
+                    </a>
+                  </h3>
+                  <p class="entry-def">{t.definition}</p>
+                  {t.seeAlso && t.seeAlso.length > 0 && (
+                    <p class="entry-seealso">
+                      <span class="seealso-label">See also:</span>
+                      {t.seeAlso.map((s, i) => (
+                        <>
+                          <a href={s.href}>{s.label}</a>{i < t.seeAlso!.length - 1 && <span class="seealso-sep">·</span>}
+                        </>
+                      ))}
+                    </p>
+                  )}
+                </article>
+              ))}
+            </div>
+          </section>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="band band-compliance">
+    <div class="container">
+      <p class="compliance-row">
+        Glossary entries are general definitions intended to orient mortgage brokers and
+        real-estate investors. They do not constitute regulatory advice, program
+        guidelines, or a commitment to lend. Loan terms, eligibility, and rates are
+        determined by program guidelines in effect on the lock date and by underwriting
+        approval. Clout Wholesale Mortgage Bankers is a division of Cliffco Mortgage
+        Bankers. NMLS <a href={SITE.nmlsUrl} rel="noopener" target="_blank">#{SITE.nmlsId}</a>.
+        Equal Housing Lender. Page last updated <time datetime={lastUpdatedIso}>{lastUpdatedDisplay}</time>.
+      </p>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .container { max-width: 1080px; margin: 0 auto; padding: 0 1.5rem; }
+
+  .hero {
+    padding: 4.5rem 0 2.5rem;
+    background:
+      radial-gradient(900px 360px at 12% -10%, color-mix(in srgb, var(--color-brand-bright) 16%, transparent) 0%, transparent 60%),
+      linear-gradient(180deg, var(--color-paper) 0%, var(--color-surface) 100%);
+  }
+  .eyebrow {
+    font-size: var(--text-micro);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-brand-warmth);
+    font-weight: 700;
+    margin: 0 0 1rem;
+  }
+  .hero h1 {
+    font-size: clamp(2rem, 4.5vw, 3rem);
+    line-height: 1.1;
+    margin: 0 0 1rem;
+    max-width: 22ch;
+  }
+  .hero .lead { max-width: 64ch; margin: 0 0 1.5rem; }
+  .hero .reviewed-by { margin: 0; }
+
+  /* Sticky A–Z nav bar */
+  .azbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--color-paper);
+    border-top: 1px solid var(--color-line);
+    border-bottom: 1px solid var(--color-line);
+    box-shadow: 0 4px 16px -10px rgba(0, 65, 70, 0.10);
+  }
+  .azbar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.125rem;
+    justify-content: center;
+    padding: 0.5rem 0;
+  }
+  .azbar li { display: inline-flex; }
+  .azbar a,
+  .azbar span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.875rem;
+    height: 1.875rem;
+    border-radius: var(--radius-sm);
+    font-size: var(--text-small);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+  .azbar a {
+    color: var(--color-brand-deep);
+    text-decoration: none;
+    background: transparent;
+    transition: background 120ms ease, color 120ms ease;
+  }
+  .azbar a:hover {
+    background: var(--color-surface);
+    color: var(--color-brand);
+  }
+  .azbar span {
+    color: var(--color-mid);
+    opacity: 0.5;
+  }
+
+  /* Glossary content */
+  .band { padding: 3rem 0 4rem; }
+  .glossary { display: grid; gap: 3rem; }
+
+  .letter-block { scroll-margin-top: 4.5rem; }
+  .letter-heading {
+    font-size: clamp(2rem, 3.5vw, 2.75rem);
+    line-height: 1;
+    margin: 0 0 1.5rem;
+    color: var(--color-brand);
+    border-bottom: 2px solid var(--color-line);
+    padding-bottom: 0.75rem;
+    font-feature-settings: 'tnum';
+  }
+
+  .entries { display: grid; gap: 1.75rem; }
+
+  .entry {
+    scroll-margin-top: 4.5rem;
+    padding: 1.5rem;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    background: var(--color-paper);
+    transition: border-color 120ms ease, box-shadow 120ms ease;
+  }
+  .entry:target {
+    border-color: var(--color-brand);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-brand-bright) 30%, transparent);
+  }
+  .entry h3 { margin: 0 0 0.5rem; font-size: 1.125rem; line-height: 1.3; }
+  .entry-anchor {
+    color: var(--color-ink);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.375rem;
+  }
+  .entry-anchor:hover { color: var(--color-brand); }
+  .entry-anchor .anchor-hash {
+    color: var(--color-mid);
+    font-weight: 400;
+    opacity: 0;
+    transition: opacity 120ms ease;
+    font-size: 0.875rem;
+  }
+  .entry:hover .anchor-hash,
+  .entry-anchor:focus-visible .anchor-hash {
+    opacity: 1;
+  }
+
+  .entry-def {
+    margin: 0;
+    color: var(--color-ink-soft);
+    font-size: var(--text-body);
+    line-height: 1.65;
+  }
+  .entry-seealso {
+    margin: 0.875rem 0 0;
+    font-size: var(--text-small);
+    color: var(--color-mid);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+  }
+  .seealso-label {
+    font-weight: 600;
+    color: var(--color-ink-soft);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    font-size: var(--text-meta);
+  }
+  .entry-seealso a {
+    color: var(--color-brand-deep);
+    text-decoration-color: color-mix(in srgb, var(--color-brand) 40%, transparent);
+    font-weight: 500;
+  }
+  .seealso-sep { color: var(--color-mid); }
+
+  .band-compliance { padding: 1rem 0 3.5rem; }
+  .compliance-row { max-width: 96ch; }
+
+  @media (max-width: 720px) {
+    .azbar a, .azbar span { width: 1.625rem; height: 1.625rem; font-size: var(--text-meta); }
+    .azbar ul { padding: 0.375rem 0; }
+  }
+</style>

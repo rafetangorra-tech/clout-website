@@ -1,6 +1,5 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import StubPage from '../../components/StubPage.astro';
 import { SITE } from '../../data/site';
 
 const pageUrl = `${SITE.url}/resources/`;
@@ -8,24 +7,192 @@ const breadcrumbs = [
   { name: 'Home', url: SITE.url },
   { name: 'Resources', url: pageUrl },
 ];
+
+type Resource = {
+  title: string;
+  description: string;
+  href: string;
+  status: 'live' | 'soon';
+};
+
+const resources: Resource[] = [
+  {
+    title: 'Non-QM glossary',
+    description:
+      '61 plain-language definitions for the terms that come up most often in Clout files — Non-QM program names, wholesale-channel mechanics, underwriting concepts, real-estate-investor metrics, and regulatory frameworks.',
+    href: '/resources/glossary/',
+    status: 'live',
+  },
+  {
+    title: 'Program guides',
+    description:
+      'Long-form educational content per Non-QM program — DSCR, Bank Statement, 1099 Only, Foreign National, Asset Qualifier, and the rest.',
+    href: '/loan-options/',
+    status: 'live',
+  },
+  {
+    title: 'Scenario library',
+    description:
+      'Anonymized broker and investor closings, with borrower profile, property, loan structure, and timeline. Updated monthly.',
+    href: '/resources/',
+    status: 'soon',
+  },
+  {
+    title: 'Market commentary',
+    description:
+      'Non-QM rate-environment notes, regulatory updates, and Cliffco-team perspective on the lending cycle.',
+    href: '/resources/',
+    status: 'soon',
+  },
+];
 ---
 
 <Layout
-  title="Resources"
-  description="Clout Non-QM education library: guides, anonymized scenarios, market commentary, and glossary for brokers and real estate investors."
+  title="Resources — Non-QM Education for Brokers and Investors"
+  description="Clout's Non-QM education library: a 61-term Non-QM glossary, program guides, anonymized scenarios, and market commentary for mortgage brokers and real estate investors."
   canonical={pageUrl}
   breadcrumbs={breadcrumbs}
 >
-  <StubPage
-    eyebrow="Resources"
-    title="Non-QM education for brokers and investors."
-    lead={`The Clout resources library — guides, anonymized scenarios, market commentary, and a Non-QM glossary — is the home for evergreen content that helps brokers and investors learn the products and the markets.`}
-    breadcrumbs={[{ label: 'Resources' }]}
-    highlights={[
-      'Guides — long-form educational content per product',
-      'Scenarios — anonymized broker + investor closings',
-      'Market commentary — rate environment, regulatory updates',
-      'Glossary — Non-QM terms with plain-language definitions',
-    ]}
-  />
+  <section class="hero">
+    <div class="container">
+      <p class="eyebrow">Resources</p>
+      <h1>Non-QM education for brokers and investors.</h1>
+      <p class="answer-first lead">
+        The Clout resources library — a 61-term Non-QM glossary, program guides,
+        anonymized scenarios, and market commentary — is the home for evergreen content
+        that helps brokers and investors learn the products and the markets.
+      </p>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="container">
+      <div class="resource-grid">
+        {resources.map((r) => (
+          <a href={r.href} class={`resource-card ${r.status === 'soon' ? 'is-soon' : ''}`}>
+            <div class="resource-card-head">
+              <h2>{r.title}</h2>
+              <span class={`status status-${r.status}`}>
+                {r.status === 'live' ? 'Live' : 'Coming soon'}
+              </span>
+            </div>
+            <p>{r.description}</p>
+            <span class="resource-link">
+              {r.status === 'live' ? `Open ${r.title.toLowerCase()} →` : 'In development →'}
+            </span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="band band-compliance">
+    <div class="container">
+      <p class="compliance-row">
+        Resources content is educational and does not constitute regulatory or legal
+        advice, program guidelines, or a commitment to lend. {SITE.legalName} · NMLS
+        <a href={SITE.nmlsUrl} target="_blank" rel="noopener">#{SITE.nmlsId}</a> ·
+        Equal Housing Lender · Licensed in NY · NJ · PA · FL · CT · TX.
+      </p>
+    </div>
+  </section>
 </Layout>
+
+<style>
+  .container { max-width: 1080px; margin: 0 auto; padding: 0 1.5rem; }
+
+  .hero {
+    padding: 4.5rem 0 2.5rem;
+    background:
+      radial-gradient(900px 360px at 12% -10%, color-mix(in srgb, var(--color-brand-bright) 16%, transparent) 0%, transparent 60%),
+      linear-gradient(180deg, var(--color-paper) 0%, var(--color-surface) 100%);
+  }
+  .eyebrow {
+    font-size: var(--text-micro);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-brand-warmth);
+    font-weight: 700;
+    margin: 0 0 1rem;
+  }
+  .hero h1 {
+    font-size: clamp(2rem, 4.5vw, 3rem);
+    line-height: 1.1;
+    margin: 0 0 1rem;
+    max-width: 22ch;
+  }
+  .hero .lead { max-width: 64ch; margin: 0; }
+
+  .band { padding: 3.5rem 0; }
+
+  .resource-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+  .resource-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1.75rem;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    background: var(--color-paper);
+    text-decoration: none;
+    color: var(--color-ink);
+    transition: border-color 120ms ease, transform 120ms ease, box-shadow 120ms ease;
+  }
+  .resource-card:hover {
+    border-color: var(--color-brand);
+    transform: translateY(-2px);
+    box-shadow: 0 16px 32px -16px rgba(1, 128, 118, 0.18);
+  }
+  .resource-card.is-soon {
+    background: var(--color-surface);
+    border-style: dashed;
+  }
+  .resource-card.is-soon:hover {
+    transform: none;
+    box-shadow: none;
+    border-color: var(--color-line);
+  }
+  .resource-card-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  .resource-card h2 {
+    font-size: 1.25rem;
+    margin: 0;
+    color: var(--color-brand-deep);
+  }
+  .status {
+    font-size: var(--text-micro);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--radius-sm);
+    white-space: nowrap;
+  }
+  .status-live {
+    background: color-mix(in srgb, var(--color-brand-bright) 18%, transparent);
+    color: var(--color-brand-deep);
+  }
+  .status-soon {
+    background: var(--color-paper);
+    color: var(--color-mid);
+    border: 1px solid var(--color-line);
+  }
+  .resource-card p { margin: 0; color: var(--color-ink-soft); font-size: var(--text-small); line-height: 1.6; }
+  .resource-link { color: var(--color-brand-deep); font-weight: 600; font-size: var(--text-small); margin-top: auto; }
+  .is-soon .resource-link { color: var(--color-mid); }
+
+  .band-compliance { padding: 1rem 0 3.5rem; }
+  .compliance-row { max-width: 96ch; }
+
+  @media (max-width: 720px) {
+    .resource-grid { grid-template-columns: 1fr; }
+  }
+</style>
