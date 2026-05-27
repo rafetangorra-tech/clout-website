@@ -48,19 +48,32 @@ const faqs = [
   extraSchema={[jsonLd(faqSchema(faqs))]}
 >
   <section class="hero">
-    <div class="container">
+    <div class="speed-mark" aria-hidden="true">
+      <img src="/brand/icon-primary.svg" alt="" class="speed-mark-echo speed-mark-echo-3" width="600" height="227" loading="eager" />
+      <img src="/brand/icon-primary.svg" alt="" class="speed-mark-echo speed-mark-echo-2" width="600" height="227" loading="eager" />
+      <img src="/brand/icon-primary.svg" alt="" class="speed-mark-echo speed-mark-echo-1" width="600" height="227" loading="eager" />
+      <img src="/brand/icon-primary.svg" alt="" class="speed-mark-main" width="600" height="227" loading="eager" />
+    </div>
+    <div class="container hero-content">
       <p class="eyebrow">Wholesale Non-QM · Direct-to-Investor</p>
-      <h1>Non-QM lending built for brokers and real estate investors.</h1>
+      <h1>Non-QM lending built for <em>speed</em>, brokers, and real estate investors.</h1>
+      <span class="speed-line" aria-hidden="true"></span>
       <p class="answer-first lead">
         Clout funds Non-QM mortgages in NY, NJ, PA, FL, CT, and TX — DSCR, bank statement,
         1099, foreign national, and asset qualifier programs delivered through wholesale
-        broker partners and directly to real estate investors. NMLS #65328. A division of
-        Cliffco Mortgage Bankers.
+        broker partners and directly to real estate investors. Typical clear-to-close:
+        <strong>15–25 days</strong>. NMLS #65328. A division of Cliffco Mortgage Bankers.
       </p>
       <div class="hero-cta">
         <a href="/contact/" class="cta-primary">Get pre-qualified</a>
         <a href="/brokers/" class="cta-secondary">Become a broker partner</a>
       </div>
+      <ul class="hero-metrics" aria-label="Headline metrics">
+        <li><span class="metric-value">15–25</span><span class="metric-label">Day average close</span></li>
+        <li><span class="metric-value">10</span><span class="metric-label">Non-QM programs</span></li>
+        <li><span class="metric-value">6</span><span class="metric-label">States licensed</span></li>
+        <li><span class="metric-value">24–72h</span><span class="metric-label">Initial decision</span></li>
+      </ul>
     </div>
   </section>
 
@@ -109,6 +122,7 @@ const faqs = [
   </section>
 
   <section class="band band-dark">
+    <img src="/brand/icon-mono-white.svg" alt="" class="band-watermark" aria-hidden="true" width="800" height="302" loading="lazy" />
     <div class="container">
       <header class="section-head">
         <p class="eyebrow">Locations</p>
@@ -181,10 +195,75 @@ const faqs = [
     padding: 0 1.5rem;
   }
   .hero {
-    padding: 5rem 0 4rem;
+    position: relative;
+    overflow: hidden;
+    padding: 6rem 0 4.5rem;
     background:
-      linear-gradient(180deg, transparent 0, var(--color-surface) 100%);
+      radial-gradient(1200px 520px at 88% -10%, color-mix(in srgb, var(--color-brand-bright) 22%, transparent) 0%, transparent 60%),
+      radial-gradient(900px 420px at -10% 105%, color-mix(in srgb, var(--color-brand-warmth) 14%, transparent) 0%, transparent 55%),
+      linear-gradient(180deg, var(--color-paper) 0%, var(--color-surface) 100%);
   }
+  .hero-content { position: relative; z-index: 2; }
+
+  /* Speed mark — large icon swoosh with motion echoes */
+  .speed-mark {
+    position: absolute;
+    top: 50%;
+    right: -8%;
+    transform: translateY(-50%);
+    width: min(70vw, 880px);
+    height: auto;
+    aspect-ratio: 158.93 / 60.04;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .speed-mark img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  .speed-mark-main {
+    opacity: 0.18;
+    animation: speed-in-main 900ms cubic-bezier(0.16, 0.84, 0.3, 1) both;
+  }
+  .speed-mark-echo {
+    opacity: 0;
+    filter: blur(0.5px);
+  }
+  .speed-mark-echo-1 {
+    animation: speed-echo 1100ms cubic-bezier(0.16, 0.84, 0.3, 1) 80ms both;
+    --echo-x: -3.5%;
+    --echo-opacity: 0.10;
+  }
+  .speed-mark-echo-2 {
+    animation: speed-echo 1300ms cubic-bezier(0.16, 0.84, 0.3, 1) 160ms both;
+    --echo-x: -7%;
+    --echo-opacity: 0.06;
+    filter: blur(1.5px);
+  }
+  .speed-mark-echo-3 {
+    animation: speed-echo 1500ms cubic-bezier(0.16, 0.84, 0.3, 1) 240ms both;
+    --echo-x: -11%;
+    --echo-opacity: 0.035;
+    filter: blur(3px);
+  }
+  @keyframes speed-in-main {
+    from { transform: translateX(8%); opacity: 0; }
+    to { transform: translateX(0); opacity: 0.18; }
+  }
+  @keyframes speed-echo {
+    from { transform: translateX(8%); opacity: 0; }
+    to { transform: translateX(var(--echo-x)); opacity: var(--echo-opacity); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .speed-mark-main { animation: none; opacity: 0.18; }
+    .speed-mark-echo-1 { animation: none; opacity: 0.10; transform: translateX(-3.5%); }
+    .speed-mark-echo-2 { animation: none; opacity: 0.06; transform: translateX(-7%); }
+    .speed-mark-echo-3 { animation: none; opacity: 0.035; transform: translateX(-11%); }
+  }
+
   .eyebrow {
     font-size: var(--text-micro);
     letter-spacing: 0.18em;
@@ -194,28 +273,117 @@ const faqs = [
     margin: 0 0 1rem;
   }
   .hero h1 {
-    font-size: clamp(2rem, 5vw, 3.5rem);
-    line-height: 1.1;
-    margin: 0 0 1.25rem;
-    max-width: 22ch;
+    font-size: clamp(2.25rem, 5.5vw, 4rem);
+    line-height: 1.05;
+    margin: 0 0 1rem;
+    max-width: 18ch;
+    letter-spacing: -0.02em;
   }
+  .hero h1 em {
+    font-style: normal;
+    color: var(--color-brand);
+    position: relative;
+    white-space: nowrap;
+  }
+  .hero h1 em::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0.06em;
+    height: 0.18em;
+    background: color-mix(in srgb, var(--color-brand-warmth) 60%, transparent);
+    border-radius: 2px;
+    z-index: -1;
+  }
+  .speed-line {
+    display: block;
+    width: clamp(80px, 18vw, 200px);
+    height: 3px;
+    background: linear-gradient(90deg, var(--color-brand-warmth), transparent 90%);
+    border-radius: 2px;
+    margin: 0 0 1.5rem;
+    animation: speed-line-in 700ms cubic-bezier(0.16, 0.84, 0.3, 1) 200ms both;
+  }
+  @keyframes speed-line-in {
+    from { transform: scaleX(0); opacity: 0; }
+    to { transform: scaleX(1); opacity: 1; }
+  }
+  .speed-line { transform-origin: left center; }
+  @media (prefers-reduced-motion: reduce) {
+    .speed-line { animation: none; }
+  }
+
   .hero .lead {
     max-width: 56ch;
     margin: 0 0 2rem;
+  }
+  .hero .lead strong {
+    color: var(--color-brand-deep);
+    font-weight: 700;
   }
   .hero-cta {
     display: flex;
     gap: 0.75rem;
     flex-wrap: wrap;
+    margin-bottom: 3rem;
+  }
+
+  .hero-metrics {
+    list-style: none;
+    margin: 0;
+    padding: 1.5rem 0 0;
+    display: grid;
+    grid-template-columns: repeat(4, max-content);
+    gap: 2.5rem;
+    border-top: 1px solid color-mix(in srgb, var(--color-line) 80%, transparent);
+    max-width: 720px;
+  }
+  .hero-metrics li {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .metric-value {
+    font-size: clamp(1.5rem, 2.5vw, 2rem);
+    font-weight: 700;
+    color: var(--color-brand-deep);
+    letter-spacing: -0.02em;
+    line-height: 1;
+    font-feature-settings: 'tnum';
+  }
+  .metric-label {
+    font-size: var(--text-meta);
+    color: var(--color-ink-soft);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  @media (max-width: 720px) {
+    .hero-metrics { grid-template-columns: repeat(2, 1fr); gap: 1.25rem; }
+    .speed-mark { width: 110vw; right: -20%; opacity: 0.55; }
   }
 
   .band { padding: 4rem 0; }
   .band-dark {
+    position: relative;
+    overflow: hidden;
     background: var(--color-brand-deep);
     color: var(--color-paper);
   }
   .band-dark .eyebrow { color: var(--color-brand-bright); }
   .band-dark h2 { color: var(--color-paper); }
+  .band-dark .container { position: relative; z-index: 2; }
+  .band-watermark {
+    position: absolute;
+    top: 50%;
+    right: -10%;
+    transform: translateY(-50%);
+    width: min(80vw, 900px);
+    height: auto;
+    opacity: 0.05;
+    pointer-events: none;
+    z-index: 1;
+  }
 
   .section-head {
     margin: 0 0 2.5rem;
