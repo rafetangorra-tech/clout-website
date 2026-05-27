@@ -134,8 +134,18 @@ export const BLOG_POSTS: BlogPostMeta[] = [
   },
 ];
 
-export const BLOG_ROOT = `${SITE.url}/resources/blog/`;
+/** Relative path — use for href/anchor attributes (Astro rewrites for base path). */
+export const BLOG_PATH = `/resources/blog/`;
 
+/** Absolute URL — use for canonical, schema, og:url, sitemap, etc. */
+export const BLOG_ROOT = `${SITE.url}${BLOG_PATH}`;
+
+/** Relative path for a single post — use in `<a href>`. */
+export function blogPostPath(slug: string): string {
+  return `${BLOG_PATH}${slug}/`;
+}
+
+/** Absolute URL for a single post — use in schema, canonical, etc. */
 export function blogPostUrl(slug: string): string {
   return `${BLOG_ROOT}${slug}/`;
 }

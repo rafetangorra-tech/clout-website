@@ -2,7 +2,7 @@
 import Layout from '../../../layouts/Layout.astro';
 import { SITE } from '../../../data/site';
 import { jsonLd } from '../../../data/schema';
-import { BLOG_POSTS, BLOG_CATEGORIES, BLOG_ROOT, blogPostUrl } from '../../../data/blog';
+import { BLOG_POSTS, BLOG_CATEGORIES, BLOG_ROOT, blogPostUrl, blogPostPath } from '../../../data/blog';
 
 const pageUrl = BLOG_ROOT;
 const lastUpdatedIso = '2026-05-27';
@@ -99,7 +99,7 @@ const blogSchema = {
             <div class="post-grid">
               {group.posts.map((p) => (
                 <a
-                  href={blogPostUrl(p.slug)}
+                  href={blogPostPath(p.slug)}
                   class="post-card"
                   data-category={p.category}
                 >

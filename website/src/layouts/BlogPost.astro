@@ -13,7 +13,7 @@
 import Layout from './Layout.astro';
 import { SITE } from '../data/site';
 import { jsonLd, articleSchema, faqSchema } from '../data/schema';
-import { blogPostUrl, BLOG_ROOT } from '../data/blog';
+import { blogPostUrl, BLOG_ROOT, BLOG_PATH } from '../data/blog';
 
 interface Props {
   slug: string;
@@ -101,7 +101,7 @@ const displayDate =
         <span aria-hidden="true">/</span>
         <a href="/resources/">Resources</a>
         <span aria-hidden="true">/</span>
-        <a href={BLOG_ROOT}>Blog</a>
+        <a href={BLOG_PATH}>Blog</a>
       </nav>
       <p class="eyebrow">{category}</p>
       <h1>{title}</h1>
