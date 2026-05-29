@@ -1,0 +1,407 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { SITE, PRODUCTS } from '../../data/site';
+import { faqSchema, jsonLd } from '../../data/schema';
+
+const pageUrl = `${SITE.url}/powered-up-pricing/`;
+const loanNexUrl = 'https://clout.loannex.com/';
+const lastUpdatedIso = '2026-05-29';
+const lastUpdatedDisplay = 'May 29, 2026';
+
+const breadcrumbs = [
+  { name: 'Home', url: SITE.url },
+  { name: 'Powered Up Pricing', url: pageUrl },
+];
+
+const featuredProducts = PRODUCTS.filter((p) => p.tier <= 3);
+
+const features = [
+  {
+    title: 'Multi-program scenario pricing',
+    detail:
+      'Price one borrower scenario across DSCR, Bank Statement, 1099 Only, P&L Only, Asset Qualifier, and Foreign National simultaneously. See which program fits the file before you commit to a path.',
+  },
+  {
+    title: 'FICO and LTV grids',
+    detail:
+      'Live pricing tiers across the standard 620 / 680 / 720 / 740 FICO bands and the program-specific LTV ladders. Pricing adjusts automatically when you change a tier.',
+  },
+  {
+    title: 'Lock-period options',
+    detail:
+      '15, 30, 45, and 60-day lock pricing visible side by side. Extension pricing visible inline so brokers can match the lock period to the close timeline.',
+  },
+  {
+    title: 'Borrower-ready rate sheets',
+    detail:
+      'Export scenario pricing as a clean rate sheet PDF for borrower presentations. Includes program-specific notes and standard disclosures.',
+  },
+  {
+    title: 'Same-source as TPO Connect',
+    detail:
+      'Pricing in Powered Up Pricing reflects the same wholesale rate sheet that drives initial decisions in TPO Connect. No reconciliation between systems.',
+  },
+  {
+    title: 'Lock from the engine',
+    detail:
+      'Once a scenario matches a registered file, lock directly from Powered Up Pricing — the lock confirmation posts to TPO Connect within minutes.',
+  },
+];
+
+const whenToUse = [
+  {
+    title: 'Powered Up Pricing',
+    body:
+      'When you have specific borrower numbers (FICO, LTV, loan amount, property type, occupancy) and want apples-to-apples pricing across multiple Non-QM programs.',
+    when: 'You know the file structure.',
+  },
+  {
+    title: 'Daily rate sheet',
+    body:
+      'When you want the full pricing matrix across all programs, all FICO bands, all LTV bands at once — for reference or for posting in your office. Refreshed daily by 9:30 AM ET in TPO Connect.',
+    when: 'You want the whole grid.',
+  },
+  {
+    title: 'Scenario desk',
+    body:
+      'When the file is borderline, the program fit is unclear, or the borrower has a credit event, foreign credit, or other underwriting nuance pricing alone won\'t answer.',
+    when: 'You need a written eligibility opinion.',
+  },
+];
+
+const faqs = [
+  {
+    question: 'What is Clout Powered Up Pricing?',
+    answer:
+      'Powered Up Pricing is the wholesale Non-QM scenario pricing engine for Clout broker partners. It prices a borrower scenario across all 10 Clout Non-QM programs simultaneously — DSCR, Bank Statement, 1099 Only, P&L Only, Asset Qualifier, Foreign National, and more — across FICO bands, LTV bands, and lock periods. Powered by LoanNEX.',
+  },
+  {
+    question: 'Who has access to Powered Up Pricing?',
+    answer:
+      'Active Clout wholesale partner brokers. Access is provisioned during onboarding alongside TPO Connect — usually within 24 hours of broker package approval. New brokers should start with the TPO Connect partner hub to apply.',
+  },
+  {
+    question: 'How is Powered Up Pricing different from the daily rate sheet?',
+    answer:
+      'The daily rate sheet is a full matrix showing every program, FICO band, and LTV band — useful for reference. Powered Up Pricing takes a specific borrower scenario and returns pricing only for that scenario across programs that fit. Use the rate sheet when you want the whole grid; use Powered Up Pricing when you have a real file in front of you.',
+  },
+  {
+    question: 'Can I lock pricing directly from Powered Up Pricing?',
+    answer:
+      'Yes. Once your scenario is registered as a file in TPO Connect, you can lock pricing directly from Powered Up Pricing. The lock confirmation posts back to TPO Connect within minutes and the lock confirmation document is generated same business day.',
+  },
+  {
+    question: 'How often is pricing refreshed?',
+    answer:
+      'Powered Up Pricing reflects the same wholesale rate sheet that drives TPO Connect decisions — refreshed daily by 9:30 AM ET. Intraday changes (rate-environment-driven repricing) post to both systems simultaneously when they occur.',
+  },
+  {
+    question: 'What if my scenario does not fit any program?',
+    answer:
+      'Powered Up Pricing returns "no program fit" rather than a misleading quote. When that happens, send the scenario to the desk — email PowerUp@CLOUTwmb.com or call 844-477-3111. The scenario desk reviews edge cases pricing alone cannot evaluate (credit events, foreign credit, unusual property types).',
+  },
+  {
+    question: 'Can borrowers see Powered Up Pricing?',
+    answer:
+      'Powered Up Pricing is a broker tool — pricing visibility is for the broker. Brokers can export scenario pricing as a borrower-ready rate-sheet PDF with appropriate disclosures, which is the typical way pricing reaches the borrower.',
+  },
+];
+
+// Service schema — describes the pricing engine itself
+const pricingServiceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  '@id': `${pageUrl}#service`,
+  name: 'Clout Powered Up Pricing',
+  alternateName: ['Clout Wholesale Non-QM Pricing Engine', 'Clout Scenario Pricing'],
+  serviceType: 'Wholesale Non-QM scenario pricing engine for mortgage brokers',
+  description:
+    'Powered Up Pricing is Clout\'s wholesale Non-QM scenario pricing engine for licensed mortgage brokers. Returns live multi-program pricing across DSCR, Bank Statement, 1099 Only, P&L Only, Asset Qualifier, and Foreign National programs by FICO band, LTV band, and lock period. Powered by LoanNEX.',
+  provider: { '@id': `${SITE.url}#organization` },
+  audience: {
+    '@type': 'BusinessAudience',
+    audienceType: 'Licensed mortgage brokers and brokerages (NMLS-registered) — active Clout wholesale partners',
+  },
+  url: pageUrl,
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Non-QM loan programs priced through Powered Up Pricing',
+    itemListElement: featuredProducts.map((p) => ({
+      '@type': 'Offer',
+      itemOffered: {
+        '@type': 'LoanOrCredit',
+        name: p.name,
+        url: `${SITE.url}/loan-options/${p.slug}/`,
+      },
+    })),
+  },
+};
+---
+
+<Layout
+  title="Clout Powered Up Pricing — Wholesale Non-QM Scenario Pricing Engine"
+  description="Powered Up Pricing is Clout's wholesale Non-QM scenario pricing engine — live multi-program pricing across DSCR, Bank Statement, 1099, Foreign National, and Asset Qualifier by FICO band, LTV band, and lock period. For active Clout partner brokers."
+  canonical={pageUrl}
+  breadcrumbs={breadcrumbs}
+  extraSchema={[jsonLd(pricingServiceSchema), jsonLd(faqSchema(faqs))]}
+>
+  <section class="hero">
+    <div class="container">
+      <p class="eyebrow">Wholesale pricing engine · NMLS #{SITE.nmlsId}</p>
+      <h1>Powered Up Pricing — live Non-QM scenario pricing for brokers.</h1>
+      <p class="answer-first lead">
+        Powered Up Pricing is the wholesale Non-QM scenario pricing engine Clout broker
+        partners use to price a borrower scenario across all 10 Non-QM programs at once —
+        DSCR, Bank Statement, 1099 Only, Foreign National, Asset Qualifier, and more —
+        across FICO bands, LTV bands, and lock periods. Powered by LoanNEX.
+      </p>
+      <div class="hero-cta">
+        <a href={loanNexUrl} target="_blank" rel="noopener" class="cta-primary">
+          Open Powered Up Pricing
+          <span aria-hidden="true">→</span>
+        </a>
+        <a href="/tpo-connect/#apply" class="cta-secondary">Apply to become a partner</a>
+      </div>
+      <p class="reviewed-by">
+        Reviewed by Clout Wholesale Operations · NMLS #{SITE.nmlsId} · Last updated <time datetime={lastUpdatedIso}>{lastUpdatedDisplay}</time>
+      </p>
+    </div>
+  </section>
+
+  <section class="band band-tldr">
+    <div class="container">
+      <div class="tldr">
+        <h2>Powered Up Pricing at a glance</h2>
+        <ul>
+          <li><span class="label">What it is</span><span class="value">Scenario pricing engine</span></li>
+          <li><span class="label">Who uses it</span><span class="value">Active Clout partner brokers</span></li>
+          <li><span class="label">Programs priced</span><span class="value">All 10 Non-QM</span></li>
+          <li><span class="label">Refresh</span><span class="value">Daily, by 9:30 AM ET</span></li>
+          <li><span class="label">FICO bands</span><span class="value">620 · 680 · 720 · 740</span></li>
+          <li><span class="label">Lock periods</span><span class="value">15 · 30 · 45 · 60 days</span></li>
+          <li><span class="label">Lock workflow</span><span class="value">Direct from engine to TPO Connect</span></li>
+          <li><span class="label">Powered by</span><span class="value">LoanNEX</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="container">
+      <header class="section-head">
+        <p class="eyebrow">What's inside</p>
+        <h2>What brokers can do in Powered Up Pricing.</h2>
+      </header>
+      <div class="feature-grid">
+        {features.map((f) => (
+          <article class="feature-card">
+            <h3>{f.title}</h3>
+            <p>{f.detail}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="band band-surface">
+    <div class="container">
+      <header class="section-head">
+        <p class="eyebrow">When to use which tool</p>
+        <h2>Pricing engine vs rate sheet vs scenario desk.</h2>
+      </header>
+      <div class="compare-grid">
+        {whenToUse.map((w) => (
+          <article class="compare-card">
+            <h3>{w.title}</h3>
+            <p class="compare-when"><strong>Use when:</strong> {w.when}</p>
+            <p>{w.body}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="band band-dark">
+    <div class="container">
+      <header class="section-head">
+        <p class="eyebrow">Access</p>
+        <h2>How brokers get access to Powered Up Pricing.</h2>
+      </header>
+      <ol class="step-list">
+        <li class="step">
+          <span class="step-n">01</span>
+          <div>
+            <h3>Apply to become a Clout partner</h3>
+            <p>Email <strong>PowerUp@CLOUTwmb.com</strong> or call <strong>{SITE.phoneDisplay}</strong>. Standard wholesale broker package — most files approved in 5–7 business days.</p>
+          </div>
+        </li>
+        <li class="step">
+          <span class="step-n">02</span>
+          <div>
+            <h3>Onboard through TPO Connect</h3>
+            <p>Your named AE walks you through TPO Connect access during the 30-minute onboarding call. Powered Up Pricing access is provisioned at the same time.</p>
+          </div>
+        </li>
+        <li class="step">
+          <span class="step-n">03</span>
+          <div>
+            <h3>Sign in and price your first scenario</h3>
+            <p>Powered Up Pricing opens to your broker dashboard. Enter borrower FICO, loan amount, LTV, and property details — pricing returns across every Non-QM program that fits.</p>
+          </div>
+        </li>
+      </ol>
+      <div class="step-cta">
+        <a href="/tpo-connect/#apply" class="cta-primary">Apply to partner</a>
+        <a href={`tel:${SITE.phone}`} class="cta-secondary">Call {SITE.phoneDisplay}</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="container">
+      <header class="section-head">
+        <p class="eyebrow">Frequently asked</p>
+        <h2>Questions about Powered Up Pricing.</h2>
+      </header>
+      <div class="faq" itemscope itemtype="https://schema.org/FAQPage">
+        {faqs.map((f) => (
+          <details itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+            <summary itemprop="name">{f.question}</summary>
+            <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+              <p itemprop="text">{f.answer}</p>
+            </div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="band band-compliance">
+    <div class="container">
+      <p class="compliance-row">
+        Powered Up Pricing is provided to NMLS-registered mortgage brokers and brokerages
+        actively partnered with Clout Wholesale Mortgage Bankers. Pricing is indicative and
+        subject to underwriting approval, lock confirmation, and program guidelines in effect
+        on the lock date. Powered by LoanNEX. {SITE.legalName} · NMLS
+        <a href={SITE.nmlsUrl} target="_blank" rel="noopener">#{SITE.nmlsId}</a>.
+        Equal Housing Lender. Page last updated <time datetime={lastUpdatedIso}>{lastUpdatedDisplay}</time>.
+      </p>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .container { max-width: 1180px; margin: 0 auto; padding: 0 1.5rem; }
+
+  .hero {
+    padding: 5rem 0 3.5rem;
+    background:
+      radial-gradient(1100px 480px at 18% -10%, color-mix(in srgb, var(--color-brand-bright) 18%, transparent) 0%, transparent 60%),
+      linear-gradient(180deg, var(--color-paper) 0%, var(--color-surface) 100%);
+  }
+  .hero h1 {
+    font-size: clamp(2rem, 4.6vw, 3.25rem);
+    line-height: 1.08;
+    margin: 0 0 1.25rem;
+    max-width: 22ch;
+  }
+  .hero .lead { max-width: 64ch; margin: 0 0 1.75rem; }
+  .hero-cta { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+  .hero .cta-primary span { transition: transform 120ms ease; }
+  .hero .cta-primary:hover span { transform: translateX(3px); }
+  .hero .reviewed-by { margin: 1.5rem 0 0; }
+
+  .band { padding: 4rem 0; }
+  .band-tldr { padding-top: 0; margin-top: -1.5rem; position: relative; z-index: 1; }
+  .band-surface { background: var(--color-surface); }
+  .band-dark { background: var(--color-brand-deep); color: var(--color-paper); }
+  .band-dark .eyebrow { color: var(--color-brand-bright); }
+  .band-dark h2, .band-dark h3 { color: var(--color-paper); }
+  .band-compliance { padding: 2rem 0 3.5rem; }
+
+  .band-tldr .tldr { background: var(--color-paper); box-shadow: 0 12px 40px -24px rgba(0, 65, 70, 0.18); }
+  .band-tldr .tldr ul { grid-template-columns: repeat(2, 1fr); gap: 0; column-gap: 2.5rem; }
+  @media (max-width: 720px) { .band-tldr .tldr ul { grid-template-columns: 1fr; } }
+
+  .section-head { margin: 0 0 2.5rem; max-width: 56ch; }
+  .section-head h2 { font-size: clamp(1.5rem, 3vw, 2.25rem); line-height: 1.2; margin: 0; }
+
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+  .feature-card {
+    padding: 1.5rem;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    background: var(--color-paper);
+    transition: border-color 120ms ease, transform 120ms ease, box-shadow 120ms ease;
+  }
+  .feature-card:hover {
+    border-color: var(--color-brand);
+    transform: translateY(-2px);
+    box-shadow: 0 14px 28px -18px rgba(1, 128, 118, 0.22);
+  }
+  .feature-card h3 { font-size: 1.0625rem; margin: 0 0 0.5rem; color: var(--color-brand-deep); }
+  .feature-card p { margin: 0; color: var(--color-ink-soft); font-size: var(--text-small); line-height: 1.6; }
+
+  /* Comparison */
+  .compare-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+  .compare-card {
+    padding: 1.75rem;
+    border: 1px solid var(--color-line);
+    border-left: 3px solid var(--color-brand);
+    border-radius: var(--radius-lg);
+    background: var(--color-paper);
+  }
+  .compare-card h3 { margin: 0 0 0.5rem; font-size: 1.125rem; color: var(--color-brand-deep); }
+  .compare-when { margin: 0 0 0.5rem; font-size: var(--text-small); color: var(--color-brand-warmth); font-weight: 500; }
+  .compare-when strong { color: var(--color-brand-warmth); font-weight: 700; }
+  .compare-card p:last-child { margin: 0; color: var(--color-ink-soft); font-size: var(--text-small); line-height: 1.65; }
+
+  /* Steps */
+  .step-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+  .step {
+    background: color-mix(in srgb, var(--color-paper) 6%, transparent);
+    border: 1px solid color-mix(in srgb, var(--color-brand-bright) 24%, transparent);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .step-n {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--color-brand-bright);
+    letter-spacing: 0.18em;
+  }
+  .step h3 { margin: 0; font-size: 1.0625rem; }
+  .step p { margin: 0; color: color-mix(in srgb, var(--color-paper) 80%, transparent); font-size: var(--text-small); line-height: 1.6; }
+  .step p strong { color: var(--color-paper); font-weight: 700; }
+  .step-cta { margin-top: 2rem; display: flex; gap: 0.75rem; flex-wrap: wrap; }
+
+  .band-compliance .compliance-row { max-width: 96ch; }
+
+  @media (max-width: 960px) {
+    .feature-grid { grid-template-columns: repeat(2, 1fr); }
+    .compare-grid { grid-template-columns: 1fr; }
+    .step-list { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 560px) {
+    .feature-grid { grid-template-columns: 1fr; }
+  }
+</style>

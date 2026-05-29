@@ -41,6 +41,7 @@ NY, NJ, PA, FL, CT, TX
 - [Locations Hub](https://cloutwmb.com/locations/)
 - [Broker Partners](https://cloutwmb.com/brokers/)
 - [TPO Connect — Wholesale Partner Portal](https://cloutwmb.com/tpo-connect/) — How brokers register, price, submit, and track Non-QM files with Clout. Includes turn-times by program, onboarding steps, scenario desk, and partner FAQs.
+- [Powered Up Pricing — Wholesale Non-QM Scenario Pricing Engine](https://cloutwmb.com/powered-up-pricing/) — Clout's scenario pricing engine for broker partners. Prices a borrower scenario across all 10 Non-QM programs by FICO band, LTV band, and lock period. Powered by LoanNEX.
 - [Real Estate Investors](https://cloutwmb.com/investors/)
 - [Resources Library](https://cloutwmb.com/resources/)
 - [Non-QM Blog](https://cloutwmb.com/resources/blog/) — Plain-language guides for brokers and investors on DSCR, Bank Statement, 1099 Only, P&L Only, BRRRR refinances, and Foreign National DSCR. Field-tested practical advice with real numbers.
@@ -50,5 +51,5 @@ NY, NJ, PA, FL, CT, TX
 ## Optional
 
 - Wholesale Partner Portal sign-in (Encompass): https://1866701084.encompasstpoconnect.com/
-- Pricing Engine: https://clout.loannex.com/
+- Powered Up Pricing engine (LoanNEX): https://clout.loannex.com/
 - Parent company: https://cliffcomortgage.com/
